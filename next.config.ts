@@ -4,6 +4,9 @@
  */
 
 const nextConfig = {
+	experimental: {
+		turbopack: false,
+	},
 	images: {
 		domains: ["images.unsplash.com", "lh3.googleusercontent.com"],
 		remotePatterns: [

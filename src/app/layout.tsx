@@ -14,6 +14,7 @@ export const metadata = {
 	title: "StrataDeed — Tokenized Property Deeds",
 	description:
 		"Mint, list, and discover tokenized property deeds (UI-only prototype)",
+	colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -22,9 +23,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
-			<body className={montserrat.className + " antialiased"}>
-				<div className="min-h-screen flex flex-col bg-strata-light">
+		<html
+			lang="en"
+			className="dark">
+			<body className={montserrat.className + " antialiased dark"}>
+				<div className="min-h-screen flex flex-col bg-gray-950">
 					<Navbar />
 					<main className="flex-1 w-full">{children}</main>
 					<Footer />
