@@ -23,16 +23,13 @@ hostname: "source.unsplash.com",
 ],
 },
 
-// ⚡ CRITICAL: Disable Turbopack to fix build errors
-// Next.js 16 doesn't support `turbo` in experimental config
-// Instead, use environment variable or disable via webpack
+// Build optimizations
+swcMinify: true,
 
-// Disable type checking during build (temporary fix)
+// Temporary: Disable type checking and eslint during build
 typescript: {
 ignoreBuildErrors: true,
 },
-
-// Disable ESLint during build
 eslint: {
 ignoreDuringBuilds: true,
 },
@@ -47,12 +44,11 @@ transpilePackages: [
 '@mantleio/sdk',
 ],
 
-// Webpack configuration to exclude problematic modules
+// Webpack configuration
 webpack: (config, { isServer }) => {
-// Don't bundle these packages on the server
+// Don't bundle Node.js modules on client
 if (!isServer) {
 config.resolve.fallback = {
-...config.resolve.fallback,
 fs: false,
 net: false,
 tls: false,
@@ -65,36 +61,9 @@ https: false,
 };
 }
 
-    // Exclude test files and problematic modules
-    config.module = {
-      ...config.module,
-      noParse: [
-        /node_modules\/thread-stream/,
-        /node_modules\/pino/,
-        /node_modules\/tap/,
-        /node_modules\/desm/,
-        /node_modules\/why-is-node-running/,
-        /node_modules\/fastbench/,
-        /node_modules\/pino-elasticsearch/,
-      ],
-    };
-
     return config;
 
 },
-
-// Exclude problematic packages from server bundles
-serverExternalPackages: [
-'thread-stream',
-'pino',
-'tap',
-'desm',
-'why-is-node-running',
-'fastbench',
-'pino-elasticsearch',
-'bufferutil',
-'utf-8-validate',
-],
 };
 
 module.exports = nextConfig;
