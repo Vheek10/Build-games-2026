@@ -3,7 +3,8 @@
 import { sampleProperties } from "../../../lib/dummy-data";
 
 export default function PropertyPage({ params }: { params: { id: string } }) {
-	const prop = sampleProperties.find((p) => p.id === params.id);
+	const id = Number(params.id);
+	const prop = sampleProperties.find((p) => p.id === id);
 
 	if (!prop) return <div>Property not found</div>;
 
