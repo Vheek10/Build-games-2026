@@ -243,7 +243,7 @@ export default function SignUpPage() {
 											type="text"
 											value={formData.name}
 											onChange={(e) => handleChange("name", e.target.value)}
-											placeholder="John Doe"
+											placeholder="First Last"
 											required
 											className="w-full pl-9 pr-3 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
 										/>

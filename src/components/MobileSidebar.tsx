@@ -13,7 +13,10 @@ const navIcons = {
 	"for-developers": Building,
 	company: Users,
 	"contact-us": Phone,
-};
+} as const;
+
+// Type for icon keys
+type IconKey = keyof typeof navIcons;
 
 interface MobileSidebarProps {
 	isOpen: boolean;
@@ -77,7 +80,8 @@ export default function MobileSidebar({
 						{/* Mobile Navigation */}
 						<nav className="space-y-0.5 mb-8">
 							{navItems.map((item) => {
-								const Icon = navIcons[item.key as keyof typeof navIcons];
+								// Safely get the icon with fallback to Home icon
+								const Icon = navIcons[item.key as IconKey] || Home;
 								const active = isActive(item.href);
 
 								return (
@@ -113,6 +117,12 @@ export default function MobileSidebar({
 									className="flex items-center justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-blue-600/40 rounded-lg"
 									onClick={onClose}>
 									Sign Up
+								</Link>
+								<Link
+									href="/login"
+									className="flex items-center justify-center px-6 py-2.5 border border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-500 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-semibold transition-all duration-300 rounded-lg"
+									onClick={onClose}>
+									Log In
 								</Link>
 							</div>
 						</div>
