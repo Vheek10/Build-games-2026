@@ -11,5 +11,5 @@ export { default as RecentActivities } from "./RecentActivities";
 export { default as QuickActions } from "./QuickActions";
 export { default as MarketInsights } from "./MarketInsights";
 
-// Export types and data
+// Export data and types
 export * from "./data/dashboard-data";

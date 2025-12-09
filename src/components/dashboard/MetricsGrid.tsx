@@ -1,7 +1,17 @@
 /** @format */
 
 import { MoreVertical, ArrowUpRight } from "lucide-react";
-import { DashboardMetric } from "../types";
+
+interface DashboardMetric {
+	id: string;
+	title: string;
+	value: string | number;
+	change: number;
+	icon: React.ComponentType<{ className?: string }>;
+	gradientFrom: string;
+	borderColor: string;
+	iconColor: string;
+}
 
 interface MetricsGridProps {
 	metrics: DashboardMetric[];
@@ -17,7 +27,11 @@ export default function MetricsGrid({ metrics }: MetricsGridProps) {
 						key={metric.id}
 						className={`bg-gradient-to-br ${metric.gradientFrom} rounded-xl p-5 border ${metric.borderColor}`}>
 						<div className="flex items-center justify-between mb-4">
-							<div className={`p-2 bg-${metric.color}-500/10 rounded-lg`}>
+							<div
+								className="p-2 rounded-lg bg-opacity-10"
+								style={{
+									backgroundColor: `${metric.iconColor.replace("text-", "")}20`,
+								}}>
 								<Icon className={`w-5 h-5 ${metric.iconColor}`} />
 							</div>
 							<div className="flex items-center gap-2">

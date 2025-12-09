@@ -9,19 +9,43 @@ import {
 	Download,
 	BarChart3,
 	Users,
-	Wallet,
-	Shield,
-	TrendingUp,
-	MapPin,
-	Building,
-	Star,
 } from "lucide-react";
-import {
-	DashboardMetric,
-	RecentActivity,
-	PortfolioDistribution,
-	QuickAction,
-} from "../types";
+
+export interface DashboardMetric {
+	id: string;
+	title: string;
+	value: string | number;
+	description: string;
+	change: number;
+	icon: React.ComponentType<{ className?: string }>;
+	color: string;
+	borderColor: string;
+	gradientFrom: string;
+	gradientTo: string;
+	iconColor: string;
+}
+
+export interface RecentActivity {
+	id: number;
+	type: "purchase" | "viewing" | "offer" | "document";
+	property: string;
+	amount: string | null;
+	date: string;
+	status: "completed" | "pending" | "scheduled";
+}
+
+export interface PortfolioDistribution {
+	type: string;
+	value: number;
+	color: string;
+}
+
+export interface QuickAction {
+	id: string;
+	label: string;
+	icon: React.ComponentType<{ className?: string }>;
+	color: string;
+}
 
 export const metrics: DashboardMetric[] = [
 	{
