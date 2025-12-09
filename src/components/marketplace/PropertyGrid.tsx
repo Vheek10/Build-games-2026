@@ -27,6 +27,7 @@ interface PropertyGridProps {
 	removeFromCart: (id: number) => void;
 	toggleWishlist: (id: number) => void;
 	clearFilters: () => void;
+	viewMode?: "grid" | "list";
 }
 
 export default function PropertyGrid({
@@ -38,9 +39,12 @@ export default function PropertyGrid({
 	removeFromCart,
 	toggleWishlist,
 	clearFilters,
+	viewMode = "grid", // Add default value
 }: PropertyGridProps) {
 	const [isLoading, setIsLoading] = useState(false);
-	const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+	const [currentViewMode, setCurrentViewMode] = useState<"grid" | "list">(
+		viewMode,
+	);
 
 	// Simulate loading state
 	useEffect(() => {

@@ -85,7 +85,7 @@ export default function MarketplacePage() {
 	const [showCart, setShowCart] = useState(false);
 	const [wishlist, setWishlist] = useState<number[]>([]);
 	const [showSearch, setShowSearch] = useState(false);
-
+	const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 	// Cart functionality
 	const addToCart = (property: (typeof sampleProperties)[0]) => {
 		setCart((prev) => {
@@ -291,6 +291,8 @@ export default function MarketplacePage() {
 							filteredProperties={filteredProperties}
 							sortBy={sortBy}
 							setSortBy={setSortBy}
+							viewMode={viewMode}
+							setViewMode={setViewMode}
 						/>
 
 						{/* Property Grid */}

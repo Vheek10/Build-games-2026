@@ -8,16 +8,22 @@ const nextConfig = {
 		turbopack: false,
 	},
 	images: {
-		domains: ["images.unsplash.com", "lh3.googleusercontent.com"],
 		remotePatterns: [
 			{
 				protocol: "https",
 				hostname: "lh3.googleusercontent.com",
-				pathname: "/aida-public/**",
 			},
 			{
 				protocol: "https",
 				hostname: "images.unsplash.com",
+			},
+			{
+				protocol: "https",
+				hostname: "picsum.photos",
+			},
+			{
+				protocol: "https",
+				hostname: "source.unsplash.com",
 			},
 		],
 	},

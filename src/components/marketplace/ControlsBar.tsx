@@ -155,7 +155,6 @@ export default function ControlsBar({
 									<option value="featured">Featured First</option>
 									<option value="price-low">Price: Low to High</option>
 									<option value="price-high">Price: High to Low</option>
-									<option value="roi-high">ROI: High to Low</option>
 									<option value="newest">Newest First</option>
 									<option value="views">Most Viewed</option>
 								</select>
@@ -170,19 +169,23 @@ export default function ControlsBar({
 							Filters
 						</button>
 
-						<button
-							onClick={onExport}
-							className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg transition-colors text-sm">
-							<Download className="w-4 h-4" />
-							Export
-						</button>
+						{onExport && (
+							<button
+								onClick={onExport}
+								className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg transition-colors text-sm">
+								<Download className="w-4 h-4" />
+								Export
+							</button>
+						)}
 
-						<button
-							onClick={onShare}
-							className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg transition-colors text-sm">
-							<Share2 className="w-4 h-4" />
-							Share
-						</button>
+						{onShare && (
+							<button
+								onClick={onShare}
+								className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg transition-colors text-sm">
+								<Share2 className="w-4 h-4" />
+								Share
+							</button>
+						)}
 					</div>
 				</div>
 
