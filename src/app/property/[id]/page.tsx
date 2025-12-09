@@ -29,7 +29,9 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
 				<aside className="card-glass p-6">
 					<div className="mb-4">
 						<div className="text-sm text-strata-stone-light">Valuation</div>
-						<div className="text-lg font-semibold">{prop.valuation}</div>
+						<div className="text-lg font-semibold">
+							${prop.price.toLocaleString()}
+						</div>
 					</div>
 					<button className="w-full px-4 py-3 rounded-xl bg-mantle-amber text-white font-semibold">
 						Buy Property

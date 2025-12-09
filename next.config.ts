@@ -4,9 +4,6 @@
  */
 
 const nextConfig = {
-	experimental: {
-		turbopack: false,
-	},
 	images: {
 		remotePatterns: [
 			{
