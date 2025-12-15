@@ -30,6 +30,6 @@ export const getPublicClient = (chainId?: number) => {
 			return mantleSepoliaPublicClient;
 
 		default:
-			return mantlePublicClient;
+			return mantleSepoliaPublicClient;
 	}
 };

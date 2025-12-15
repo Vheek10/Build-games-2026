@@ -6,7 +6,10 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:mantle": "hardhat run scripts/deploy.js --network mantleTestnet",
+    "test:contracts": "hardhat test",
+    "compile": "hardhat compile"
   },
   "dependencies": {
     "@base-org/account": "^2.5.0",
