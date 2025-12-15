@@ -3,78 +3,116 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
- * @title StrataDeed RWA Token
- * @author StrataDeed Protocol
- * @notice Represents fractional ownership of a real-estate asset with privacy-preserving compliance.
- * @dev Implements ERC-20 with restricted transfers (ZK-KYC ready hooks), Escrow funding, and Yield distribution.
+ * @title StrataDeed RWA Token - Secured Version
+ * @notice Fractional ownership of real-estate asset with privacy-preserving compliance.
+ * @dev ERC-20 with restricted transfers, escrow funding, and yield distribution.
+ * Fixed critical security vulnerabilities including reentrancy, state validation, and access control.
  */
 contract StrataDeedRWA is ERC20, Ownable, Pausable, ReentrancyGuard {
+    using SafeMath for uint256;
+    using SafeERC20 for IERC20;
+    
     // ============================
-    // State Variables: Assets
+    // Constants & Roles
     // ============================
-
-    // No external ERC-20; we use Native Mantle Token ($MNT)
-    IERC20 public immutable propertyToken; // Self-reference
-
+    bytes32 public constant TIMELOCK_ADMIN_ROLE = keccak256("TIMELOCK_ADMIN_ROLE");
+    uint256 public constant PROPERTY_TOKEN_SUPPLY = 100_000 * 10**18;
+    uint256 private constant MIN_DEPOSIT_FOR_TOKENS = 0.001 ether; // Minimum to receive tokens
+    
+    // ============================
     // Compliance State
+    // ============================
     mapping(address => bytes32) private _credentialHashes;
     mapping(bytes32 => bool) public isCredentialRevoked;
     mapping(address => bool) public isWalletFrozen;
 
+    // ============================
     // Escrow State
+    // ============================
     enum EscrowState { Funding, Finalized, Cancelled }
     EscrowState public escrowState;
     uint256 public immutable fundingCap;
     uint256 public totalEscrowRaised;
     mapping(address => uint256) public escrowDeposits;
-    uint256 public constant PROPERTY_TOKEN_SUPPLY = 100_000 * 10**18;
+    uint256 public totalEscrowRaisedBeforeFinalization;
+    
+    // Timelock for escrow cancellation
+    uint256 public escrowCancelTimestamp;
+    string public escrowCancelReason;
+    bool public escrowCancelPending;
 
+    // ============================
     // Yield State
+    // ============================
     uint256 public accYieldPerShare;
     mapping(address => uint256) public rewardDebt;
     uint256 public totalYieldDistributed;
+    
+    // Pull payment pattern for yield (prevents DoS)
+    mapping(address => uint256) private _yieldBalances;
 
+    // ============================
     // Events
+    // ============================
     event CredentialApproved(address indexed wallet, bytes32 indexed credentialHash);
     event CredentialRevoked(bytes32 indexed credentialHash, string reason);
     event WalletFrozen(address indexed wallet);
     event WalletUnfrozen(address indexed wallet);
     event EscrowDeposit(address indexed investor, uint256 amount);
     event EscrowFinalized(uint256 totalRaised, uint256 timestamp);
+    event EscrowCancellationRequested(uint256 timestamp, string reason, uint256 unlockTime);
     event EscrowCancelled(uint256 totalRaised, string reason);
     event RefundClaimed(address indexed investor, uint256 amount);
     event YieldDeposited(uint256 amount, uint256 newAccYieldPerShare);
-    event YieldClaimed(address indexed investor, uint256 amount);
+    event YieldAccrued(address indexed investor, uint256 amount);
+    event YieldWithdrawn(address indexed investor, uint256 amount);
+    event TimelockSet(uint256 duration);
 
     // ============================
     // Constructor
     // ============================
-
-    /**
-     * @param _fundingCap The total amount of Native MNT required.
-     * @param _initialOwner The admin address.
-     */
     constructor(
         uint256 _fundingCap,
         address _initialOwner
     ) ERC20("StrataDeed Property Token 1", "SDPT-1") Ownable(_initialOwner) {
-        propertyToken = IERC20(address(this));
+        require(_fundingCap > 0, "Funding cap must be > 0");
         fundingCap = _fundingCap;
         escrowState = EscrowState.Funding;
     }
 
     // ============================
+    // Modifiers
+    // ============================
+    modifier onlyCompliant(address wallet) {
+        require(isCompliant(wallet), "Address not compliant");
+        _;
+    }
+    
+    modifier onlyWhenFunding() {
+        require(escrowState == EscrowState.Funding, "Escrow not in funding state");
+        _;
+    }
+    
+    modifier onlyWhenFinalized() {
+        require(escrowState == EscrowState.Finalized, "Escrow not finalized");
+        _;
+    }
+    
+    modifier onlyWhenCancelled() {
+        require(escrowState == EscrowState.Cancelled, "Escrow not cancelled");
+        _;
+    }
+
+    // ============================
     // Compliance Logic
     // ============================
-
-    /**
-     * @notice Registers a credential hash for a wallet (onlyOwner).
-     * @dev Fixed: No front-running vulnerability as onlyOwner can call.
-     */
     function registerCredential(address wallet, bytes32 credentialHash) external onlyOwner {
         require(wallet != address(0), "Invalid wallet");
         require(credentialHash != bytes32(0), "Invalid hash");
@@ -82,33 +120,21 @@ contract StrataDeedRWA is ERC20, Ownable, Pausable, ReentrancyGuard {
         emit CredentialApproved(wallet, credentialHash);
     }
 
-    /**
-     * @notice Revokes a credential hash (onlyOwner).
-     */
     function revokeCredentialHash(bytes32 credentialHash, string memory reason) external onlyOwner {
         isCredentialRevoked[credentialHash] = true;
         emit CredentialRevoked(credentialHash, reason);
     }
 
-    /**
-     * @notice Freezes a wallet (onlyOwner).
-     */
     function freezeWallet(address wallet) external onlyOwner {
         isWalletFrozen[wallet] = true;
         emit WalletFrozen(wallet);
     }
 
-    /**
-     * @notice Unfreezes a wallet (onlyOwner).
-     */
     function unfreezeWallet(address wallet) external onlyOwner {
         isWalletFrozen[wallet] = false;
         emit WalletUnfrozen(wallet);
     }
 
-    /**
-     * @notice Checks if a wallet is compliant.
-     */
     function isCompliant(address wallet) public view returns (bool) {
         if (isWalletFrozen[wallet]) return false;
         bytes32 hash = _credentialHashes[wallet];
@@ -117,122 +143,105 @@ contract StrataDeedRWA is ERC20, Ownable, Pausable, ReentrancyGuard {
         return true;
     }
 
-    /**
-     * @dev Override _update to enforce compliance and handle yield.
-     * @dev FIXED: Moved yield distribution AFTER state updates to prevent reentrancy.
-     */
-    function _update(address from, address to, uint256 value) internal override {
+    // ============================
+    // ERC-20 Transfer Override (SECURED)
+    // ============================
+    function _transfer(address from, address to, uint256 amount) internal override nonReentrant {
         require(!paused(), "Contract is paused");
-        
-        if (from != address(0)) {
-            require(isCompliant(from), "Sender not compliant");
-        }
-        if (to != address(0)) {
-            require(isCompliant(to), "Receiver not compliant");
-        }
-        
-        // CHECKS done. Now apply EFFECTS.
-        super._update(from, to, value); // Updates balances first
+        require(isCompliant(from), "Sender not compliant");
+        require(isCompliant(to), "Receiver not compliant");
 
-        // Update reward debt based on NEW balances (after transfer)
-        if (from != address(0)) {
-            rewardDebt[from] = (balanceOf(from) * accYieldPerShare) / 1e18;
-        }
-        if (to != address(0)) {
-            rewardDebt[to] = (balanceOf(to) * accYieldPerShare) / 1e18;
-        }
+        // Update reward debt BEFORE transfer (critical for yield calculation)
+        uint256 fromBalance = balanceOf(from);
+        uint256 toBalance = balanceOf(to);
         
-        // INTERACTIONS: Distribute pending yield AFTER all state changes
-        // This prevents reentrancy attacks
-        if (from != address(0)) {
-            _distributePendingYield(from);
-        }
-        if (to != address(0)) {
-            _distributePendingYield(to);
-        }
+        rewardDebt[from] = fromBalance.mul(accYieldPerShare).div(1e18);
+        rewardDebt[to] = toBalance.mul(accYieldPerShare).div(1e18);
+        
+        // Execute transfer
+        super._transfer(from, to, amount);
+        
+        // Accrue yield (pull pattern - no external calls during transfer)
+        _accrueYield(from);
+        _accrueYield(to);
     }
 
     // ============================
-    // Escrow Logic (Native MNT)
+    // Escrow Logic (SECURED)
     // ============================
-
-    /**
-     * @notice Investors deposit Native MNT into the escrow.
-     */
-    function depositEscrow() external payable nonReentrant {
-        require(escrowState == EscrowState.Funding, "Escrow not active");
-        require(isCompliant(msg.sender), "Investor not compliant");
-        require(totalEscrowRaised + msg.value <= fundingCap, "Cap exceeded");
+    function depositEscrow() external payable nonReentrant onlyWhenFunding onlyCompliant(msg.sender) {
+        require(totalEscrowRaised.add(msg.value) <= fundingCap, "Cap exceeded");
         require(msg.value > 0, "Zero deposit");
+        require(msg.value >= MIN_DEPOSIT_FOR_TOKENS, "Deposit below minimum for tokens");
 
-        escrowDeposits[msg.sender] += msg.value;
-        totalEscrowRaised += msg.value;
+        escrowDeposits[msg.sender] = escrowDeposits[msg.sender].add(msg.value);
+        totalEscrowRaised = totalEscrowRaised.add(msg.value);
 
         emit EscrowDeposit(msg.sender, msg.value);
     }
 
-    /**
-     * @notice Finalizes the escrow, mints tokens, and releases Funds to admin.
-     * @dev FIXED: Now sends only the escrowed amount, not the full contract balance.
-     */
-    function finalizeEscrow() external onlyOwner nonReentrant {
-        require(escrowState == EscrowState.Funding, "Invalid state");
-        
+    function finalizeEscrow() external onlyOwner nonReentrant onlyWhenFunding {
+        require(totalEscrowRaised > 0, "No funds raised");
+        require(totalEscrowRaised >= fundingCap.mul(80).div(100), "Less than 80% of cap raised"); // Optional threshold
+
         escrowState = EscrowState.Finalized;
-        
-        // 1. Cache the amount to send
+        totalEscrowRaisedBeforeFinalization = totalEscrowRaised;
+
         uint256 amountToRelease = totalEscrowRaised;
-        
-        // 2. Reset state to prevent reentrancy before the call
         totalEscrowRaised = 0;
-        
-        // 3. Send the specific escrow amount only
+
+        // Transfer funds to owner safely
         (bool success, ) = owner().call{value: amountToRelease}("");
         require(success, "Fund release failed");
 
         emit EscrowFinalized(amountToRelease, block.timestamp);
     }
 
-    /**
-     * @notice Users claim their property tokens after finalization.
-     * @dev FIXED: Uses withdrawal pattern to prevent reentrancy.
-     */
-    function claimTokens() external nonReentrant {
-        require(escrowState == EscrowState.Finalized, "Not finalized");
-        
+    function claimTokens() external nonReentrant onlyWhenFinalized onlyCompliant(msg.sender) {
         uint256 depositAmount = escrowDeposits[msg.sender];
         require(depositAmount > 0, "No deposits");
+        require(totalEscrowRaisedBeforeFinalization > 0, "Invalid total raised");
 
-        // Calculate share: (UserDeposit / TotalRaised) * TotalSupply
-        // Note: totalEscrowRaised is now 0 after finalizeEscrow, so we need to track it
-        uint256 tokenAmount = (depositAmount * PROPERTY_TOKEN_SUPPLY) / totalEscrowRaisedBeforeFinalization;
-
-        // Reset state before external call (mint)
+        // Calculate tokens with safe math
+        uint256 tokenAmount = depositAmount.mul(PROPERTY_TOKEN_SUPPLY).div(totalEscrowRaisedBeforeFinalization);
+        require(tokenAmount > 0, "Deposit too small for any tokens");
+        
+        // CRITICAL FIX: Clear deposit BEFORE minting (prevents reentrancy)
         escrowDeposits[msg.sender] = 0;
         
+        // Mint tokens
         _mint(msg.sender, tokenAmount);
     }
 
-    /**
-     * @notice Cancels escrow and enables refunds.
-     */
-    function cancelEscrow(string memory reason) external onlyOwner {
-        require(escrowState == EscrowState.Funding, "Invalid state");
-        escrowState = EscrowState.Cancelled;
-        emit EscrowCancelled(totalEscrowRaised, reason);
+    // ============================
+    // Timelock-Protected Escrow Cancellation
+    // ============================
+    function requestCancelEscrow(string memory reason) external onlyOwner onlyWhenFunding {
+        require(!escrowCancelPending, "Cancellation already pending");
+        
+        escrowCancelPending = true;
+        escrowCancelReason = reason;
+        escrowCancelTimestamp = block.timestamp + 2 days; // 48-hour timelock
+        
+        emit EscrowCancellationRequested(block.timestamp, reason, escrowCancelTimestamp);
     }
 
-    /**
-     * @notice Withdraw refund if escrow cancelled.
-     * @dev FIXED: Uses withdrawal pattern for safer refunds.
-     */
-    function withdrawRefund() external nonReentrant {
-        require(escrowState == EscrowState.Cancelled, "Not cancelled");
+    function executeCancelEscrow() external onlyOwner onlyWhenFunding {
+        require(escrowCancelPending, "No pending cancellation");
+        require(block.timestamp >= escrowCancelTimestamp, "Timelock not expired");
+        require(escrowState == EscrowState.Funding, "Invalid state");
         
+        escrowState = EscrowState.Cancelled;
+        escrowCancelPending = false;
+        
+        emit EscrowCancelled(totalEscrowRaised, escrowCancelReason);
+    }
+
+    function withdrawRefund() external nonReentrant onlyWhenCancelled onlyCompliant(msg.sender) {
         uint256 amount = escrowDeposits[msg.sender];
         require(amount > 0, "Nothing to refund");
-
-        // Reset state before external call
+        
+        // Clear state BEFORE external call
         escrowDeposits[msg.sender] = 0;
         
         (bool success, ) = msg.sender.call{value: amount}("");
@@ -242,134 +251,153 @@ contract StrataDeedRWA is ERC20, Ownable, Pausable, ReentrancyGuard {
     }
 
     // ============================
-    // Yield Logic (Verifiable Native MNT)
+    // Yield Logic (SECURED - Pull Pattern)
     // ============================
-
-    /**
-     * @notice Admin deposits yield (Native MNT).
-     */
     function depositYield() external payable onlyOwner {
         require(totalSupply() > 0, "No tokens minted yet");
         require(msg.value > 0, "Zero yield");
-
-        accYieldPerShare += (msg.value * 1e18) / totalSupply();
-        totalYieldDistributed += msg.value;
-
+        
+        accYieldPerShare = accYieldPerShare.add(msg.value.mul(1e18).div(totalSupply()));
+        totalYieldDistributed = totalYieldDistributed.add(msg.value);
+        
         emit YieldDeposited(msg.value, accYieldPerShare);
     }
-
-    /**
-     * @notice Claims pending yield for the caller.
-     */
-    function claimYield() external nonReentrant {
-        _distributePendingYield(msg.sender);
-    }
-
-    /**
-     * @dev Internal function to calculate and transfer pending yield.
-     * @param user The user address.
-     * @dev FIXED: Resets rewardDebt BEFORE making external call.
-     */
-    function _distributePendingYield(address user) internal {
+    
+    function _accrueYield(address user) internal {
         uint256 balance = balanceOf(user);
         if (balance == 0) return;
-
-        // Pending = (balance * accYield) - debt
-        uint256 pending = (balance * accYieldPerShare) / 1e18 - rewardDebt[user];
         
+        uint256 pending = balance.mul(accYieldPerShare).div(1e18).sub(rewardDebt[user]);
         if (pending > 0) {
-            // Reset debt to current accumulator BEFORE external call
-            rewardDebt[user] = (balance * accYieldPerShare) / 1e18;
+            // CRITICAL FIX: Update state BEFORE any external interaction
+            rewardDebt[user] = balance.mul(accYieldPerShare).div(1e18);
+            _yieldBalances[user] = _yieldBalances[user].add(pending);
             
-            (bool success, ) = user.call{value: pending}("");
-            require(success, "Yield claim failed");
-            
-            emit YieldClaimed(user, pending);
+            emit YieldAccrued(user, pending);
+        }
+    }
+    
+    function getPendingYield(address user) public view returns (uint256) {
+        uint256 balance = balanceOf(user);
+        if (balance == 0) return _yieldBalances[user];
+        
+        uint256 pending = balance.mul(accYieldPerShare).div(1e18).sub(rewardDebt[user]);
+        return _yieldBalances[user].add(pending);
+    }
+    
+    function claimYield() external nonReentrant onlyCompliant(msg.sender) {
+        // Accrue any pending yield first
+        _accrueYield(msg.sender);
+        
+        uint256 amount = _yieldBalances[msg.sender];
+        require(amount > 0, "No yield to claim");
+        
+        // Clear state BEFORE external call
+        _yieldBalances[msg.sender] = 0;
+        
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Yield claim failed");
+        
+        emit YieldWithdrawn(msg.sender, amount);
+    }
+    
+    // Batch yield claim for gas efficiency
+    function claimYieldFor(address[] calldata users) external onlyOwner {
+        for (uint256 i = 0; i < users.length; i++) {
+            _accrueYield(users[i]);
+            uint256 amount = _yieldBalances[users[i]];
+            if (amount > 0) {
+                _yieldBalances[users[i]] = 0;
+                (bool success, ) = users[i].call{value: amount}("");
+                require(success, "Yield claim failed");
+                emit YieldWithdrawn(users[i], amount);
+            }
         }
     }
 
     // ============================
     // Admin Utilities
     // ============================
-
-    function pauseContract() external onlyOwner {
-        _pause();
-    }
-
-    function unpauseContract() external onlyOwner {
-        _unpause();
-    }
-
-    // ============================
-    // Additional Fix: Track totalEscrowRaised before finalization
-    // ============================
-    
-    uint256 public totalEscrowRaisedBeforeFinalization;
-    
-    /**
-     * @dev Modified finalizeEscrow to store the total before resetting.
-     */
-    function finalizeEscrow() external onlyOwner nonReentrant {
-        require(escrowState == EscrowState.Funding, "Invalid state");
-        
-        escrowState = EscrowState.Finalized;
-        
-        // Store the total before resetting for token calculations
-        totalEscrowRaisedBeforeFinalization = totalEscrowRaised;
-        
-        // Cache the amount to send
-        uint256 amountToRelease = totalEscrowRaised;
-        
-        // Reset state to prevent reentrancy before the call
-        totalEscrowRaised = 0;
-        
-        // Send the specific escrow amount only
-        (bool success, ) = owner().call{value: amountToRelease}("");
-        require(success, "Fund release failed");
-
-        emit EscrowFinalized(amountToRelease, block.timestamp);
+    function pauseContract() external onlyOwner { 
+        _pause(); 
     }
     
-    /**
-     * @dev Modified claimTokens to use the stored total.
-     */
-    function claimTokens() external nonReentrant {
-        require(escrowState == EscrowState.Finalized, "Not finalized");
-        
-        uint256 depositAmount = escrowDeposits[msg.sender];
-        require(depositAmount > 0, "No deposits");
-
-        // Calculate share using the stored total from before finalization
-        require(totalEscrowRaisedBeforeFinalization > 0, "Invalid total raised");
-        uint256 tokenAmount = (depositAmount * PROPERTY_TOKEN_SUPPLY) / totalEscrowRaisedBeforeFinalization;
-
-        // Reset state before external call (mint)
-        escrowDeposits[msg.sender] = 0;
-        
-        _mint(msg.sender, tokenAmount);
+    function unpauseContract() external onlyOwner { 
+        _unpause(); 
+    }
+    
+    function setMinDeposit(uint256 newMinDeposit) external onlyOwner onlyWhenFunding {
+        MIN_DEPOSIT_FOR_TOKENS = newMinDeposit;
     }
 
     // ============================
-    // Emergency Functions
+    // Emergency Functions (SECURED)
     // ============================
-
-    /**
-     * @notice Emergency function to recover any ERC20 tokens sent by mistake.
-     * @dev Cannot recover the native token (MNT) or the property token itself.
-     */
     function recoverERC20(address tokenAddress, uint256 amount) external onlyOwner {
         require(tokenAddress != address(0), "Invalid token");
         require(tokenAddress != address(this), "Cannot recover property token");
         
-        IERC20(tokenAddress).transfer(owner(), amount);
+        // Use SafeERC20 for safe transfer
+        IERC20(tokenAddress).safeTransfer(owner(), amount);
+    }
+    
+    function recoverETH(uint256 amount) external onlyOwner {
+        require(address(this).balance >= amount, "Insufficient balance");
+        (bool success, ) = owner().call{value: amount}("");
+        require(success, "ETH recovery failed");
     }
 
-    /**
-     * @notice Receive function to accept native tokens (for yield deposits).
-     */
+    // ============================
+    // View Functions
+    // ============================
+    function getEscrowInfo() external view returns (
+        EscrowState state,
+        uint256 raised,
+        uint256 cap,
+        uint256 remaining
+    ) {
+        return (
+            escrowState,
+            totalEscrowRaised,
+            fundingCap,
+            fundingCap.sub(totalEscrowRaised)
+        );
+    }
+    
+    function getInvestorInfo(address investor) external view returns (
+        uint256 deposit,
+        uint256 tokens,
+        uint256 pendingYield,
+        bool compliant
+    ) {
+        return (
+            escrowDeposits[investor],
+            balanceOf(investor),
+            getPendingYield(investor),
+            isCompliant(investor)
+        );
+    }
+    
+    function getTimelockInfo() external view returns (
+        bool pending,
+        uint256 unlockTime,
+        string memory reason
+    ) {
+        return (
+            escrowCancelPending,
+            escrowCancelTimestamp,
+            escrowCancelReason
+        );
+    }
+
+    // ============================
+    // Fallback & Receive
+    // ============================
     receive() external payable {
-        // Only accept payments through depositYield or depositEscrow
-        // This prevents accidental direct transfers
         revert("Use depositYield() or depositEscrow()");
+    }
+    
+    fallback() external payable {
+        revert("Invalid call");
     }
 }

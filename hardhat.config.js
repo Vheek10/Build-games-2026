@@ -1,13 +1,15 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config({ path: ".env.local" }); // Use .env.local to match Next.js conventions if present, or just standard
+import "@nomicfoundation/hardhat-toolbox";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env.local" });
 
 /** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
+export default {
   solidity: "0.8.20",
   networks: {
-    mantleTestnet: {
+    mantleSepolia: {
       url: "https://rpc.sepolia.mantle.xyz",
-      chainId: 5003,
+      chainId: 5001,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
     hardhat: {
@@ -15,10 +17,9 @@ module.exports = {
     },
   },
   paths: {
-    artifacts: "./src/contracts/artifacts", // Place artifacts where Next.js can see them easily if needed, or just default
-    // But standard hardhat is ./artifacts. Let's keep it standard to avoid confusion, 
-    // unless user specifically wants frontend integration. 
-    // The user has `src/contracts`. Let's output there? 
-    // Actually, normally we copy abi. Let's stick to default ./artifacts and user can import from there.
-  }
+    artifacts: "./src/contracts/artifacts",
+    cache: "./cache",
+    sources: "./contracts",
+    tests: "./test",
+  },
 };

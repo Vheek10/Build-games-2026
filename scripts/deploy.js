@@ -1,9 +1,11 @@
-const hre = require("hardhat");
+// scripts/deploy.js
+import hre from "hardhat";
 
-async function main() {
+const main = async () => {
   const [deployer] = await hre.ethers.getSigners();
 
   console.log("Deploying contracts with the account:", deployer.address);
+
   // Optional: Check balance to ensure gas
   const balance = await hre.ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", hre.ethers.formatEther(balance));
@@ -13,7 +15,7 @@ async function main() {
   const fundingCap = hre.ethers.parseUnits("5000", 18); 
   
   const StrataDeedRWA = await hre.ethers.getContractFactory("StrataDeedRWA");
-  // Constructor only takes fundingCap and owner now
+  // Constructor takes fundingCap and owner
   const strataDeed = await StrataDeedRWA.deploy(fundingCap, deployer.address);
 
   await strataDeed.waitForDeployment();
@@ -22,21 +24,20 @@ async function main() {
   console.log(`StrataDeedRWA deployed to: ${strataAddress}`);
   console.log(`- Note: Accepts NATIVE MNT for Escrow and Yield.`);
 
-  // 3. Setup Basic Compliance for Deployer (Self-Verify for Demo)
-  // Create a dummy hash: 0x123...
+  // 2. Setup Basic Compliance for Deployer (Self-Verify for Demo)
   const dummyHash = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("DEPLOYER_CREDENTIAL"));
   
   const tx = await strataDeed.registerCredential(deployer.address, dummyHash);
   await tx.wait();
   
   console.log(`Registered Identity for Deployer. Hash: ${dummyHash}`);
-  
-  // 4. Verify Compliance Status
+
+  // 3. Verify Compliance Status
   const isCompliant = await strataDeed.isCompliant(deployer.address);
   console.log(`Deployer Compliance Check: ${isCompliant}`);
-  
+
   console.log("\nDeployment script finished.");
-}
+};
 
 main().catch((error) => {
   console.error(error);
