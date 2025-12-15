@@ -37,7 +37,7 @@ export interface QuickAction {
 }
 
 export interface Property {
-	id: string;
+	id: string | number;
 	title: string;
 	price: number;
 	location: string;

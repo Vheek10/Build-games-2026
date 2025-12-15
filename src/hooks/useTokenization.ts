@@ -4,24 +4,28 @@
 
 import { useState } from "react";
 import { parseEther } from "viem";
-import { useAccount, useWriteContract, useReadContract } from "wagmi";
+import { useAccount, useWriteContract, useReadContract, useChainId } from "wagmi";
 import { StrataDeedNFTABI } from "@/contracts/abis/StrataDeedNFT";
 import { STRATA_DEED_NFT_ADDRESS } from "@/contracts/addresses";
 
 export function useTokenization() {
 	const { address } = useAccount();
+	const chainId = useChainId();
+	const currentChainId = chainId && STRATA_DEED_NFT_ADDRESS[chainId] ? chainId : 5003; // Default to testnet if mismatch
+    const contractAddress = STRATA_DEED_NFT_ADDRESS[currentChainId] as `0x${string}`;
+
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	// Read functions
 	const { data: tokenCounter } = useReadContract({
-		address: STRATA_DEED_NFT_ADDRESS,
+		address: contractAddress,
 		abi: StrataDeedNFTABI,
 		functionName: "tokenCounter",
 	});
 
 	const { data: userTokens } = useReadContract({
-		address: STRATA_DEED_NFT_ADDRESS,
+		address: contractAddress,
 		abi: StrataDeedNFTABI,
 		functionName: "tokensOfOwner",
 		args: [address!],
@@ -43,7 +47,7 @@ export function useTokenization() {
 
 		try {
 			const hash = await writeContractAsync({
-				address: STRATA_DEED_NFT_ADDRESS,
+				address: contractAddress,
 				abi: StrataDeedNFTABI,
 				functionName: "mintPropertyDeed",
 				args: [propertyId, metadataURI],
@@ -65,7 +69,7 @@ export function useTokenization() {
 
 		try {
 			const hash = await writeContractAsync({
-				address: STRATA_DEED_NFT_ADDRESS,
+				address: contractAddress,
 				abi: StrataDeedNFTABI,
 				functionName: "safeTransferFrom",
 				args: [address!, to, tokenId],

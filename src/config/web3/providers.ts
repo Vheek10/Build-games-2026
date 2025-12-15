@@ -13,6 +13,4 @@ export const config = getDefaultConfig({
 		[mantleSepoliaTestnet.id]: http("https://rpc.sepolia.mantle.xyz"),
 	},
 	ssr: true,
-	// Disable auto-connect on page load
-	initialConnector: undefined,
 });

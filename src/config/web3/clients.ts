@@ -1,7 +1,7 @@
 /** @format */
 
 import { createPublicClient, http } from "viem";
-import { mantle, mantleSepolia } from "../chains/mantle";
+import { mantle, mantleSepoliaTestnet } from "./chains";
 
 // Mainnet public client
 export const mantlePublicClient = createPublicClient({
@@ -13,7 +13,7 @@ export const mantlePublicClient = createPublicClient({
 
 // Sepolia testnet public client
 export const mantleSepoliaPublicClient = createPublicClient({
-	chain: mantleSepolia,
+	chain: mantleSepoliaTestnet,
 	transport: http(
 		process.env.NEXT_PUBLIC_MANTLE_SEPOLIA_RPC_URL ||
 			"https://rpc.sepolia.mantle.xyz",

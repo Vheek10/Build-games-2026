@@ -1,8 +1,10 @@
 /** @format */
 
-import { mantle, mantleSepolia } from "viem/chains";
+import { mantle, mantleSepoliaTestnet } from "viem/chains";
+
+export { mantle, mantleSepoliaTestnet };
 
 export const mantleChains = {
 	mantle,
-	mantleSepolia,
+	mantleSepoliaTestnet,
 };
