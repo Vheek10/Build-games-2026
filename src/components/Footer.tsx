@@ -1,199 +1,143 @@
 /** @format */
 
 import Link from "next/link";
-import {
-	Twitter,
-	Linkedin,
-	Github,
-	Mail,
-	Globe,
-	Shield,
-	Building,
-} from "lucide-react";
+import { Twitter, Mail, Building2, Shield } from "lucide-react";
 
 export default function Footer() {
-	const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-	const links = {
-		product: [
-			{ name: "How It Works", href: "/how-it-works" },
-			{ name: "Features", href: "/features" },
-			{ name: "Pricing", href: "/pricing" },
-			{ name: "API Docs", href: "/api" },
-		],
-		company: [
-			{ name: "About", href: "/about" },
-			{ name: "Blog", href: "/blog" },
-			{ name: "Careers", href: "/careers" },
-			{ name: "Press", href: "/press" },
-		],
-		legal: [
-			{ name: "Privacy Policy", href: "/privacy" },
-			{ name: "Terms of Service", href: "/terms" },
-			{ name: "Cookie Policy", href: "/cookies" },
-			{ name: "Compliance", href: "/compliance" },
-		],
-		resources: [
-			{ name: "Help Center", href: "/help" },
-			{ name: "Contact Support", href: "/support" },
-			{ name: "Status", href: "/status" },
-			{ name: "Partners", href: "/partners" },
-		],
-	};
+  const links = {
+    product: ["How It Works", "Features", "Pricing"],
+    company: ["About", "Blog", "Careers", "Contact"],
+    legal: ["Privacy", "Terms", "Compliance"],
+  };
 
-	const socialLinks = [
-		{ icon: Twitter, href: "https://twitter.com/stratadeed", label: "Twitter" },
-		{
-			icon: Linkedin,
-			href: "https://linkedin.com/company/stratadeed",
-			label: "LinkedIn",
-		},
-		{ icon: Github, href: "https://github.com/stratadeed", label: "GitHub" },
-		{ icon: Globe, href: "https://stratadeed.com", label: "Website" },
-	];
+  const socialLinks = [
+    { icon: Twitter, href: "https://twitter.com/stratadeed", label: "Twitter" },
+    { icon: Mail, href: "mailto:hello@stratadeed.com", label: "Email" },
+  ];
 
-	return (
-		<footer className="mt-20 bg-gray-900 text-gray-300">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				{/* Main Footer Content */}
-				<div className="py-8 sm:py-12 lg:py-16">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
-						{/* Brand Section */}
-						<div className="sm:col-span-2 lg:col-span-2">
-							<div className="flex items-center gap-3 mb-6">
-								<div className="w-10 h-10 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
-									<Building className="w-6 h-6 text-white" />
-								</div>
-								<div>
-									<h3 className="text-xl font-bold text-white">StrataDeed</h3>
-									<p className="text-sm text-gray-400">
-										Blockchain Real Estate
-									</p>
-								</div>
-							</div>
+  return (
+    <footer className="relative bg-gradient-to-br from-slate-900 to-slate-950 text-gray-300">
+      {/* Background Pattern */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '30px 30px'
+        }}
+      />
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-8 sm:py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand Section */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
+                  <Building2 className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white">StrataDeed</h2>
+                  <p className="text-sm text-cyan-300 font-medium">Real Estate Tokenization</p>
+                </div>
+              </div>
+              
+              <p className="text-gray-300 mb-6 max-w-md">
+                Transforming real estate ownership through blockchain technology. 
+                Secure, transparent, and accessible digital property assets.
+              </p>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all hover:scale-105 border border-white/10"
+                        aria-label={social.label}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </a>
+                    );
+                  })}
+                </div>
+                
+                <div className="flex items-center gap-2 text-sm text-emerald-400">
+                  <Shield className="w-4 h-4" />
+                  <span>Secured by Blockchain</span>
+                </div>
+              </div>
+            </div>
 
-							<p className="text-gray-400 mb-6 max-w-md">
-								Transforming real estate into liquid, transparent, and
-								accessible digital assets powered by blockchain technology.
-							</p>
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Product</h4>
+              <ul className="space-y-3">
+                {links.product.map((item) => (
+                  <li key={item}>
+                    <Link
+                      href={`/${item.toLowerCase().replace(' ', '-')}`}
+                      className="text-gray-400 hover:text-white transition-colors hover:translate-x-1 inline-block"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-							{/* Social Links */}
-							<div className="flex items-center gap-4">
-								{socialLinks.map((social) => {
-									const Icon = social.icon;
-									return (
-										<a
-											key={social.label}
-											href={social.href}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-											aria-label={social.label}>
-											<Icon className="w-5 h-5" />
-										</a>
-									);
-								})}
-							</div>
-						</div>
+            <div>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Company</h4>
+              <ul className="space-y-3">
+                {links.company.map((item) => (
+                  <li key={item}>
+                    <Link
+                      href={`/${item.toLowerCase()}`}
+                      className="text-gray-400 hover:text-white transition-colors hover:translate-x-1 inline-block"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-						{/* Quick Links */}
-						<div>
-							<h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-								Product
-							</h4>
-							<ul className="space-y-3">
-								{links.product.map((link) => (
-									<li key={link.name}>
-										<Link
-											href={link.href}
-											className="text-gray-400 hover:text-white transition-colors">
-											{link.name}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
-
-						<div>
-							<h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-								Company
-							</h4>
-							<ul className="space-y-3">
-								{links.company.map((link) => (
-									<li key={link.name}>
-										<Link
-											href={link.href}
-											className="text-gray-400 hover:text-white transition-colors">
-											{link.name}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
-
-						<div>
-							<h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-								Resources
-							</h4>
-							<ul className="space-y-3">
-								{links.resources.map((link) => (
-									<li key={link.name}>
-										<Link
-											href={link.href}
-											className="text-gray-400 hover:text-white transition-colors">
-											{link.name}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				{/* Bottom Bar */}
-				<div className="py-6 sm:py-8 border-t border-gray-800">
-					<div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-						{/* Left Side */}
-						<div className="flex flex-col sm:flex-row items-center gap-4">
-							<div className="flex items-center gap-2 text-sm">
-								<Shield className="w-4 h-4 text-emerald-400" />
-								<span>Secure & Compliant</span>
-							</div>
-							<div className="hidden sm:block w-px h-4 bg-gray-700" />
-							<div className="flex items-center gap-2 text-sm">
-								<Mail className="w-4 h-4 text-blue-400" />
-								<a
-									href="mailto:hello@stratadeed.com"
-									className="hover:text-white transition-colors">
-									hello@stratadeed.com
-								</a>
-							</div>
-						</div>
-
-						{/* Middle - Copyright */}
-						<div className="text-center">
-							<p className="text-sm text-gray-400">
-								© {currentYear} StrataDeed. All rights reserved.
-							</p>
-							<p className="text-xs text-gray-500 mt-1">
-								Built for Mantle Hackathon | MVP Version
-							</p>
-						</div>
-
-						{/* Right Side - Legal Links */}
-						<div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6">
-							{links.legal.map((link) => (
-								<Link
-									key={link.name}
-									href={link.href}
-									className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
-									{link.name}
-								</Link>
-							))}
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-	);
+          {/* Bottom Section */}
+          <div className="mt-12 pt-6 border-t border-white/10">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="text-center md:text-left">
+                <p className="text-sm text-gray-300">
+                  © {currentYear} StrataDeed. All rights reserved.
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Real Estate • Blockchain • Innovation
+                </p>
+              </div>
+              
+              <div className="flex flex-wrap justify-center gap-6">
+                {links.legal.map((item) => (
+                  <Link
+                    key={item}
+                    href={`/${item.toLowerCase()}`}
+                    className="text-xs text-gray-500 hover:text-gray-300 transition-colors font-medium"
+                  >
+                    {item}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
