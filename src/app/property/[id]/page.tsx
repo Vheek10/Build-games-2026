@@ -2,8 +2,13 @@
 
 import { sampleProperties } from "../../../lib/dummy-data";
 
-export default function PropertyPage({ params }: { params: { id: string } }) {
-	const id = Number(params.id);
+export default async function PropertyPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id: idString } = await params;
+	const id = Number(idString);
 	const prop = sampleProperties.find((p) => p.id === id);
 
 	if (!prop) return <div>Property not found</div>;

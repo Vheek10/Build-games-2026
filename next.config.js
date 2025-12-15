@@ -74,7 +74,10 @@ const nextConfig = {
 				resourceRegExp: /^@gemini-wallet\/core$/,
 			}),
 			new webpack.IgnorePlugin({
-				resourceRegExp: /^porto$/,
+				resourceRegExp: /^porto(\/internal)?$/,
+			}),
+			new webpack.IgnorePlugin({
+				resourceRegExp: /^@react-native-async-storage\/async-storage$/,
 			})
 		);
 
