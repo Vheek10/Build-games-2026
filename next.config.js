@@ -47,14 +47,11 @@ const nextConfig = {
 		// Exclude test files from all packages
 		config.module.rules.push({
 			test: /\.(test|spec)\.(js|ts|mjs)$/,
+			exclude: /node_modules/,
 			use: "ignore-loader",
 		});
 
-		// Exclude specific problematic directories
-		config.module.rules.push({
-			test: /[\\/](test|__tests__|tests|bench|benchmark)[\\/]/,
-			use: "ignore-loader",
-		});
+
 
 		// Specifically ignore thread-stream test files
 		config.module.rules.push({
@@ -67,6 +64,19 @@ const nextConfig = {
 			test: /\.(md|yml|sh|zip)$/,
 			use: "ignore-loader",
 		});
+
+
+		// Ignore specific viem test files that are causing re-export errors
+		const webpack = require("webpack");
+		config.plugins.push(
+
+			new webpack.IgnorePlugin({
+				resourceRegExp: /^@gemini-wallet\/core$/,
+			}),
+			new webpack.IgnorePlugin({
+				resourceRegExp: /^porto$/,
+			})
+		);
 
 		return config;
 	},
