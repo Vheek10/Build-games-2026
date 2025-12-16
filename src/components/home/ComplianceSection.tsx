@@ -122,7 +122,7 @@ export default function ComplianceSection() {
     return 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700';
   };
 
-  const getIconClasses = (index) => {
+  const getIconClasses = (index: number) => {
     const isActive = activeFeature === index;
     const feature = complianceFeatures[index];
     
@@ -143,7 +143,7 @@ export default function ComplianceSection() {
     return 'text-gray-500';
   };
 
-  const getIconBgClasses = (index) => {
+  const getIconBgClasses = (index: number) => {
     const isActive = activeFeature === index;
     const feature = complianceFeatures[index];
     
@@ -164,7 +164,7 @@ export default function ComplianceSection() {
     return 'bg-gray-100 dark:bg-gray-700';
   };
 
-  const getMetricIconClasses = (color) => {
+  const getMetricIconClasses = (color: string) => {
     switch(color) {
       case 'blue':
         return 'text-blue-600 dark:text-blue-400';
@@ -179,7 +179,7 @@ export default function ComplianceSection() {
     }
   };
 
-  const getMetricBgClasses = (color) => {
+  const getMetricBgClasses = (color: string) => {
     switch(color) {
       case 'blue':
         return 'bg-blue-100 dark:bg-blue-900/30';
