@@ -134,17 +134,17 @@ export default function FinalCTASection() {
 					transition={{ duration: 0.6, delay: 0.4 }}
 					className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
 					<Link
-						href="/signup"
+						href="/dashboard"
 						className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl hover:shadow-2xl hover:shadow-cyan-500/30 hover:scale-105 transition-all duration-300 overflow-hidden">
-						<span className="relative z-10">Start Investing Free</span>
+						<span className="relative z-10">Start Investing</span>
 						<ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
 						<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 					</Link>
 
 					<Link
-						href="/contact"
+						href="/marketplace"
 						className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-xl hover:bg-white/10 hover:scale-105 transition-all duration-300 overflow-hidden">
-						<span>Schedule a Demo</span>
+						<span>Browse Properties</span>
 						<div className="w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
 						<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 					</Link>

@@ -292,37 +292,22 @@ export default function Navbar() {
 								</div>
 							) : (
 								<>
-									{/* Desktop: Auth Buttons */}
-									<div className="hidden lg:flex items-center gap-3">
-										<Link
-											href="/signin"
-											className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-											Sign In
-										</Link>
-										<Link
-											href="/signup"
-											className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-600/40 transition-all duration-300 hover:scale-105">
-											Sign Up
-										</Link>
-									</div>
-
-									{/* Mobile: Connect Button */}
-									<div className="lg:hidden">
-										<ConnectButton.Custom>
-											{({ openConnectModal, authenticationStatus, mounted }) => {
-												const ready = mounted && authenticationStatus !== "loading";
-												if (!ready) return <div className="w-20 h-9 bg-gray-800 rounded-lg animate-pulse" />;
-												
-												return (
-													<button
-														onClick={openConnectModal}
-														className="px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-600/40 transition-all duration-300">
-														Connect
-													</button>
-												);
-											}}
-										</ConnectButton.Custom>
-									</div>
+									{/* Desktop & Mobile: Connect Button */}
+									<ConnectButton.Custom>
+										{({ openConnectModal, authenticationStatus, mounted }) => {
+											const ready = mounted && authenticationStatus !== "loading";
+											if (!ready) return <div className="w-20 h-9 bg-gray-800 rounded-lg animate-pulse" />;
+											
+											return (
+												<button
+													onClick={openConnectModal}
+													className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-600/40 transition-all duration-300 hover:scale-105 flex items-center gap-2">
+													<span className="hidden sm:inline">Connect Wallet</span>
+													<span className="sm:hidden">Connect</span>
+												</button>
+											);
+										}}
+									</ConnectButton.Custom>
 								</>
 							)}
 						</div>

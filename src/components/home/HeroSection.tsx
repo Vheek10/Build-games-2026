@@ -136,7 +136,7 @@ export default function HeroSection() {
 							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-12 sm:mb-14 lg:mb-16 px-4 w-full max-w-md sm:max-w-none mx-auto">
 								{/* Primary Button */}
 								<Link
-									href="/signup"
+									href="/dashboard"
 									className="group relative px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/40 w-full sm:w-auto text-center shadow-lg min-h-[48px]">
 									{/* Shine effect */}
 									<div className="absolute inset-0 translate-x-[-100%] skew-x-[-45deg] group-hover:translate-x-[100%] group-hover:skew-x-[-45deg] transition-all duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
@@ -155,7 +155,7 @@ export default function HeroSection() {
 
 								{/* Secondary Button */}
 								<Link
-									href="/list-property"
+									href="/mint"
 									className="group relative px-6 sm:px-8 py-3.5 sm:py-4 bg-gray-800/40 backdrop-blur-sm border border-gray-700/30 text-gray-200 font-semibold rounded-xl overflow-hidden transition-all duration-500 hover:bg-gray-800/60 hover:border-gray-600/50 hover:text-white w-full sm:w-auto text-center shadow-md min-h-[48px]">
 									{/* Background glow on hover */}
 									<div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-600/15 group-hover:to-cyan-600/15 transition-all duration-500" />
