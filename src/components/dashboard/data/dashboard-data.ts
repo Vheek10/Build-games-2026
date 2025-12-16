@@ -2,13 +2,15 @@
 
 import {
 	DollarSign,
-	Home,
-	Target,
-	Eye,
+	Activity,
+	TrendingUp,
+	Zap,
 	Plus,
 	Download,
 	BarChart3,
-	Users,
+	Repeat, // For swap/bridge
+	Layers, // For strategies
+	Wallet // For wallet/assets
 } from "lucide-react";
 
 export interface DashboardMetric {
@@ -27,11 +29,12 @@ export interface DashboardMetric {
 
 export interface RecentActivity {
 	id: number;
-	type: "purchase" | "viewing" | "offer" | "document";
-	property: string;
+	type: "stake" | "harvest" | "bridge" | "swap" | "liquidity";
+	property: string; // Used for "Strategy Name" or "Asset Pair"
 	amount: string | null;
 	date: string;
-	status: "completed" | "pending" | "scheduled";
+	status: "completed" | "pending" | "processing";
+    txHash?: string; // Add optional txHash
 }
 
 export interface PortfolioDistribution {
@@ -49,12 +52,26 @@ export interface QuickAction {
 
 export const metrics: DashboardMetric[] = [
 	{
-		id: "portfolio-value",
-		title: "Portfolio Value",
-		value: "$15.87M",
-		description: "Total portfolio value",
-		change: 12.5,
+		id: "tvl",
+		title: "Total Tokenized Value",
+		value: "$1.24M",
+		description: "Real estate assets on-chain",
+		change: 8.4,
 		icon: DollarSign,
+		color: "emerald", // Mantle Green-ish
+		borderColor: "border-emerald-200 dark:border-emerald-800",
+		gradientFrom:
+			"from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20",
+		gradientTo: "to-emerald-100 dark:to-emerald-800/20",
+		iconColor: "text-emerald-600 dark:text-emerald-400",
+	},
+	{
+		id: "active-strategies",
+		title: "Properties Tokenized",
+		value: 8,
+		description: "3 pending tokenization",
+		change: 1, // +1 active strategy
+		icon: Layers,
 		color: "blue",
 		borderColor: "border-blue-200 dark:border-blue-800",
 		gradientFrom:
@@ -63,26 +80,12 @@ export const metrics: DashboardMetric[] = [
 		iconColor: "text-blue-600 dark:text-blue-400",
 	},
 	{
-		id: "properties-owned",
-		title: "Properties Owned",
-		value: 24,
-		description: "Total properties",
-		change: 3,
-		icon: Home,
-		color: "emerald",
-		borderColor: "border-emerald-200 dark:border-emerald-800",
-		gradientFrom:
-			"from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20",
-		gradientTo: "to-emerald-100 dark:to-emerald-800/20",
-		iconColor: "text-emerald-600 dark:text-emerald-400",
-	},
-	{
-		id: "roi",
-		title: "Average ROI",
-		value: "24.8%",
-		description: "Return on investment",
-		change: 5.2,
-		icon: Target,
+		id: "avg-apy",
+		title: "Average Rental Yield",
+		value: "18.4%",
+		description: "Annualized rental income",
+		change: 2.1,
+		icon: TrendingUp,
 		color: "purple",
 		borderColor: "border-purple-200 dark:border-purple-800",
 		gradientFrom:
@@ -91,12 +94,12 @@ export const metrics: DashboardMetric[] = [
 		iconColor: "text-purple-600 dark:text-purple-400",
 	},
 	{
-		id: "active-viewers",
-		title: "Active Viewers",
-		value: "1,542",
-		description: "Current viewers",
-		change: 18,
-		icon: Eye,
+		id: "gas-saved",
+		title: "Gas Saved vs ETH",
+		value: "92%",
+		description: "~$1,240 saved total",
+		change: 0.5,
+		icon: Zap,
 		color: "amber",
 		borderColor: "border-amber-200 dark:border-amber-800",
 		gradientFrom:
@@ -106,50 +109,57 @@ export const metrics: DashboardMetric[] = [
 	},
 ];
 
+// Rebranded "Recent Activities" to "On-Chain Activity"
 export const recentActivities: RecentActivity[] = [
 	{
 		id: 1,
-		type: "purchase",
-		property: "Luxury Villa",
-		amount: "$2.5M",
-		date: "Today",
+		type: "stake",
+		property: "Mantle Meth Staking",
+		amount: "5,000 MNT",
+		date: "10 mins ago",
 		status: "completed",
+        txHash: "0x3a...8f21"
 	},
 	{
 		id: 2,
-		type: "viewing",
-		property: "Downtown Loft",
-		amount: null,
-		date: "Yesterday",
-		status: "scheduled",
+		type: "harvest",
+		property: "USDC/MNT LP Farm",
+		amount: "$1,250 USDC",
+		date: "2 hours ago",
+		status: "completed",
+         txHash: "0x7b...9c33"
 	},
 	{
 		id: 3,
-		type: "offer",
-		property: "Beachfront Property",
-		amount: "$3.2M",
-		date: "2 days ago",
-		status: "pending",
+		type: "bridge",
+		property: "Ethereum -> Mantle",
+		amount: "2.5 ETH",
+		date: "5 hours ago",
+		status: "processing",
+         txHash: "0x1d...4e55"
 	},
 	{
 		id: 4,
-		type: "document",
-		property: "All Properties",
-		amount: null,
-		date: "1 week ago",
+		type: "swap",
+		property: "USDT -> MNT",
+		amount: "10,000 USDT",
+		date: "1 day ago",
 		status: "completed",
+         txHash: "0x9f...2a11"
 	},
 ];
 
+// Rebranded "Portfolio Distribution" to "Asset Allocation"
 export const portfolioDistribution: PortfolioDistribution[] = [
-	{ type: "Residential", value: 65, color: "bg-blue-500" },
-	{ type: "Commercial", value: 25, color: "bg-emerald-500" },
-	{ type: "Luxury", value: 10, color: "bg-purple-500" },
+	{ type: "MNT", value: 45, color: "bg-emerald-500" }, // Mantle Token
+	{ type: "ETH", value: 30, color: "bg-blue-500" },       // Ether
+	{ type: "Stablecoins", value: 15, color: "bg-purple-500" }, // USDC/USDT
+    { type: "Other", value: 10, color: "bg-gray-400" }, // Governance/Misc
 ];
 
 export const quickActions: QuickAction[] = [
-	{ id: "new-listing", label: "New Listing", icon: Plus, color: "blue" },
-	{ id: "reports", label: "Reports", icon: Download, color: "emerald" },
-	{ id: "analytics", label: "Analytics", icon: BarChart3, color: "purple" },
-	{ id: "consult", label: "Consult", icon: Users, color: "amber" },
+	{ id: "new-strategy", label: "Create Strategy", icon: Plus, color: "blue" },
+	{ id: "harvest-all", label: "Harvest All", icon: Download, color: "emerald" },
+	{ id: "analytics", label: "Yield Analytics", icon: BarChart3, color: "purple" },
+	{ id: "bridge", label: "Bridge Funds", icon: Repeat, color: "amber" },
 ];

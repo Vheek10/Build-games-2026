@@ -22,10 +22,10 @@ export default function MarketplaceHeader({
 			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
 				<div>
 					<h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-						Property Marketplace
+						Asset Marketplace
 					</h1>
 					<p className="text-gray-600 dark:text-gray-400">
-						Discover exclusive real estate investment opportunities worldwide
+						Discover high-yield tokenized real estate opportunities worldwide
 					</p>
 				</div>
 

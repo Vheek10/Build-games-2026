@@ -2,16 +2,15 @@
 
 import {
 	Plus,
-	MapPin,
-	Building,
-	Home,
+	TrendingUp,
+	Layers,
 	MoreVertical,
 	ChevronRight,
-	Bath,
-	Square,
-	Star,
+	Activity,
+	DollarSign,
+	Clock,
 } from "lucide-react";
-import { Property } from "./types";
+import { Property } from "./types"; // We will alias this or assume types are updated separately, or just treat 'Property' as 'Strategy' object structurally for now.
 
 interface PropertiesListProps {
 	properties: Property[];
@@ -22,16 +21,17 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 		<div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
 			<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
 				<div>
-					<h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
-						Your Properties
+					<h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <Layers className="w-5 h-5 text-blue-500" />
+						Tokenized Properties
 					</h3>
 					<p className="text-sm text-gray-600 dark:text-gray-400">
-						Recent acquisitions and listings
+						Fractional real estate ownership
 					</p>
 				</div>
-				<button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm">
+				<button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors text-sm shadow-lg shadow-emerald-500/20">
 					<Plus className="w-4 h-4" />
-					Add Property
+					Tokenize Property
 				</button>
 			</div>
 
@@ -39,28 +39,25 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 				{properties.slice(0, 3).map((property, index) => (
 					<div
 						key={property.id}
-						className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+						className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 hover:shadow-md group">
 						<div className="flex w-full sm:w-auto items-center gap-4">
-							<div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-								<img
-									src={property.image}
-									alt={property.title}
-									className="w-full h-full object-cover"
-								/>
-								{property.isFeatured && (
-									<div className="absolute top-1 left-1 px-1.5 py-0.5 bg-blue-600 text-white text-[10px] rounded">
-										<Star className="w-2.5 h-2.5 fill-current" />
-									</div>
-								)}
+							<div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                                {/* Placeholder for Token/Strategy Icon since we don't have strategy images yet */}
+								<div className="text-2xl">🏠</div>
+                                {/* Status Indicator */}
+								<div className="absolute top-1 left-1 px-1.5 py-0.5 bg-emerald-500 text-white text-[10px] font-bold rounded shadow-sm">
+									LIVE
+								</div>
 							</div>
 							
-							{/* Mobile: Title & Price shown here */}
+							{/* Mobile: Title & Value shown here */}
 							<div className="sm:hidden flex-1">
-								<h4 className="font-semibold text-gray-900 dark:text-white text-sm">
-									{property.title}
+								<h4 className="font-bold text-gray-900 dark:text-white text-sm">
+									{property.title} {/* Strategy Name */}
 								</h4>
-								<div className="text-base font-bold text-gray-900 dark:text-white">
-									${property.price.toLocaleString()}
+								<div className="text-base font-bold text-emerald-600 dark:text-emerald-400">
+                                    {/* Using price as 'Staked Amount' */}
+									${property.price.toLocaleString()} Tokenized
 								</div>
 							</div>
 
@@ -70,54 +67,38 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 						</div>
 
 						<div className="flex-1 w-full">
-							{/* Desktop: Title & Price */}
+							{/* Desktop: Title & Value */}
 							<div className="hidden sm:flex items-center justify-between mb-1">
-								<h4 className="font-semibold text-gray-900 dark:text-white">
+								<h4 className="font-bold text-gray-900 dark:text-white text-base">
 									{property.title}
 								</h4>
-								<div className="text-lg font-bold text-gray-900 dark:text-white">
+								<div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                    <span className="text-xs text-gray-500 font-normal uppercase mr-1">Tokenized:</span>
 									${property.price.toLocaleString()}
 								</div>
 							</div>
 
-							<div className="flex items-center gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">
-								<div className="flex items-center gap-1">
-									<MapPin className="w-3.5 h-3.5" />
-									{property.location}
+							{/* Strategy Details: APY, TVL, Earned */}
+							<div className="flex items-center gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-100 dark:border-gray-700 w-full sm:w-auto mt-2">
+								<div className="flex items-center gap-1.5 text-xs sm:text-sm bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-md text-blue-700 dark:text-blue-300 font-medium">
+									<TrendingUp className="w-3.5 h-3.5" />
+                                    {/* Mock APY based on bedrooms :) */}
+									<span>{property.bedrooms * 4.2}% Rental Yield</span>
 								</div>
-								<div className="flex items-center gap-1">
-									<Building className="w-3.5 h-3.5" />
-									{property.type}
+								<div className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+									<Activity className="w-3.5 h-3.5 text-gray-400" />
+                                    {/* Mock Risk Score based on bathrooms */}
+									<span>Occupancy: 100%</span>
 								</div>
-							</div>
-
-							<div className="flex items-center gap-4 border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-100 dark:border-gray-700 w-full sm:w-auto">
-								<div className="flex items-center gap-1 text-xs sm:text-sm">
-									<Home className="w-3.5 h-3.5 text-gray-400" />
-									<span className="font-medium text-gray-900 dark:text-white">
-										{property.bedrooms}
-									</span>
-									<span className="text-gray-500">beds</span>
-								</div>
-								<div className="flex items-center gap-1 text-xs sm:text-sm">
-									<Bath className="w-3.5 h-3.5 text-gray-400" />
-									<span className="font-medium text-gray-900 dark:text-white">
-										{property.bathrooms}
-									</span>
-									<span className="text-gray-500">baths</span>
-								</div>
-								<div className="flex items-center gap-1 text-xs sm:text-sm">
-									<Square className="w-3.5 h-3.5 text-gray-400" />
-									<span className="font-medium text-gray-900 dark:text-white">
-										{property.squareFeet.toLocaleString()}
-									</span>
-									<span className="text-gray-500">sqft</span>
+								<div className="flex items-center gap-1.5 text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 font-medium ml-auto sm:ml-0">
+									<DollarSign className="w-3.5 h-3.5" />
+									<span>Annual Rent: ${(property.price * 0.05).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
 								</div>
 							</div>
 						</div>
 
-						<button className="hidden sm:block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-							<MoreVertical className="w-5 h-5 text-gray-400" />
+						<button className="hidden sm:block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
+							<MoreVertical className="w-5 h-5" />
 						</button>
 					</div>
 				))}

@@ -27,7 +27,7 @@ import MarketplaceFooter from "../../components/marketplace/MarketplaceFooter";
 
 // Data
 const cities = [
-	{ name: "All Cities", icon: Globe },
+	{ name: "All Markets", icon: Globe },
 	{ name: "New York", icon: Building, properties: 45, country: "USA" },
 	{ name: "London", icon: Castle, properties: 32, country: "UK" },
 	{ name: "Tokyo", icon: Hotel, properties: 28, country: "Japan" },
@@ -39,16 +39,16 @@ const cities = [
 ];
 
 const propertyTypes = [
-	{ label: "All Types", icon: Home },
-	{ label: "Apartments", icon: Building },
-	{ label: "Villas", icon: Castle },
-	{ label: "Commercial", icon: Building },
-	{ label: "Luxury", icon: Star },
-	{ label: "Beachfront", icon: Waves },
+	{ label: "All Asset Classes", icon: Home },
+	{ label: "Residential Units", icon: Building },
+	{ label: "Luxury Estates", icon: Castle },
+	{ label: "Commercial Equity", icon: Building },
+	{ label: "Penthouses", icon: Star },
+	{ label: "Vacation Rentals", icon: Waves },
 ];
 
 const priceRanges = [
-	{ label: "Any Price", min: 0, max: Infinity },
+	{ label: "Any Valuation", min: 0, max: Infinity },
 	{ label: "Under $100K", min: 0, max: 100000 },
 	{ label: "$100K - $500K", min: 100000, max: 500000 },
 	{ label: "$500K - $1M", min: 500000, max: 1000000 },
@@ -66,9 +66,9 @@ const demoImages = [
 
 export default function MarketplacePage() {
 	const [searchQuery, setSearchQuery] = useState("");
-	const [selectedCity, setSelectedCity] = useState("All Cities");
-	const [selectedType, setSelectedType] = useState("All Types");
-	const [selectedPrice, setSelectedPrice] = useState("Any Price");
+	const [selectedCity, setSelectedCity] = useState("All Markets");
+	const [selectedType, setSelectedType] = useState("All Asset Classes");
+	const [selectedPrice, setSelectedPrice] = useState("Any Valuation");
 	const [showFilters, setShowFilters] = useState(false);
 	const [sortBy, setSortBy] = useState("featured");
 	const [showSearch, setShowSearch] = useState(false);
@@ -88,20 +88,20 @@ export default function MarketplacePage() {
 			);
 		}
 
-		if (selectedCity !== "All Cities") {
+		if (selectedCity !== "All Markets") {
 			filtered = filtered.filter((property) =>
 				property.location.toLowerCase().includes(selectedCity.toLowerCase()),
 			);
 		}
 
-		if (selectedType !== "All Types") {
+		if (selectedType !== "All Asset Classes") {
 			filtered = filtered.filter(
 				(property) =>
 					property.type.toLowerCase() === selectedType.toLowerCase(),
 			);
 		}
 
-		if (selectedPrice !== "Any Price") {
+		if (selectedPrice !== "Any Valuation") {
 			const priceRange = priceRanges.find(
 				(range) => range.label === selectedPrice,
 			);
@@ -134,14 +134,14 @@ export default function MarketplacePage() {
 				break;
 		}
 
-		return filtered;
+		return filtered.slice(0, 9);
 	}, [searchQuery, selectedCity, selectedType, selectedPrice, sortBy]);
 
 	const clearFilters = () => {
 		setSearchQuery("");
-		setSelectedCity("All Cities");
-		setSelectedType("All Types");
-		setSelectedPrice("Any Price");
+		setSelectedCity("All Markets");
+		setSelectedType("All Asset Classes");
+		setSelectedPrice("Any Valuation");
 	};
 
 	return (

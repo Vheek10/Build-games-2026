@@ -4,10 +4,9 @@
 
 import {
 	LayoutDashboard,
-	Home,
-	CreditCard,
-	FileText,
-	Briefcase,
+	Layers,
+	Activity,
+	BarChart3,
 } from "lucide-react";
 
 interface DashboardTabsProps {
@@ -24,25 +23,25 @@ export default function DashboardTabs({
 			id: "overview",
 			label: "Overview",
 			icon: LayoutDashboard,
-			color: "text-blue-600 dark:text-blue-400",
-		},
-		{
-			id: "portfolio",
-			label: "Portfolio",
-			icon: Briefcase,
 			color: "text-emerald-600 dark:text-emerald-400",
 		},
 		{
-			id: "transactions",
-			label: "Transactions",
-			icon: CreditCard,
+			id: "properties",
+			label: "Properties",
+			icon: Layers,
+			color: "text-blue-600 dark:text-blue-400",
+		},
+		{
+			id: "activity",
+			label: "History",
+			icon: Activity,
 			color: "text-amber-600 dark:text-amber-400",
 		},
 		{
-			id: "documents",
-			label: "Documents",
-			icon: FileText,
-			color: "text-violet-600 dark:text-violet-400",
+			id: "analytics",
+			label: "Analytics",
+			icon: BarChart3,
+			color: "text-purple-600 dark:text-purple-400",
 		},
 	];
 
@@ -58,7 +57,7 @@ export default function DashboardTabs({
 							onClick={() => onTabChange(tab.id)}
 							className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
 								activeTab === tab.id
-									? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+									? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20"
 									: "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white"
 							}`}>
 							<Icon className="w-4 h-4" />
@@ -80,7 +79,7 @@ export default function DashboardTabs({
 								onClick={() => onTabChange(tab.id)}
 								className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium border transition-all ${
 									isActive
-										? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/25"
+										? "bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-500/25"
 										: "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400"
 								}`}>
 								<Icon className={`w-4 h-4 ${isActive ? "text-white" : ""}`} />

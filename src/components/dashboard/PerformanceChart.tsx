@@ -20,22 +20,22 @@ export default function PerformanceChart({
 	const timeRanges = ["weekly", "monthly", "quarterly", "yearly"];
 
 	return (
-		<div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-			<div className="flex items-center justify-between mb-6">
+		<div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
 				<div>
 					<h3 className="font-bold text-gray-900 dark:text-white">
 						Portfolio Performance
 					</h3>
 					<p className="text-sm text-gray-600 dark:text-gray-400">
-						Monthly growth and trends
+						Value growth and rental yield trends
 					</p>
 				</div>
-				<div className="flex items-center gap-2">
+				<div className="flex flex-wrap items-center gap-2">
 					{timeRanges.map((range) => (
 						<button
 							key={range}
 							onClick={() => onTimeRangeChange(range)}
-							className={`px-3 py-1 rounded-lg text-sm capitalize ${
+							className={`px-3 py-1 rounded-lg text-xs sm:text-sm capitalize ${
 								timeRange === range
 									? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium"
 									: "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -53,7 +53,7 @@ export default function PerformanceChart({
 						Performance chart visualization
 					</p>
 					<p className="text-sm text-gray-500 dark:text-gray-500">
-						Interactive chart would appear here
+						Real-time value tracking
 					</p>
 				</div>
 			</div>
@@ -61,7 +61,7 @@ export default function PerformanceChart({
 			<div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
 				<div>
 					<div className="text-sm text-gray-600 dark:text-gray-400">
-						Avg. Monthly Growth
+						Avg. Rental Yield
 					</div>
 					<div className="text-lg font-bold text-gray-900 dark:text-white">
 						+{monthlyGrowth}%
@@ -80,7 +80,7 @@ export default function PerformanceChart({
 						Market Rank
 					</div>
 					<div className="text-lg font-bold text-gray-900 dark:text-white">
-						Top 8%
+						Top 5%
 					</div>
 				</div>
 			</div>

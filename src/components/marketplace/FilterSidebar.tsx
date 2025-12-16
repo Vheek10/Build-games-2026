@@ -86,7 +86,7 @@ export default function FilterSidebar({
 								{filteredProperties.length}
 							</div>
 							<div className="text-sm text-gray-600 dark:text-gray-400">
-								Properties Available
+								Assets Listed
 							</div>
 						</div>
 					</div>
@@ -108,9 +108,9 @@ export default function FilterSidebar({
 						</div>
 					)}
 
-					{/* Global Cities */}
+					{/* Global Cities -> Global Markets */}
 					<FilterSection
-						title="Global Cities"
+						title="Global Markets"
 						icon={MapPin}
 						options={cities.map(city => ({
 							label: city.name,
@@ -123,9 +123,9 @@ export default function FilterSidebar({
 						type="city"
 					/>
 
-					{/* Property Type */}
+					{/* Property Type -> Asset Class */}
 					<FilterSection
-						title="Property Type"
+						title="Asset Class"
 						icon={Home}
 						options={propertyTypes}
 						selectedValue={selectedType}
@@ -133,9 +133,9 @@ export default function FilterSidebar({
 						type="type"
 					/>
 
-					{/* Price Range */}
+					{/* Price Range -> Valuation Range */}
 					<FilterSection
-						title="Price Range"
+						title="Valuation Range"
 						icon={DollarSign}
 						options={priceRanges.map(range => ({ label: range.label }))}
 						selectedValue={selectedPrice}

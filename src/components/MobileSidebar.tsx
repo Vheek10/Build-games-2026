@@ -27,15 +27,13 @@ import { useAccount, useDisconnect } from "wagmi";
 
 // Updated icon mapping for navigation items with more varied icons
 const navIcons = {
-    home: Building2, // Changed from Home to Building2 for property focus
-    "about-us": FileText, // Changed from Info to FileText for documentation
-    "marketplace": Store, // Added marketplace icon
-    "for-investors": LineChart, // Changed from Briefcase to LineChart for investments
-    "for-developers": Building,
+    home: Building2, 
+    "about-us": FileText, 
+    "marketplace": Store, 
     company: Users,
     "contact-us": Phone,
     mint: PlusCircle,
-    dashboard: Briefcase, // Changed dashboard to use Briefcase
+    dashboard: Briefcase, 
 } as const;
 
 // Type for icon keys
@@ -168,24 +166,6 @@ export default function MobileSidebar({
 
                                     {/* Connected User Options */}
                                     <div className="space-y-2">
-                                        <Link
-                                            href="/marketplace"
-                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                                            onClick={onClose}
-                                        >
-                                            <Store className="w-4 h-4" />
-                                            Marketplace
-                                        </Link>
-
-                                        <Link
-                                            href="/dashboard"
-                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                                            onClick={onClose}
-                                        >
-                                            <Briefcase className="w-4 h-4" />
-                                            Dashboard
-                                        </Link>
-
                                         <Link
                                             href="/profile"
                                             className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
