@@ -19,6 +19,7 @@ import {
     LineChart,
     Building2,
     FileText,
+    PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAccount, useDisconnect } from "wagmi";
@@ -33,6 +34,7 @@ const navIcons = {
     "for-developers": Building,
     company: Users,
     "contact-us": Phone,
+    mint: PlusCircle,
     dashboard: Briefcase, // Changed dashboard to use Briefcase
 } as const;
 

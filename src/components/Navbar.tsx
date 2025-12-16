@@ -22,6 +22,7 @@ import {
 	Settings,
 	CheckCircle,
 	ChevronDown,
+	PlusCircle,
 } from "lucide-react";
 
 // Navigation configuration
@@ -29,6 +30,7 @@ const navItems = [
 	{ href: "/", label: "Home", key: "home", icon: Home },
 	{ href: "/about", label: "About", key: "about", icon: Info },
 	{ href: "/marketplace", label: "Marketplace", key: "marketplace", icon: Building },
+	{ href: "/mint", label: "Mint", key: "mint", icon: PlusCircle },
 	{ href: "/dashboard", label: "Dashboard", key: "dashboard", icon: Briefcase },
 ];
 

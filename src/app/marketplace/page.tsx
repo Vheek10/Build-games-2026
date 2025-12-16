@@ -16,6 +16,8 @@ import {
 	X,
 } from "lucide-react";
 
+import AuthGuard from "@/components/AuthGuard";
+
 // Components
 import MarketplaceHeader from "../../components/marketplace/MarketplaceHeader";
 import FilterSidebar from "../../components/marketplace/FilterSidebar";
@@ -143,80 +145,82 @@ export default function MarketplacePage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-				{/* Header */}
-				<MarketplaceHeader
-					searchQuery={searchQuery}
-					setSearchQuery={setSearchQuery}
-					showSearch={showSearch}
-					setShowSearch={setShowSearch}
-				/>
-
-				{/* Mobile Search */}
-				{showSearch && (
-					<div className="md:hidden mb-6">
-						<div className="relative">
-							<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-							<input
-								type="text"
-								placeholder="Search properties..."
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								className="w-full pl-10 pr-10 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-							/>
-							{searchQuery && (
-								<button
-									onClick={() => setSearchQuery("")}
-									className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
-									<X className="w-4 h-4 text-gray-400" />
-								</button>
-							)}
-						</div>
-					</div>
-				)}
-
-				{/* Main Content */}
-				<div className="flex flex-col lg:flex-row gap-8">
-					{/* Filters Sidebar */}
-					<FilterSidebar
-						showFilters={showFilters}
-						setShowFilters={setShowFilters}
-						filteredProperties={filteredProperties}
-						cities={cities}
-						selectedCity={selectedCity}
-						setSelectedCity={setSelectedCity}
-						propertyTypes={propertyTypes}
-						selectedType={selectedType}
-						setSelectedType={setSelectedType}
-						priceRanges={priceRanges}
-						selectedPrice={selectedPrice}
-						setSelectedPrice={setSelectedPrice}
+		<AuthGuard>
+			<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+					{/* Header */}
+					<MarketplaceHeader
 						searchQuery={searchQuery}
-						clearFilters={clearFilters}
+						setSearchQuery={setSearchQuery}
+						showSearch={showSearch}
+						setShowSearch={setShowSearch}
 					/>
 
-					{/* Property Grid */}
-					<div className="lg:w-3/4">
-						{/* Controls */}
-						<ControlsBar
+					{/* Mobile Search */}
+					{showSearch && (
+						<div className="md:hidden mb-6">
+							<div className="relative">
+								<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+								<input
+									type="text"
+									placeholder="Search properties..."
+									value={searchQuery}
+									onChange={(e) => setSearchQuery(e.target.value)}
+									className="w-full pl-10 pr-10 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+								/>
+								{searchQuery && (
+									<button
+										onClick={() => setSearchQuery("")}
+										className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+										<X className="w-4 h-4 text-gray-400" />
+									</button>
+								)}
+							</div>
+						</div>
+					)}
+
+					{/* Main Content */}
+					<div className="flex flex-col lg:flex-row gap-8">
+						{/* Filters Sidebar */}
+						<FilterSidebar
+							showFilters={showFilters}
+							setShowFilters={setShowFilters}
 							filteredProperties={filteredProperties}
-							sortBy={sortBy}
-							setSortBy={setSortBy}
+							cities={cities}
+							selectedCity={selectedCity}
+							setSelectedCity={setSelectedCity}
+							propertyTypes={propertyTypes}
+							selectedType={selectedType}
+							setSelectedType={setSelectedType}
+							priceRanges={priceRanges}
+							selectedPrice={selectedPrice}
+							setSelectedPrice={setSelectedPrice}
+							searchQuery={searchQuery}
+							clearFilters={clearFilters}
 						/>
 
 						{/* Property Grid */}
-						<PropertyGrid
-							filteredProperties={filteredProperties}
-							demoImages={demoImages}
-							clearFilters={clearFilters}
-						/>
+						<div className="lg:w-3/4">
+							{/* Controls */}
+							<ControlsBar
+								filteredProperties={filteredProperties}
+								sortBy={sortBy}
+								setSortBy={setSortBy}
+							/>
+
+							{/* Property Grid */}
+							<PropertyGrid
+								filteredProperties={filteredProperties}
+								demoImages={demoImages}
+								clearFilters={clearFilters}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* Footer */}
-			<MarketplaceFooter />
-		</div>
+				{/* Footer */}
+				<MarketplaceFooter />
+			</div>
+		</AuthGuard>
 	);
 }
