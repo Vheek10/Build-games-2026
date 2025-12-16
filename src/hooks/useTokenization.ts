@@ -8,22 +8,33 @@ import { useAccount, useWriteContract, useReadContract, useChainId } from "wagmi
 import { StrataDeedNFTABI } from "@/contracts/abis/StrataDeedNFT";
 import { STRATA_DEED_NFT_ADDRESS } from "@/contracts/addresses";
 
+/**
+ * Hook for managing Property NFT Tokenization.
+ * Handles minting and transferring of Property Deeds (NFTs).
+ */
 export function useTokenization() {
 	const { address } = useAccount();
 	const chainId = useChainId();
-	const currentChainId = chainId && STRATA_DEED_NFT_ADDRESS[chainId] ? chainId : 5003; // Default to testnet if mismatch
+	
+    // Determine the correct contract address based on chainId, defaulting to Mantle Sepolia (5003)
+	const currentChainId = chainId && STRATA_DEED_NFT_ADDRESS[chainId] ? chainId : 5003; 
     const contractAddress = STRATA_DEED_NFT_ADDRESS[currentChainId] as `0x${string}`;
 
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	// Read functions
+	// =========================================
+	// READ Operations
+	// =========================================
+
+    // Get total number of tokens minted
 	const { data: tokenCounter } = useReadContract({
 		address: contractAddress,
 		abi: StrataDeedNFTABI,
 		functionName: "tokenCounter",
 	});
 
+    // Get tokens owned by the current user
 	const { data: userTokens } = useReadContract({
 		address: contractAddress,
 		abi: StrataDeedNFTABI,
@@ -34,9 +45,18 @@ export function useTokenization() {
 		},
 	});
 
-	// Write functions
+	// =========================================
+	// WRITE Operations
+	// =========================================
+    
 	const { writeContractAsync } = useWriteContract();
 
+    /**
+     * Mints a new Property Deed NFT.
+     * @param {string} propertyId - The unique ID of the property.
+     * @param {string} metadataURI - The IPFS/Arweave URI for the metadata.
+     * @param {string} price - The listing price in ETH (required value sent with transaction).
+     */
 	const tokenizeProperty = async (
 		propertyId: string,
 		metadataURI: string,
@@ -63,6 +83,11 @@ export function useTokenization() {
 		}
 	};
 
+    /**
+     * Transfers a Property Deed NFT to another address.
+     * @param {string} to - The recipient address.
+     * @param {bigint} tokenId - The ID of the token to transfer.
+     */
 	const transferDeed = async (to: string, tokenId: bigint) => {
 		setLoading(true);
 		setError(null);

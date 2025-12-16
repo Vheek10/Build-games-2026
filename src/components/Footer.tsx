@@ -1,17 +1,25 @@
 /** @format */
 
+"use client";
+
 import Link from "next/link";
 import { Twitter, Mail, Building2, Shield } from "lucide-react";
 
+/**
+ * Global Footer Component.
+ * Contains site map, social links, and legal information.
+ */
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  // Navigation Links
   const links = {
     product: ["How It Works", "Features", "Pricing"],
     company: ["About", "Blog", "Careers", "Contact"],
     legal: ["Privacy", "Terms", "Compliance"],
   };
 
+  // Social Media Links
   const socialLinks = [
     { icon: Twitter, href: "https://twitter.com/stratadeed", label: "Twitter" },
     { icon: Mail, href: "mailto:hello@stratadeed.com", label: "Email" },
@@ -19,7 +27,10 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gradient-to-br from-slate-900 to-slate-950 text-gray-300">
-      {/* Background Pattern */}
+      
+      {/* =========================================
+          Background Effects
+      ========================================= */}
       <div 
         className="absolute inset-0 opacity-10"
         style={{
@@ -27,13 +38,15 @@ export default function Footer() {
           backgroundSize: '30px 30px'
         }}
       />
-      
-      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
       
+      {/* =========================================
+          Main Content
+      ========================================= */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 sm:py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
             {/* Brand Section */}
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
@@ -77,7 +90,7 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Quick Links */}
+            {/* Product Links */}
             <div>
               <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Product</h4>
               <ul className="space-y-3">
@@ -94,6 +107,7 @@ export default function Footer() {
               </ul>
             </div>
 
+            {/* Company Links */}
             <div>
               <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Company</h4>
               <ul className="space-y-3">
@@ -111,7 +125,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Bottom Section */}
+          {/* Bottom Bar */}
           <div className="mt-12 pt-6 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="text-center md:text-left">

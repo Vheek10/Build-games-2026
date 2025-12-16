@@ -1,54 +1,58 @@
 /** @format */
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAccount, useDisconnect } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { cn } from "@/lib/utils";
+import MobileSidebar from "./MobileSidebar";
+
+// Icons
 import {
 	Menu,
 	X,
 	Home,
 	Info,
 	Building,
-	Users,
 	Briefcase,
-	Phone,
 	User,
 	LogOut,
 	Settings,
-	Wallet,
 	CheckCircle,
 	ChevronDown,
 } from "lucide-react";
-import MobileSidebar from "./MobileSidebar";
-import { cn } from "@/lib/utils";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useDisconnect } from "wagmi";
 
+// Navigation configuration
+const navItems = [
+	{ href: "/", label: "Home", key: "home", icon: Home },
+	{ href: "/about", label: "About", key: "about", icon: Info },
+	{ href: "/marketplace", label: "Marketplace", key: "marketplace", icon: Building },
+	{ href: "/dashboard", label: "Dashboard", key: "dashboard", icon: Briefcase },
+];
 
-// Icon mapping for navigation items
-const navIcons = {
-	home: Home,
-	about: Info,
-	marketplace: Building,
-	dashboard: Briefcase,
-};
-
+/**
+ * Main Navigation Bar Component.
+ * Handles desktop and mobile responsive layouts, wallet connection state, and user menu.
+ */
 export default function Navbar() {
+	// =========================================
+	// State & Hooks
+	// =========================================
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+	
 	const pathname = usePathname();
 	const { address, isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
 
-	const navItems = [
-		{ href: "/", label: "Home", key: "home" },
-		{ href: "/about", label: "About", key: "about" },
-		{ href: "/marketplace", label: "Marketplace", key: "marketplace" },
-		{ href: "/dashboard", label: "Dashboard", key: "dashboard" },
-	];
+	// =========================================
+	// Effects
+	// =========================================
 
+	// Handle scroll effect for sticky navbar transparency
 	useEffect(() => {
 		const handleScroll = () => {
 			setIsScrolled(window.scrollY > 10);
@@ -59,30 +63,39 @@ export default function Navbar() {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	// Reset mobile menu on route change
 	useEffect(() => {
 		setIsMobileMenuOpen(false);
 	}, [pathname]);
 
+	// Lock body scroll when mobile menu is open
 	useEffect(() => {
 		if (isMobileMenuOpen) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "unset";
 		}
-
 		return () => {
 			document.body.style.overflow = "unset";
 		};
 	}, [isMobileMenuOpen]);
+
+	// =========================================
+	// Helpers
+	// =========================================
 
 	const isActive = (href: string) => {
 		if (href === "/") return pathname === href;
 		return pathname === href || pathname?.startsWith(`${href}/`);
 	};
 
+	// =========================================
+	// Render
+	// =========================================
+
 	return (
 		<>
-			{/* Main Navigation */}
+			{/* Main Header */}
 			<header
 				className={cn(
 					"sticky top-0 z-50 w-full transition-all duration-500 ease-out",
@@ -92,7 +105,8 @@ export default function Navbar() {
 					"border-b border-gray-800/50",
 					"px-4 sm:px-6 lg:px-8 xl:px-10",
 				)}>
-				{/* Animated Background Element */}
+				
+				{/* Background Glow Effects */}
 				<div className="absolute inset-0 overflow-hidden pointer-events-none">
 					<div className="absolute -top-24 -left-24 w-48 h-48 bg-gradient-to-r from-blue-400/5 to-cyan-400/5 rounded-full blur-3xl" />
 					<div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 rounded-full blur-3xl" />
@@ -100,7 +114,8 @@ export default function Navbar() {
 
 				<div className="relative mx-auto w-full max-w-screen-2xl">
 					<div className="flex items-center justify-between h-16 lg:h-20">
-						{/* Left Section: Mobile Menu Button (only on mobile) */}
+						
+						{/* Mobile Menu Toggle */}
 						<div className="flex lg:hidden items-center flex-shrink-0">
 							<button
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -115,7 +130,7 @@ export default function Navbar() {
 							</button>
 						</div>
 
-						{/* Center: Logo (centered on mobile/tablet, left on desktop) */}
+						{/* Brand Logo */}
 						<div className="lg:flex items-center gap-3 lg:gap-4 flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
 							<Link
 								href="/"
@@ -139,14 +154,13 @@ export default function Navbar() {
 							</Link>
 						</div>
 
-						{/* Desktop Navigation - Centered */}
+						{/* Desktop Navigation */}
 						<nav className="hidden lg:flex items-center justify-center flex-1 mx-8 xl:mx-12 2xl:mx-16">
 							<div className="relative">
-								{/* Decorative border */}
 								<div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-transparent to-cyan-400/10 rounded-full blur-sm" />
 								<div className="relative flex items-center gap-6 xl:gap-8">
 									{navItems.map((item) => {
-										const Icon = navIcons[item.key as keyof typeof navIcons];
+										const Icon = item.icon;
 										const active = isActive(item.href);
 
 										return (
@@ -170,11 +184,9 @@ export default function Navbar() {
 												/>
 												<span className="relative">
 													{item.label}
-													{/* Underline on active */}
 													{active && (
 														<div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
 													)}
-													{/* Hover underline effect */}
 													{!active && (
 														<div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-cyan-400/0 rounded-full scale-x-0 group-hover/nav:scale-x-100 transition-transform duration-300 origin-center" />
 													)}
@@ -186,14 +198,12 @@ export default function Navbar() {
 							</div>
 						</nav>
 
-						{/* Right Section: Authentication State */}
+						{/* User & Wallet Actions */}
 						<div className="flex items-center gap-3 lg:gap-4 xl:gap-5 flex-shrink-0">
 							{isConnected ? (
-								// User is connected - Show wallet info
 								<div className="flex items-center gap-3">
-									{/* Desktop: Full wallet info */}
+									{/* Connected State (Desktop) */}
 									<div className="hidden lg:flex items-center gap-3">
-
 										<div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-emerald-900/30 to-green-900/30 border border-emerald-800/50 rounded-lg backdrop-blur-sm">
 											<CheckCircle className="w-4 h-4 text-emerald-400" />
 											<span className="text-sm font-medium text-emerald-400">
@@ -201,7 +211,6 @@ export default function Navbar() {
 											</span>
 										</div>
 
-										{/* User Menu */}
 										<div className="relative">
 											<button
 												onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -226,7 +235,6 @@ export default function Navbar() {
 																{address?.slice(0, 8)}...{address?.slice(-6)}
 															</div>
 														</div>
-
 														<div className="p-1">
 															<Link
 																href="/dashboard"
@@ -235,7 +243,6 @@ export default function Navbar() {
 																<Briefcase className="w-4 h-4" />
 																Dashboard
 															</Link>
-
 															<Link
 																href="/settings"
 																className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-blue-400 hover:bg-gray-800/50 rounded transition-colors"
@@ -243,7 +250,6 @@ export default function Navbar() {
 																<Settings className="w-4 h-4" />
 																Settings
 															</Link>
-
 															<button
 																onClick={() => {
 																	disconnect();
@@ -260,25 +266,14 @@ export default function Navbar() {
 										</div>
 									</div>
 
-									{/* Mobile: Connect button */}
+									{/* Mobile: RainbowKit Button */}
 									<div className="lg:hidden">
 										<ConnectButton.Custom>
-											{({
-												account,
-												openAccountModal,
-												authenticationStatus,
-												mounted,
-											}) => {
-												const ready =
-													mounted && authenticationStatus !== "loading";
+											{({ account, openAccountModal, authenticationStatus, mounted }) => {
+												const ready = mounted && authenticationStatus !== "loading";
 												const connected = ready && account;
 
-												if (!ready) {
-													return (
-														<div className="w-24 h-9 bg-gray-800 rounded-lg animate-pulse" />
-													);
-												}
-
+												if (!ready) return <div className="w-24 h-9 bg-gray-800 rounded-lg animate-pulse" />;
 												if (connected) {
 													return (
 														<button
@@ -288,18 +283,15 @@ export default function Navbar() {
 														</button>
 													);
 												}
-
 												return null;
 											}}
 										</ConnectButton.Custom>
 									</div>
 								</div>
 							) : (
-								// User is not connected - Show sign in/up options
 								<>
-									{/* Desktop: Full buttons */}
+									{/* Desktop: Auth Buttons */}
 									<div className="hidden lg:flex items-center gap-3">
-
 										<Link
 											href="/signin"
 											className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -312,23 +304,13 @@ export default function Navbar() {
 										</Link>
 									</div>
 
-									{/* Mobile: Connect button */}
+									{/* Mobile: Connect Button */}
 									<div className="lg:hidden">
 										<ConnectButton.Custom>
-											{({
-												openConnectModal,
-												authenticationStatus,
-												mounted,
-											}) => {
-												const ready =
-													mounted && authenticationStatus !== "loading";
-
-												if (!ready) {
-													return (
-														<div className="w-20 h-9 bg-gray-800 rounded-lg animate-pulse" />
-													);
-												}
-
+											{({ openConnectModal, authenticationStatus, mounted }) => {
+												const ready = mounted && authenticationStatus !== "loading";
+												if (!ready) return <div className="w-20 h-9 bg-gray-800 rounded-lg animate-pulse" />;
+												
 												return (
 													<button
 														onClick={openConnectModal}
@@ -346,7 +328,6 @@ export default function Navbar() {
 				</div>
 			</header>
 
-			{/* Mobile Sidebar Component */}
 			<MobileSidebar
 				isOpen={isMobileMenuOpen}
 				onClose={() => setIsMobileMenuOpen(false)}

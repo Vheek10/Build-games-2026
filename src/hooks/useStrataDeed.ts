@@ -1,17 +1,27 @@
-import { useDeployContract, useWriteContract, useReadContract, useWaitForTransactionReceipt } from "wagmi";
+"use client";
+
+import { useDeployContract, useWriteContract } from "wagmi";
 import { parseEther } from "viem";
 import { STRATA_DEED_ABI, STRATA_DEED_BYTECODE } from "@/config/contracts";
 import { useState } from "react";
 
+/**
+ * Hook for interacting with the core StrataDeed Smart Contract.
+ * Handles deployment and interaction with existing contracts (Escrow, Compliance).
+ */
 export function useStrataDeed() {
     const { deployContractAsync } = useDeployContract();
     const { writeContractAsync } = useWriteContract();
     
-    // State for tracking deployment
+    // State for tracking deployment status
     const [isDeploying, setIsDeploying] = useState(false);
-    const [deployedAddress, setDeployedAddress] = useState<`0x${string}` | null>(null);
-
-    // Deploy a new StrataDeedRWA contract
+    
+    /**
+     * Deploys a new StrataDeedRWA contract instance.
+     * @param {string} fundingCap - The funding cap in ETH (as a string, e.g., "1.5").
+     * @param {string} ownerAddress - The address that will own the contract.
+     * @returns {Promise<`0x${string}`>} The transaction hash of the deployment.
+     */
     const deployStrataDeed = async (fundingCap: string, ownerAddress: string) => {
         setIsDeploying(true);
         try {
@@ -33,8 +43,16 @@ export function useStrataDeed() {
         }
     };
 
-    // Helper to interact with a specific address
+    /**
+     * Helper to get contract actions for a specific deployed address.
+     * @param {`0x${string}`} contractAddress - The address of the StrataDeed contract.
+     */
     const useStrataContract = (contractAddress: `0x${string}`) => {
+        
+        /**
+         * Deposits ETH into the escrow.
+         * @param {string} amount - Amount in ETH to deposit.
+         */
         const depositEscrow = async (amount: string) => {
              return writeContractAsync({
                 address: contractAddress,
@@ -51,6 +69,5 @@ export function useStrataDeed() {
         deployStrataDeed,
         useStrataContract,
         isDeploying,
-        deployedAddress // logic to capture this from receipt would be needed in component or here using useWaitForTransactionReceipt
     };
 }
