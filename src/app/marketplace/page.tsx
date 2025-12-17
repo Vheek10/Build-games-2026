@@ -3,58 +3,14 @@
 
 import { useState, useMemo } from "react";
 import { sampleProperties } from "../../lib/dummy-data";
-import {
-	Home,
-	Building,
-	Hotel,
-	Castle,
-	TreePine,
-	Waves,
-	Globe,
-	Star,
-	Search,
-	X,
-} from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import AuthGuard from "@/components/AuthGuard";
 
 // Components
 import MarketplaceHeader from "../../components/marketplace/MarketplaceHeader";
-import FilterSidebar from "../../components/marketplace/FilterSidebar";
-import ControlsBar from "../../components/marketplace/ControlsBar";
 import PropertyGrid from "../../components/marketplace/PropertyGrid";
 import MarketplaceFooter from "../../components/marketplace/MarketplaceFooter";
-
-// Data
-const cities = [
-	{ name: "All Markets", icon: Globe },
-	{ name: "New York", icon: Building, properties: 45, country: "USA" },
-	{ name: "London", icon: Castle, properties: 32, country: "UK" },
-	{ name: "Tokyo", icon: Hotel, properties: 28, country: "Japan" },
-	{ name: "Dubai", icon: Building, properties: 24, country: "UAE" },
-	{ name: "Singapore", icon: Building, properties: 19, country: "Singapore" },
-	{ name: "Sydney", icon: Waves, properties: 16, country: "Australia" },
-	{ name: "Miami", icon: Home, properties: 22, country: "USA" },
-	{ name: "Vancouver", icon: TreePine, properties: 14, country: "Canada" },
-];
-
-const propertyTypes = [
-	{ label: "All Asset Classes", icon: Home },
-	{ label: "Residential Units", icon: Building },
-	{ label: "Luxury Estates", icon: Castle },
-	{ label: "Commercial Equity", icon: Building },
-	{ label: "Penthouses", icon: Star },
-	{ label: "Vacation Rentals", icon: Waves },
-];
-
-const priceRanges = [
-	{ label: "Any Valuation", min: 0, max: Infinity },
-	{ label: "Under $100K", min: 0, max: 100000 },
-	{ label: "$100K - $500K", min: 100000, max: 500000 },
-	{ label: "$500K - $1M", min: 500000, max: 1000000 },
-	{ label: "$1M - $5M", min: 1000000, max: 5000000 },
-	{ label: "Over $5M", min: 5000000, max: Infinity },
-];
 
 const demoImages = [
 	"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop",
@@ -66,11 +22,6 @@ const demoImages = [
 
 export default function MarketplacePage() {
 	const [searchQuery, setSearchQuery] = useState("");
-	const [selectedCity, setSelectedCity] = useState("All Markets");
-	const [selectedType, setSelectedType] = useState("All Asset Classes");
-	const [selectedPrice, setSelectedPrice] = useState("Any Valuation");
-	const [showFilters, setShowFilters] = useState(false);
-	const [sortBy, setSortBy] = useState("featured");
 	const [showSearch, setShowSearch] = useState(false);
 
 	// Filter properties
@@ -88,65 +39,16 @@ export default function MarketplacePage() {
 			);
 		}
 
-		if (selectedCity !== "All Markets") {
-			filtered = filtered.filter((property) =>
-				property.location.toLowerCase().includes(selectedCity.toLowerCase()),
-			);
-		}
-
-		if (selectedType !== "All Asset Classes") {
-			filtered = filtered.filter(
-				(property) =>
-					property.type.toLowerCase() === selectedType.toLowerCase(),
-			);
-		}
-
-		if (selectedPrice !== "Any Valuation") {
-			const priceRange = priceRanges.find(
-				(range) => range.label === selectedPrice,
-			);
-			if (priceRange) {
-				filtered = filtered.filter(
-					(property) =>
-						property.price >= priceRange.min &&
-						property.price <= priceRange.max,
-				);
-			}
-		}
-
-		switch (sortBy) {
-			case "price-low":
-				filtered.sort((a, b) => a.price - b.price);
-				break;
-			case "price-high":
-				filtered.sort((a, b) => b.price - a.price);
-				break;
-			case "newest":
-				filtered.sort(
-					(a, b) =>
-						new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-				);
-				break;
-			case "featured":
-				filtered.sort(
-					(a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0),
-				);
-				break;
-		}
-
 		return filtered.slice(0, 9);
-	}, [searchQuery, selectedCity, selectedType, selectedPrice, sortBy]);
+	}, [searchQuery]);
 
 	const clearFilters = () => {
 		setSearchQuery("");
-		setSelectedCity("All Markets");
-		setSelectedType("All Asset Classes");
-		setSelectedPrice("Any Valuation");
 	};
 
 	return (
 		<AuthGuard>
-			<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
+			<div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 					{/* Header */}
 					<MarketplaceHeader
@@ -180,41 +82,13 @@ export default function MarketplacePage() {
 					)}
 
 					{/* Main Content */}
-					<div className="flex flex-col lg:flex-row gap-8">
-						{/* Filters Sidebar */}
-						<FilterSidebar
-							showFilters={showFilters}
-							setShowFilters={setShowFilters}
+					<div className="flex flex-col gap-8">
+						{/* Property Grid */}
+						<PropertyGrid
 							filteredProperties={filteredProperties}
-							cities={cities}
-							selectedCity={selectedCity}
-							setSelectedCity={setSelectedCity}
-							propertyTypes={propertyTypes}
-							selectedType={selectedType}
-							setSelectedType={setSelectedType}
-							priceRanges={priceRanges}
-							selectedPrice={selectedPrice}
-							setSelectedPrice={setSelectedPrice}
-							searchQuery={searchQuery}
+							demoImages={demoImages}
 							clearFilters={clearFilters}
 						/>
-
-						{/* Property Grid */}
-						<div className="lg:w-3/4">
-							{/* Controls */}
-							<ControlsBar
-								filteredProperties={filteredProperties}
-								sortBy={sortBy}
-								setSortBy={setSortBy}
-							/>
-
-							{/* Property Grid */}
-							<PropertyGrid
-								filteredProperties={filteredProperties}
-								demoImages={demoImages}
-								clearFilters={clearFilters}
-							/>
-						</div>
 					</div>
 				</div>
 
