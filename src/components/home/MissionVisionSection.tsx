@@ -36,7 +36,7 @@ export default function MissionVisionSection() {
 						{/* Background Image */}
 						<div className="absolute inset-0">
 							<Image
-								src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+								src="/images/unsplash-f24b0cae1224.jpg"
 								alt="Modern home interior with natural light"
 								fill
 								className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -78,7 +78,7 @@ export default function MissionVisionSection() {
 						{/* Background Image */}
 						<div className="absolute inset-0">
 							<Image
-								src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+								src="/images/unsplash-9991f1c4c750.jpg"
 								alt="Global real estate development with skyscrapers"
 								fill
 								className="object-cover group-hover:scale-105 transition-transform duration-700"

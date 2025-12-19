@@ -1,7 +1,7 @@
 /** @format */
 
-export const STRATA_DEED_NFT_ADDRESS: Record<number, `0x${string}`> = {
-	5000: "0x0000000000000000000000000000000000000000", // Mantle Mainnet (update after deploy)
+ export const STRATA_DEED_NFT_ADDRESS: Record<number, `0x${string}`> = {
+	5000: "0x0000000000000000000000000000000000000000", // Mantle Mainnet
 	5001: "0x0000000000000000000000000000000000000000", // Mantle Testnet (Legacy)
-	5003: "0x0000000000000000000000000000000000000000", // Mantle Sepolia Testnet
+	5003: (process.env.NEXT_PUBLIC_STRATA_DEED_NFT_ADDRESS as `0x${string}`) || "0x0000000000000000000000000000000000000000", // Mantle Sepolia
 };

@@ -20,10 +20,16 @@
    ```
    This will:
    - Deploy a MockUSDC (if address not provided).
-   - Deploy StrataDeedRWA.
+   - Deploy StrataDeedRWA (Fractional Token).
    - Register the deployer as a compliant user (for testing).
 
-4. **Run Tests**:
+## ZK Privacy Features
+StrataDeed implements advanced ZK-ready privacy:
+- **Private KYC**: Users can register compliance via `registerWithZKProof` without revealing PII.
+- **Private Deed Commitments**: Property NFTs store a `privateCommitment` (keccak256 hash) of sensitive documents, allowing for selective disclosure.
+- **Nullifiers**: Prevents double-spending of identity proofs.
+
+## 4. Run Tests
    ```bash
    npm run test:contracts
    ```

@@ -17,7 +17,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-01-15",
 		image:
-			"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-7fde63acd811.jpg",
 		country: "USA",
 		investmentReturn: 8.5,
 		rating: 4.8,
@@ -38,7 +38,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-01-20",
 		image:
-			"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-cc1a3fa10c00.jpg",
 		country: "USA",
 		investmentReturn: 7.2,
 		rating: 4.5,
@@ -59,7 +59,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-10",
 		image:
-			"https://images.unsplash.com/photo-1613977257592-4871e5fcd7a4?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-8bab748fbf90.jpg",
 		country: "Indonesia",
 		investmentReturn: 12.5,
 		rating: 4.9,
@@ -80,7 +80,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-01-05",
 		image:
-			"https://images.unsplash.com/photo-1616587226154-91eab0a51dc7?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-37526070297c.jpg",
 		country: "UK",
 		investmentReturn: 6.8,
 		rating: 4.7,
@@ -101,7 +101,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-02-15",
 		image:
-			"https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-67f85cf4f1df.jpg",
 		country: "Switzerland",
 		investmentReturn: 9.2,
 		rating: 4.6,
@@ -122,7 +122,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-01",
 		image:
-			"https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-f609979314bd.jpg",
 		country: "Japan",
 		investmentReturn: 10.5,
 		rating: 4.8,
@@ -143,7 +143,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-01-25",
 		image:
-			"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-9991f1c4c750.jpg",
 		country: "UAE",
 		investmentReturn: 11.2,
 		rating: 4.4,
@@ -164,7 +164,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-20",
 		image:
-			"https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-ebfd161ef9cf.jpg",
 		country: "Costa Rica",
 		investmentReturn: 15.3,
 		rating: 4.9,
@@ -185,7 +185,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-01-30",
 		image:
-			"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-068cd1dbfeeb.jpg",
 		country: "France",
 		investmentReturn: 6.5,
 		rating: 4.7,
@@ -206,7 +206,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-05",
 		image:
-			"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-112f2f40a3f4.jpg",
 		country: "Australia",
 		investmentReturn: 8.9,
 		rating: 4.8,
@@ -227,7 +227,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-02-12",
 		image:
-			"https://images.unsplash.com/photo-1487956382158-bb926046304a?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-bb926046304a.jpg",
 		country: "Singapore",
 		investmentReturn: 7.8,
 		rating: 4.6,
@@ -248,7 +248,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-18",
 		image:
-			"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-c6227db76b6e.jpg",
 		country: "Canada",
 		investmentReturn: 9.5,
 		rating: 4.7,
@@ -269,7 +269,7 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-01-22",
 		image:
-			"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-fcd25c85cd64.jpg",
 		country: "Spain",
 		investmentReturn: 8.2,
 		rating: 4.5,
@@ -290,7 +290,7 @@ export const sampleProperties = [
 		isFeatured: true,
 		createdAt: "2024-02-25",
 		image:
-			"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-6a8506099945.jpg",
 		country: "Maldives",
 		investmentReturn: 18.5,
 		rating: 4.9,
@@ -311,23 +311,23 @@ export const sampleProperties = [
 		isFeatured: false,
 		createdAt: "2024-02-08",
 		image:
-			"https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&auto=format&fit=crop&q=80",
+			"/images/unsplash-f200968a6e72.jpg",
 		country: "Germany",
 		investmentReturn: 9.8,
 		rating: 4.4,
 	},
 ];
 
-// Also update your demoImages array to use these working URLs:
+// Demo images array using local paths:
 export const demoImages = [
-	"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1613977257592-4871e5fcd7a4?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1616587226154-91eab0a51dc7?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&auto=format&fit=crop&q=80",
-	"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=80",
+	"/images/unsplash-7fde63acd811.jpg",
+	"/images/unsplash-cc1a3fa10c00.jpg",
+	"/images/unsplash-8bab748fbf90.jpg",
+	"/images/unsplash-ebfd161ef9cf.jpg",
+	"/images/unsplash-8bab748fbf90.jpg",
+	"/images/unsplash-f609979314bd.jpg",
+	"/images/unsplash-9991f1c4c750.jpg",
+	"/images/unsplash-ebfd161ef9cf.jpg",
+	"/images/unsplash-068cd1dbfeeb.jpg",
+	"/images/unsplash-112f2f40a3f4.jpg",
 ];

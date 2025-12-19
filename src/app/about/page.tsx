@@ -26,28 +26,28 @@ export default function About() {
       icon: Shield,
       title: "Blockchain Security",
       description: "Immutable property records on distributed ledger technology",
-      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/images/unsplash-e363dbe005cb.jpg",
       color: "blue",
     },
     {
       icon: Globe,
       title: "Global Access",
       description: "Borderless real estate investment opportunities",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/images/unsplash-37526070297c.jpg",
       color: "emerald",
     },
     {
       icon: Users,
       title: "Community Driven",
       description: "Built for investors, property owners, and developers",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/images/unsplash-d307ca884978.jpg",
       color: "amber",
     },
     {
       icon: Zap,
       title: "Instant Transactions",
       description: "Near-instant property transfers and settlements",
-      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/images/unsplash-bcc4688e7485.jpg",
       color: "violet",
     },
   ];
@@ -58,28 +58,28 @@ export default function About() {
       label: "Active Prototype",
       description: "Live demonstration platform",
       icon: Home,
-      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image: "/images/unsplash-5185137a7f0f.jpg"
     },
     { 
       value: "2024", 
       label: "Founded",
       description: "Next-gen real estate platform",
       icon: Building2,
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image: "/images/unsplash-35680f356dfd.jpg"
     },
     { 
       value: "100%", 
       label: "Secure",
       description: "Blockchain verified transactions",
       icon: Lock,
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image: "/images/unsplash-bebda4e38f71.jpg"
     },
     { 
       value: "45+", 
       label: "Countries",
       description: "Global regulatory compliance",
       icon: Globe,
-      image: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image: "/images/unsplash-fa2f459cd5c1.jpg"
     },
   ];
 
@@ -88,25 +88,25 @@ export default function About() {
       value: "$2.5B+", 
       label: "Target Market",
       description: "Tokenization potential",
-      image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w-400&q=80"
+      image: "/images/unsplash-9c2a0a7236a3.jpg"
     },
     { 
       value: "100K+", 
       label: "Target Users",
       description: "Global investor reach",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w-400&q=80"
+      image: "/images/unsplash-f06f85e504b3.jpg"
     },
     { 
       value: "<2s", 
       label: "Transactions",
       description: "Average processing time",
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w-400&q=80"
+      image: "/images/unsplash-ef010cbdcc31.jpg"
     },
     { 
       value: "0", 
       label: "Disputes",
       description: "Immutable title records",
-      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w-400&q=80"
+      image: "/images/unsplash-d10d557cf95f.jpg"
     },
   ];
 
@@ -117,7 +117,7 @@ export default function About() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            src="/images/unsplash-c627a92ad1ab.jpg"
             alt="Modern city skyline"
             fill
             className="object-cover"
@@ -219,7 +219,7 @@ export default function About() {
             {/* Image */}
             <div className="relative aspect-square rounded-xl lg:rounded-2xl overflow-hidden shadow-xl lg:shadow-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+                src="/images/unsplash-cc1a3fa10c00.jpg"
                 alt="Secure commercial building architecture"
                 fill
                 className="object-cover"

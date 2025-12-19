@@ -12,11 +12,11 @@ import MarketplaceHeader from "../../components/marketplace/MarketplaceHeader";
 import PropertyGrid from "../../components/marketplace/PropertyGrid";
 
 const demoImages = [
-	"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1616587226154-91eab0a51dc7?w=800&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1613977257592-4871e5fcd7a4?w=800&auto=format&fit=crop",
+	"/images/unsplash-7fde63acd811.jpg",
+	"/images/unsplash-707ba9348227.jpg",
+	"/images/unsplash-ebfd161ef9cf.jpg",
+	"/images/unsplash-ae9021a400a0.jpg",
+	"/images/unsplash-8bab748fbf90.jpg",
 ];
 
 export default function MarketplacePage() {

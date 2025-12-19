@@ -51,16 +51,18 @@ export function useTokenization() {
     
 	const { writeContractAsync } = useWriteContract();
 
-    /**
+     /**
      * Mints a new Property Deed NFT.
      * @param {string} propertyId - The unique ID of the property.
      * @param {string} metadataURI - The IPFS/Arweave URI for the metadata.
-     * @param {string} price - The listing price in ETH (required value sent with transaction).
+     * @param {string} mintFee - The fee to pay for minting (defaults to "0").
+     * @param {`0x${string}`} privateCommitment - ZK-ready hash commitment (optional).
      */
 	const tokenizeProperty = async (
 		propertyId: string,
 		metadataURI: string,
-		price: string,
+		mintFee: string = "0",
+        privateCommitment: `0x${string}` = "0x0000000000000000000000000000000000000000000000000000000000000000"
 	) => {
 		setLoading(true);
 		setError(null);
@@ -70,8 +72,8 @@ export function useTokenization() {
 				address: contractAddress,
 				abi: StrataDeedNFTABI,
 				functionName: "mintPropertyDeed",
-				args: [propertyId, metadataURI],
-				value: parseEther(price),
+				args: [propertyId, metadataURI, privateCommitment],
+				value: parseEther(mintFee),
 			});
 
 			return { hash, success: true };

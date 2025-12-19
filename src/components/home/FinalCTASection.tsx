@@ -8,6 +8,7 @@ import {
 	Zap,
 	Globe,
 	Building2,
+	Check,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -28,7 +29,7 @@ export default function FinalCTASection() {
 				{/* Background Image */}
 				<div className="absolute inset-0">
 					<Image
-						src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+						src="/images/unsplash-c627a92ad1ab.jpg"
 						alt="Modern city skyline with skyscrapers"
 						fill
 						className="object-cover"
@@ -156,20 +157,32 @@ export default function FinalCTASection() {
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.6, delay: 0.5 }}
 					className="text-center mb-8">
-					<div className="inline-flex flex-wrap items-center justify-center gap-8 text-white/90 text-sm bg-white/10 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/20">
-						<div className="flex items-center gap-3">
-							<div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
-							<span className="font-medium">No minimum investment</span>
+					<div className="inline-flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 text-white/90 text-xs sm:text-sm bg-white/10 backdrop-blur-sm px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-white/20 max-w-full">
+						<div className="flex items-center gap-2 sm:gap-3">
+							<div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center flex-shrink-0">
+								<Check className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-300" />
+							</div>
+							<span className="font-medium whitespace-nowrap">
+								No minimum investment
+							</span>
 						</div>
 						<div className="hidden sm:block w-px h-4 bg-white/30" />
-						<div className="flex items-center gap-3">
-							<div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
-							<span className="font-medium">24/7 global access</span>
+						<div className="flex items-center gap-2 sm:gap-3">
+							<div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center flex-shrink-0">
+								<Check className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-300" />
+							</div>
+							<span className="font-medium whitespace-nowrap">
+								24/7 global access
+							</span>
 						</div>
 						<div className="hidden sm:block w-px h-4 bg-white/30" />
-						<div className="flex items-center gap-3">
-							<div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
-							<span className="font-medium">Fully regulated platform</span>
+						<div className="flex items-center gap-2 sm:gap-3">
+							<div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center flex-shrink-0">
+								<Check className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-300" />
+							</div>
+							<span className="font-medium whitespace-nowrap">
+								Fully regulated platform
+							</span>
 						</div>
 					</div>
 				</motion.div>

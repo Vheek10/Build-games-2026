@@ -88,7 +88,7 @@ export default function PropertyGrid({
 						<PropertyCard
 							key={property.id}
 							property={property}
-							imageUrl={demoImages[property.id % demoImages.length]}
+							imageUrl={property.image || demoImages[property.id % demoImages.length]}
 						/>
 					))}
 				</div>

@@ -13,8 +13,7 @@ const comparisons = [
 			{ text: "Paper-heavy", good: false },
 			{ text: "Local only", good: false },
 		],
-		image:
-			"https://images.unsplash.com/photo-1558036117-15e82a2c9a9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+		image: "/images/unsplash-f200968a6e72.jpg",
 		color: "red",
 	},
 	{
@@ -24,8 +23,7 @@ const comparisons = [
 			{ text: "No verification", good: false },
 			{ text: "Unregulated", good: false },
 		],
-		image:
-			"https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+		image: "/images/unsplash-e363dbe005cb.jpg",
 		color: "orange",
 	},
 	{
@@ -35,8 +33,7 @@ const comparisons = [
 			{ text: "Blockchain-backed", good: true },
 			{ text: "Global access", good: true },
 		],
-		image:
-			"https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+		image: "/images/unsplash-ce09059eeffa.jpg",
 		color: "blue",
 	},
 ];

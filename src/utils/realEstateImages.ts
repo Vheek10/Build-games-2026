@@ -34,7 +34,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Modern Buildings & Architecture
 	{
 		id: "modern-building-1",
-		url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-ce09059eeffa.jpg",
 		alt: "Modern skyscraper with glass facade in city center",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.MODERN_BUILDINGS,
 		tags: ["architecture", "skyscraper", "modern", "glass", "urban"],
@@ -45,7 +45,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "modern-building-2",
-		url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-cc1a3fa10c00.jpg",
 		alt: "Contemporary apartment building with clean architectural lines",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.MODERN_BUILDINGS,
 		tags: ["apartment", "contemporary", "minimalist", "architecture"],
@@ -56,7 +56,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "modern-building-3",
-		url: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-f200968a6e72.jpg",
 		alt: "Urban residential building with geometric balconies",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.MODERN_BUILDINGS,
 		tags: ["urban", "residential", "balcony", "modern"],
@@ -67,7 +67,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "modern-building-4",
-		url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-c627a92ad1ab.jpg",
 		alt: "Glass office tower reflecting blue sky",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.MODERN_BUILDINGS,
 		tags: ["office", "glass", "reflection", "commercial"],
@@ -78,7 +78,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "modern-building-5",
-		url: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-8bab748fbf90.jpg",
 		alt: "Modern condominium complex with sustainable design",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.MODERN_BUILDINGS,
 		tags: ["condo", "sustainable", "complex", "green"],
@@ -91,7 +91,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Luxury Homes & Interiors
 	{
 		id: "luxury-interior-1",
-		url: "https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-707ba9348227.jpg",
 		alt: "Luxury living room with floor-to-ceiling windows and designer furniture",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.INTERIORS,
 		tags: ["luxury", "living-room", "furniture", "design", "modern"],
@@ -102,7 +102,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "luxury-interior-2",
-		url: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-ae9021a400a0.jpg",
 		alt: "Modern kitchen with marble countertops and high-end appliances",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.INTERIORS,
 		tags: ["kitchen", "modern", "appliances", "luxury", "marble"],
@@ -113,7 +113,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "luxury-interior-3",
-		url: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-3dadae4b4ace.jpg",
 		alt: "Elegant bedroom with luxury bedding and minimalist decor",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.INTERIORS,
 		tags: ["bedroom", "elegant", "minimalist", "luxury", "design"],
@@ -124,7 +124,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "luxury-interior-4",
-		url: "https://images.unsplash.com/photo-1615529182904-14819c35db37?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-14819c35db37.jpg",
 		alt: "Spa-like bathroom with natural stone and modern fixtures",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.INTERIORS,
 		tags: ["bathroom", "spa", "luxury", "stone", "modern"],
@@ -135,7 +135,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "luxury-interior-5",
-		url: "https://images.unsplash.com/photo-1613545325278-f24b0cae1224?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-f24b0cae1224.jpg",
 		alt: "Open concept living area with panoramic views",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.INTERIORS,
 		tags: ["open-concept", "views", "luxury", "spacious", "design"],
@@ -148,7 +148,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Blockchain Technology & Digital
 	{
 		id: "blockchain-tech-1",
-		url: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-d088224ddc74.jpg",
 		alt: "Blockchain network visualization with interconnected digital nodes",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.BLOCKCHAIN_TECH,
 		tags: ["blockchain", "network", "digital", "tech", "innovation"],
@@ -159,7 +159,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "blockchain-tech-2",
-		url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-074b7f938ba0.jpg",
 		alt: "Digital dashboard showing real-time analytics and data visualization",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.BLOCKCHAIN_TECH,
 		tags: ["dashboard", "analytics", "data", "visualization", "tech"],
@@ -170,7 +170,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "blockchain-tech-3",
-		url: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-e363dbe005cb.jpg",
 		alt: "Abstract digital connections representing blockchain network infrastructure",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.BLOCKCHAIN_TECH,
 		tags: ["abstract", "network", "connections", "digital", "infrastructure"],
@@ -181,7 +181,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "blockchain-tech-4",
-		url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-bebda4e38f71.jpg",
 		alt: "Data center with servers and network infrastructure",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.BLOCKCHAIN_TECH,
 		tags: [
@@ -198,7 +198,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "blockchain-tech-5",
-		url: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-80b023f02d71.jpg",
 		alt: "Cryptographic security interface with digital key visualization",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.BLOCKCHAIN_TECH,
 		tags: ["crypto", "security", "encryption", "digital", "keys"],
@@ -211,7 +211,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Cityscapes & Urban Development
 	{
 		id: "cityscape-1",
-		url: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-67f85cf4f1df.jpg",
 		alt: "City skyline at sunset with modern skyscrapers",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CITYSCAPES,
 		tags: ["city", "skyline", "urban", "development", "sunset"],
@@ -222,7 +222,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "cityscape-2",
-		url: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-59a10b8d2000.jpg",
 		alt: "Urban development with modern buildings and infrastructure",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CITYSCAPES,
 		tags: ["urban", "development", "city", "buildings", "infrastructure"],
@@ -233,7 +233,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "cityscape-3",
-		url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-07fb3b4ae5f1.jpg",
 		alt: "Aerial view of city with organized urban planning",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CITYSCAPES,
 		tags: ["aerial", "urban-planning", "city", "development", "organization"],
@@ -244,7 +244,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "cityscape-4",
-		url: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-67cf0d13bc1b.jpg",
 		alt: "Modern cityscape with clean architecture and green spaces",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CITYSCAPES,
 		tags: ["modern", "architecture", "green-spaces", "city", "clean"],
@@ -255,7 +255,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "cityscape-5",
-		url: "https://images.unsplash.com/photo-1486325212027-8081e485255e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-8081e485255e.jpg",
 		alt: "Urban development with mixed-use buildings and public spaces",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CITYSCAPES,
 		tags: ["mixed-use", "public-spaces", "urban", "development", "community"],
@@ -268,7 +268,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Office Spaces
 	{
 		id: "office-space-1",
-		url: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-f200968a6e72.jpg",
 		alt: "Modern co-working space with collaborative areas",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.OFFICE_SPACES,
 		tags: ["coworking", "collaborative", "modern", "office", "workspace"],
@@ -279,7 +279,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "office-space-2",
-		url: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-37526070297c.jpg",
 		alt: "Corporate office with ergonomic furniture and natural light",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.OFFICE_SPACES,
 		tags: ["corporate", "ergonomic", "natural-light", "professional", "office"],
@@ -292,7 +292,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Sustainable Architecture
 	{
 		id: "sustainable-1",
-		url: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-8bab748fbf90.jpg",
 		alt: "Green building with solar panels and sustainable features",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.SUSTAINABLE,
 		tags: ["green-building", "solar", "sustainable", "eco-friendly", "energy"],
@@ -303,7 +303,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "sustainable-2",
-		url: "https://images.unsplash.com/photo-1487956382158-bb926046304a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-bb926046304a.jpg",
 		alt: "Building with green walls and natural ventilation",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.SUSTAINABLE,
 		tags: [
@@ -322,7 +322,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	// Construction & Development
 	{
 		id: "construction-1",
-		url: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-d81bb19240f5.jpg",
 		alt: "Construction site with modern equipment and safety measures",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CONSTRUCTION,
 		tags: ["construction", "development", "site", "safety", "progress"],
@@ -333,7 +333,7 @@ export const REAL_ESTATE_IMAGES: RealEstateImage[] = [
 	},
 	{
 		id: "construction-2",
-		url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+		url: "/images/unsplash-cc1a3fa10c00.jpg",
 		alt: "Building under construction with structural framework visible",
 		category: REAL_ESTATE_IMAGE_CATEGORIES.CONSTRUCTION,
 		tags: [

@@ -12,8 +12,8 @@ export const StrataDeedNFTABI = [
 	"function getPropertyDeed(uint256 tokenId) view returns (string propertyId, string metadataURI, uint256 mintedAt)",
 	"function tokensOfOwner(address owner) view returns (uint256[])",
 
-	// Write
-	"function mintPropertyDeed(string propertyId, string metadataURI) payable returns (uint256)",
+ 	// Write
+	"function mintPropertyDeed(string propertyId, string metadataURI, bytes32 privateCommitment) payable returns (uint256)",
 	"function safeTransferFrom(address from, address to, uint256 tokenId)",
 	"function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
 

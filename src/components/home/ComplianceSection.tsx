@@ -19,22 +19,22 @@ import Image from "next/image";
 // Simplified real estate images
 const REAL_ESTATE_IMAGES = [
   {
-    url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    url: "/images/unsplash-ce09059eeffa.jpg",
     alt: "Modern transparent building representing transparency",
     category: "Transparency",
   },
   {
-    url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    url: "/images/unsplash-cc1a3fa10c00.jpg",
     alt: "Secure commercial building with clean architectural lines",
     category: "Security",
   },
   {
-    url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    url: "/images/unsplash-fcd25c85cd64.jpg",
     alt: "Blockchain technology network connections",
     category: "Technology",
   },
   {
-    url: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    url: "/images/unsplash-f200968a6e72.jpg",
     alt: "Urban development with regulated construction",
     category: "Regulation",
   },

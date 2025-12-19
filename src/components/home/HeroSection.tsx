@@ -61,7 +61,7 @@ export default function HeroSection() {
 							{/* Main Heading with responsive text sizes */}
 							<div className="relative mb-6 sm:mb-8 lg:mb-10">
 								<div className="relative inline-block">
-										<h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-4 sm:mb-6">
+									<h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-4 sm:mb-6">
 										<span className="block">Tokenizing Global</span>
 										<span className="block bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300 bg-clip-text text-transparent mt-1 sm:mt-2">
 											Real Estate Assets
@@ -118,7 +118,7 @@ export default function HeroSection() {
 											key={index}
 											className="flex items-center gap-3 group w-full sm:w-auto justify-center sm:justify-start">
 											<div
-												className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-${item.color}-900/30 flex items-center justify-center border border-${item.color}-800/20 group-hover:border-${item.color}-700/40 transition-all duration-300 backdrop-blur-sm`}>
+												className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-${item.color}-900/30 flex items-center justify-center border border-${item.color}-800/20 group-hover:border-${item.color}-700/40 transition-all duration-300 backdrop-blur-sm flex-shrink-0`}>
 												<item.icon
 													className={`w-4 h-4 sm:w-5 sm:h-5 text-${item.color}-400 group-hover:scale-110 transition-transform`}
 												/>
@@ -131,7 +131,6 @@ export default function HeroSection() {
 								</div>
 							</div>
 
-	
 							{/* CTA Buttons - Stack on mobile */}
 							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-12 sm:mb-14 lg:mb-16 px-4 w-full max-w-md sm:max-w-none mx-auto">
 								{/* Primary Button */}

@@ -8,8 +8,16 @@ const main = async () => {
   const balance = await hre.ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", hre.ethers.formatEther(balance));
 
-  const fundingCap = hre.ethers.parseUnits("0.1", 18);  
+   const fundingCap = hre.ethers.parseUnits("0.1", 18);  
   
+  // 1. Deploy NFT Registry
+  const StrataDeedNFT = await hre.ethers.getContractFactory("StrataDeedNFT");
+  const nftDeed = await StrataDeedNFT.deploy(deployer.address);
+  await nftDeed.waitForDeployment();
+  const nftAddress = await nftDeed.getAddress();
+  console.log(`StrataDeedNFT deployed to: ${nftAddress}`);
+
+  // 2. Deploy RWA Token for a specific property (linked to a deed ID in real logic)
   const StrataDeedRWA = await hre.ethers.getContractFactory("StrataDeedRWA");
   const strataDeed = await StrataDeedRWA.deploy(fundingCap, deployer.address);
 
@@ -17,7 +25,7 @@ const main = async () => {
   const strataAddress = await strataDeed.getAddress();
 
   console.log(`StrataDeedRWA deployed to: ${strataAddress}`);
-  console.log(`- Note: Accepts NATIVE MNT for Escrow and Yield.`);
+  console.log(`- Note: NFT handles deeds, RWA handles fractional investment.`);
 
   const dummyHash = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("DEPLOYER_CREDENTIAL"));
   

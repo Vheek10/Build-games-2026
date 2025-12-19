@@ -78,7 +78,7 @@ export default function CartSidebar({
 									className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
 									<div className="flex items-start gap-4">
 										<img
-											src={`https://images.unsplash.com/photo-${item.property.id}`}
+											src={item.property.image || "/images/unsplash-7fde63acd811.jpg"}
 											alt={item.property.title}
 											className="w-20 h-16 rounded-lg object-cover"
 										/>

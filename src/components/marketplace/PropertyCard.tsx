@@ -12,6 +12,7 @@ import {
 	TrendingUp,
 	Star,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Property {
 	id: number;
@@ -41,8 +42,34 @@ export default function PropertyCard({
 	property,
 	imageUrl,
 }: PropertyCardProps) {
+	const router = useRouter();
+	
 	// Simulate funding progress based on ID (just for demo)
 	const fundingProgress = Math.min(100, Math.max(15, (property.id * 13) % 100));
+
+	const handleInvestNow = () => {
+		const params = new URLSearchParams();
+		params.set("title", property.title);
+		params.set("location", property.location);
+		params.set("valuation", property.price.toString());
+		params.set("description", property.description);
+		
+		// Map marketplace types to mint page types
+		let mintType = "residential";
+		if (property.type === "Commercial") {
+			mintType = "commercial";
+		} else if (property.type === "Industrial") {
+			mintType = "industrial";
+		} else if (property.type === "Land") {
+			mintType = "land";
+		} else if (property.type === "Mixed-Use") {
+			mintType = "mixed-use";
+		}
+		
+		params.set("type", mintType);
+
+		router.push(`/mint?${params.toString()}`);
+	};
 
 	return (
 		<div className="group h-full">
@@ -168,7 +195,10 @@ export default function PropertyCard({
 							</div>
 						</div>
 
-						<button className="w-full px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-xl shadow-gray-200 dark:shadow-none border border-transparent hover:border-gray-800 dark:hover:border-gray-200">
+						<button 
+							onClick={handleInvestNow}
+							className="w-full px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-xl shadow-gray-200 dark:shadow-none border border-transparent hover:border-gray-800 dark:hover:border-gray-200"
+						>
 							Invest Now
 							<ArrowRight className="w-4 h-4" />
 						</button>
