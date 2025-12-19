@@ -9,6 +9,7 @@ import {
 	Activity,
 	DollarSign,
 	Clock,
+	Home,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Property } from "./types"; // We will alias this or assume types are updated separately, or just treat 'Property' as 'Strategy' object structurally for now.
