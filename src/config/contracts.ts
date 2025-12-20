@@ -11,7 +11,7 @@ export const STRATA_DEED_ABI = StrataDeedArtifact.abi;
 export const STRATA_DEED_BYTECODE = StrataDeedArtifact.bytecode as `0x${string}`;
 
 // Default to the most recently deployed address from env, or a zero address fallback
-export const STRATA_DEED_ADDRESS = (process.env.NEXT_PUBLIC_STRATA_DEED_ADDRESS as `0x${string}`) || "0x0000000000000000000000000000000000000000";
+export const STRATA_DEED_ADDRESS = (process.env.NEXT_PUBLIC_STRATA_DEED_ADDRESS as `0x${string}`) || "0xb0e804ff2af5a204888f39cc4ed9de9f264a6700";
 
 /**
  * Convenience object for Wagmi hooks

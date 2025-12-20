@@ -17,7 +17,8 @@ import {
   Zap,
   DollarSign,
   PieChart,
-  Target
+  Target,
+  Clock
 } from "lucide-react";
 import { useAccount, useWaitForTransactionReceipt, useChainId } from "wagmi";
 import { keccak256, encodePacked } from "viem";
@@ -40,6 +41,7 @@ function MintForm() {
   const [rwaTxHash, setRwaTxHash] = useState<`0x${string}` | undefined>(undefined);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<"idle" | "minting" | "tokenizing" | "success">("idle");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { data: receipt, isLoading: isWaitingReceipt } = useWaitForTransactionReceipt({
     hash: txHash,
@@ -100,21 +102,24 @@ function MintForm() {
     e.preventDefault();
     
     setSubmitError(null);
+    setIsSubmitting(true);
 
     // Network Validation
     if (chainId !== 5003) {
         setSubmitError("Please switch your network to Mantle Sepolia (5003) to mint property deeds.");
+        setIsSubmitting(false);
         return;
     }
 
     if (!formData.title || !formData.location || !formData.valuation) {
       setSubmitError("Please fill in all required fields (Title, Location, Valuation)");
+      setIsSubmitting(false);
       return;
     }
 
     setSubmitError(null);
-
     setCurrentStep("minting");
+    
     try {
       // Validation for tokenization
       if (formData.tokenizationEnabled && (!formData.targetRaise || Number(formData.targetRaise) <= 0)) {
@@ -157,7 +162,7 @@ function MintForm() {
       console.log("Minting Deed with ZK Privacy:", { propertyId, privateCommitment });
 
       // 3. Call Contract for NFT Minting
-      const { hash, success } = await tokenizeProperty(
+      const result = await tokenizeProperty(
         propertyId,
         metadataURI,
         "0", // Minting fee
@@ -165,19 +170,18 @@ function MintForm() {
         address as `0x${string}`
       );
 
-      if (success && hash) {
-        setTxHash(hash);
+      console.log("Tokenize result:", result);
+
+      if (result.success && result.hash) {
+        setTxHash(result.hash);
         
         // If tokenization is disabled, we're done after this receipt
         if (!formData.tokenizationEnabled) {
-          // Success view handled by receipt effect
+          console.log("Property minted successfully without tokenization");
           return;
         }
 
         // 4. If enabled, we proceed to RWA Deployment
-        // In a real flow, we might wait for the NFT receipt first, 
-        // but for a smooth demo, we can trigger the next signature immediately or after receipt.
-        // Let's prompt for the second signature immediately to show the "Mint & Tokenize" power.
         setCurrentStep("tokenizing");
         const rwaHash = await deployStrataDeed(
             formData.targetRaise,
@@ -189,13 +193,14 @@ function MintForm() {
             setRwaTxHash(rwaHash);
         }
       } else {
-        throw new Error("Transaction failed to initiate. Please check your wallet connection or balance.");
+        throw new Error(result.message || mintError || "Transaction failed to initiate. Please check your wallet connection or balance.");
       }
       
     } catch (error: any) {
       console.error("Mint Error:", error);
       setSubmitError(error.message || "Failed to mint property deed");
       setCurrentStep("idle");
+      setIsSubmitting(false);
     }
   };
   
@@ -306,7 +311,70 @@ function MintForm() {
     );
   }
 
-  const isProcessing = isMinting || isWaitingReceipt || isDeploying || isWaitingRwaReceipt;
+  const isProcessing = isSubmitting || isMinting || isWaitingReceipt || isDeploying || isWaitingRwaReceipt;
+
+  // Enhanced loading spinner with progress indicator
+  const LoadingSpinnerWithProgress = () => (
+    <div className="flex items-center justify-center gap-3">
+      <div className="relative">
+        <Loader2 className="w-6 h-6 animate-spin text-white" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-30 blur-sm rounded-full"></div>
+      </div>
+      <div className="text-left">
+        <div className="font-semibold text-white text-sm">
+          {currentStep === "minting" 
+            ? (isWaitingReceipt ? "Confirming Deed Transaction..." : "Initiating Property Mint...")
+            : (isWaitingRwaReceipt ? "Confirming RWA Deployment..." : "Deploying Token Contract...")}
+        </div>
+        <div className="text-xs text-blue-100 font-medium">
+          {currentStep === "minting" ? "Step 1 of 2" : "Step 2 of 2"}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Enhanced mint button content
+  const MintButtonContent = () => {
+    if (isProcessing) {
+      return <LoadingSpinnerWithProgress />;
+    }
+    
+    return (
+      <div className="flex items-center justify-center gap-3">
+        {formData.tokenizationEnabled ? (
+          <>
+            <div className="relative">
+              <Zap className="w-6 h-6 text-amber-300" />
+              <motion.div 
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute inset-0 bg-amber-400/20 blur-sm rounded-full"
+              />
+            </div>
+            <div className="text-left">
+              <div className="font-bold text-white">Mint & Tokenize Property</div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="relative">
+              <CheckCircle className="w-6 h-6 text-white" />
+              <motion.div 
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute inset-0 bg-blue-400/20 blur-sm rounded-full"
+              />
+            </div>
+            <div className="text-left">
+              <div className="font-bold text-white">Mint Property Deed</div>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 py-8 transition-colors duration-300">
@@ -370,6 +438,46 @@ function MintForm() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Progress Indicator */}
+        {isProcessing && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 border border-blue-100 dark:border-blue-800/30 rounded-2xl p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900 dark:text-white">Transaction in Progress</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {currentStep === "minting" 
+                      ? "Minting your property deed NFT on Mantle Network..."
+                      : "Deploying RWA token contract for fractional ownership..."}
+                  </p>
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-gradient-to-r from-blue-500 to-cyan-400"
+                        initial={{ width: "0%" }}
+                        animate={{ 
+                          width: currentStep === "minting" ? "50%" : "100%",
+                          transition: { duration: 1 }
+                        }}
+                      />
+                    </div>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
+                      {currentStep === "minting" ? "Step 1/2" : "Step 2/2"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Main Form */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300">
@@ -721,34 +829,13 @@ function MintForm() {
                 <button
                   type="submit"
                   disabled={isProcessing || !isConnected}
-                   className={`w-full px-6 py-4 text-white font-bold text-lg rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-3 ${
+                  className={`w-full px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center ${
                     isProcessing || !isConnected 
-                      ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed opacity-70" 
-                      : "bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 hover:shadow-blue-500/25 hover:-translate-y-0.5"
+                      ? "bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 cursor-not-allowed opacity-80" 
+                      : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-600 hover:shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
                   }`}
                 >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-6 h-6 animate-spin" />
-                      {currentStep === "minting" 
-                        ? (isWaitingReceipt ? "1/2: Confirming Deed..." : "1/2: Initiating Mint...") 
-                        : (isWaitingRwaReceipt ? "2/2: Confirming RWA..." : "2/2: Deploying Token portal...")}
-                    </>
-                  ) : (
-                    <>
-                      {formData.tokenizationEnabled ? (
-                        <>
-                           <Zap className="w-6 h-6 text-amber-300" />
-                           Mint & Tokenize Property
-                        </>
-                      ) : (
-                        <>
-                           <CheckCircle className="w-6 h-6" />
-                           Mint Property Deed
-                        </>
-                      )}
-                    </>
-                  )}
+                  <MintButtonContent />
                 </button>
                 
                 {!isConnected && (
@@ -774,7 +861,14 @@ export default function MintPage() {
     <AuthGuard>
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 relative">
+              <Loader2 className="w-16 h-16 text-blue-600 dark:text-blue-400 animate-spin" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-20 blur-xl rounded-full" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Loading Mint Page</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Preparing your property minting experience...</p>
+          </div>
         </div>
       }>
         <MintForm />

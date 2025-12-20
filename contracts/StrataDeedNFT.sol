@@ -81,7 +81,7 @@ contract StrataDeedNFT is
         string memory propertyId, 
         string memory metadataURI, 
         bytes32 privateCommitment
-    ) public onlyRole(MINTER_ROLE) nonReentrant returns (uint256) {
+    ) public payable nonReentrant returns (uint256) {
         require(!propertyIdExists[propertyId], "Property already tokenized");
         require(bytes(propertyId).length > 0, "Empty property ID");
         uint256 newTokenId = tokenCounter;
