@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useMemo, useCallback } from "react";
 import { 
   Upload, 
   Home, 
@@ -18,7 +18,9 @@ import {
   DollarSign,
   PieChart,
   Target,
-  Clock
+  Clock,
+  Globe,
+  Shield
 } from "lucide-react";
 import { useAccount, useWaitForTransactionReceipt, useChainId } from "wagmi";
 import { keccak256, encodePacked } from "viem";
@@ -28,7 +30,68 @@ import { useRouter, useSearchParams } from "next/navigation";
 import AuthGuard from "@/components/AuthGuard";
 import { motion, AnimatePresence } from "framer-motion";
 
-function MintForm() {
+// Error Boundary Component (using a simple wrapper since we can't use class components in same export)
+function withErrorBoundary(WrappedComponent: React.ComponentType) {
+  return function ErrorBoundaryWrapper(props: any) {
+    const [hasError, setHasError] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+      const handleError = (err: ErrorEvent) => {
+        setHasError(true);
+        setError(err.error);
+      };
+
+      window.addEventListener('error', handleError);
+      return () => window.removeEventListener('error', handleError);
+    }, []);
+
+    if (hasError && error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 p-4">
+          <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb our-2">
+              Something went wrong
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+              An error occurred while loading the minting form.
+            </p>
+            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 mb-6">
+              <p className="text-sm text-red-700 dark:text-red-300 font-mono break-all">
+                {error.message}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setHasError(false);
+                  setError(null);
+                }}
+                className="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Try Again
+              </button>
+              <button
+                onClick={() => window.location.href = "/dashboard"}
+                className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return <WrappedComponent {...props} />;
+  };
+}
+
+// Main Form Component
+function MintFormContent() {
   const { address, isConnected } = useAccount();
   const { tokenizeProperty, loading: isMinting, error: mintError } = useTokenization();
   const { deployStrataDeed, isDeploying } = useStrataDeed();
@@ -40,6 +103,7 @@ function MintForm() {
   const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
   const [rwaTxHash, setRwaTxHash] = useState<`0x${string}` | undefined>(undefined);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [currentStep, setCurrentStep] = useState<"idle" | "minting" | "tokenizing" | "success">("idle");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -63,6 +127,15 @@ function MintForm() {
     tokenSupply: "1000",
   });
 
+  // Real-time network validation
+  useEffect(() => {
+    if (chainId && chainId !== 5003) {
+      setSubmitError("Please switch your network to Mantle Sepolia (5003) to mint property deeds.");
+    } else {
+      setSubmitError(null);
+    }
+  }, [chainId]);
+
   // Effect to pre-fill form from query parameters
   useEffect(() => {
     const title = searchParams.get("title");
@@ -85,48 +158,164 @@ function MintForm() {
     }
   }, [searchParams]);
 
-  const handleFileSelect = (files: File[]) => {
-    setSelectedFiles(prev => [...prev, ...files.slice(0, 5 - prev.length)]);
+  // Enhanced file validation
+  const validateFile = (file: File): string | null => {
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    if (!validTypes.includes(file.type)) {
+      return `Invalid file type: ${file.name}. Only images (JPEG, PNG, GIF, WebP) and PDFs allowed.`;
+    }
+    
+    if (file.size > maxSize) {
+      return `File too large: ${file.name}. Maximum size is 5MB.`;
+    }
+    
+    return null;
   };
+
+  const handleFileSelect = useCallback((files: File[]) => {
+    const errors: string[] = [];
+    const validFiles: File[] = [];
+    
+    files.slice(0, 5 - selectedFiles.length).forEach(file => {
+      const error = validateFile(file);
+      if (error) {
+        errors.push(error);
+      } else {
+        validFiles.push(file);
+      }
+    });
+    
+    if (errors.length > 0) {
+      setSubmitError(errors.join(' '));
+    }
+    
+    if (validFiles.length > 0) {
+      setSelectedFiles(prev => [...prev, ...validFiles]);
+    }
+  }, [selectedFiles.length]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleRemoveFile = (index: number) => {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Real-time form validation
+  const validateForm = useCallback((): boolean => {
+    const errors: Record<string, string> = {};
+    
+    if (!formData.title.trim()) errors.title = "Property title is required";
+    if (!formData.location.trim()) errors.location = "Location is required";
+    
+    const valuation = Number(formData.valuation);
+    if (!formData.valuation || isNaN(valuation) || valuation <= 0) {
+      errors.valuation = "Valid valuation amount is required";
+    }
+    
+    if (formData.tokenizationEnabled) {
+      const targetRaise = Number(formData.targetRaise);
+      if (!formData.targetRaise || isNaN(targetRaise) || targetRaise <= 0) {
+        errors.targetRaise = "Target raise amount is required";
+      } else if (targetRaise > valuation) {
+        errors.targetRaise = "Cannot raise more than property valuation";
+      }
+      
+      const tokenSupply = Number(formData.tokenSupply);
+      if (!formData.tokenSupply || isNaN(tokenSupply) || tokenSupply <= 0) {
+        errors.tokenSupply = "Valid token supply is required";
+      }
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  }, [formData]);
+
+  // Memoized token calculations
+  const tokenDetails = useMemo(() => {
+    if (!formData.tokenizationEnabled) return null;
+    
+    const targetRaise = Number(formData.targetRaise);
+    const valuation = Number(formData.valuation);
+    const tokenSupply = Number(formData.tokenSupply);
+    
+    if (!targetRaise || !valuation || !tokenSupply || targetRaise <= 0 || valuation <= 0 || tokenSupply <= 0) {
+      return null;
+    }
+    
+    return {
+      price: (targetRaise / tokenSupply).toFixed(2),
+      equity: ((targetRaise / valuation) * 100).toFixed(1),
+      tokensPerPercent: (tokenSupply / ((targetRaise / valuation) * 100)).toFixed(0)
+    };
+  }, [formData.tokenizationEnabled, formData.targetRaise, formData.valuation, formData.tokenSupply]);
+
+  // Enhanced Base64 encoding for UTF-8
+  const encodeMetadataToBase64 = useCallback((metadata: any): string => {
+    try {
+      const metadataJSON = JSON.stringify(metadata);
+      // Using TextEncoder for proper UTF-8 handling
+      const encoder = new TextEncoder();
+      const data = encoder.encode(metadataJSON);
+      const base64 = btoa(String.fromCharCode(...data));
+      return `data:application/json;base64,${base64}`;
+    } catch (error) {
+      console.error("Metadata encoding error:", error);
+      // Fallback to URI encoding
+      const metadataJSON = JSON.stringify(metadata);
+      const uriEncoded = encodeURIComponent(metadataJSON);
+      const base64 = btoa(uriEncoded);
+      return `data:application/json;base64,${base64}`;
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     setSubmitError(null);
-    setIsSubmitting(true);
-
-    // Network Validation
-    if (chainId !== 5003) {
-        setSubmitError("Please switch your network to Mantle Sepolia (5003) to mint property deeds.");
-        setIsSubmitting(false);
-        return;
-    }
-
-    if (!formData.title || !formData.location || !formData.valuation) {
-      setSubmitError("Please fill in all required fields (Title, Location, Valuation)");
-      setIsSubmitting(false);
+    
+    // Validate form
+    if (!validateForm()) {
+      setSubmitError("Please fix the errors in the form.");
       return;
     }
-
-    setSubmitError(null);
-    setCurrentStep("minting");
     
-    try {
-      // Validation for tokenization
-      if (formData.tokenizationEnabled && (!formData.targetRaise || Number(formData.targetRaise) <= 0)) {
-          throw new Error("Please specify a valid Target Raise for tokenization.");
-      }
+    // Network validation
+    if (chainId !== 5003) {
+      setSubmitError("Please switch your network to Mantle Sepolia (5003) to mint property deeds.");
+      return;
+    }
+    
+    if (!isConnected || !address) {
+      setSubmitError("Wallet not connected. Please connect your wallet.");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setCurrentStep("minting");
 
-      // 1. Generate Metadata (Simulated IPFS Upload)
+    console.log("=== MINT FORM DEBUG START ===");
+    console.log("1. Form validation started");
+    console.log("Form data:", formData);
+    console.log("Connected:", isConnected);
+    console.log("Address:", address);
+    console.log("Chain ID:", chainId);
+
+    try {
+      console.log("2. Form validation passed");
+      
+      console.log("3. Generating metadata...");
+
+      // 1. Generate Metadata
       const metadata = {
         name: formData.title,
         description: formData.description,
@@ -134,32 +323,47 @@ function MintForm() {
         type: formData.propertyType,
         valuation: formData.valuation,
         timestamp: new Date().toISOString(),
-        files: selectedFiles.map(f => f.name),
+        files: selectedFiles.map(f => ({
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          lastModified: f.lastModified
+        })),
         tokenization: formData.tokenizationEnabled ? {
             enabled: true,
             targetRaise: formData.targetRaise,
             tokenSupply: formData.tokenSupply,
-            tokenPrice: (Number(formData.targetRaise) / Number(formData.tokenSupply)).toFixed(2),
-            equityPercentage: ((Number(formData.targetRaise) / Number(formData.valuation)) * 100).toFixed(2)
+            tokenPrice: tokenDetails?.price || "0",
+            equityPercentage: tokenDetails?.equity || "0",
+            owner: address
         } : { enabled: false }
       };
 
-      // Robust Base64 encoding for UTF-8 compatibility (handles non-ASCII in titles/descriptions)
-      const metadataJSON = JSON.stringify(metadata);
-      const metadataURI = `data:application/json;base64,${btoa(encodeURIComponent(metadataJSON).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16))))}`;
+      // Encode metadata with proper UTF-8 handling
+      const metadataURI = encodeMetadataToBase64(metadata);
       
-      // 2. Generate Property ID & Private Commitment (ZK-ready hash anchor)
-      const propertyId = `PROP-${Date.now()}`;
+      // 2. Generate Property ID & Private Commitment
+      const propertyId = `PROP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       
-      // Simulate creating a ZK Commitment for private files/data
+      // Create ZK Commitment
       const privateDataString = JSON.stringify({
         valuation: formData.valuation,
-        files: selectedFiles.map(f => f.name + f.size),
-        salt: propertyId
+        files: selectedFiles.map(f => ({
+          name: f.name,
+          hash: keccak256(encodePacked(["string"], [f.name + f.size + f.lastModified]))
+        })),
+        salt: propertyId,
+        timestamp: Date.now()
       });
       const privateCommitment = keccak256(encodePacked(["string"], [privateDataString]));
 
-      console.log("Minting Deed with ZK Privacy:", { propertyId, privateCommitment });
+      console.log("4. Metadata generated:", { 
+        propertyId, 
+        metadataURI: metadataURI.substring(0, 100) + "...", 
+        privateCommitment 
+      });
+
+      console.log("5. Calling tokenizeProperty hook...");
 
       // 3. Call Contract for NFT Minting
       const result = await tokenizeProperty(
@@ -170,43 +374,68 @@ function MintForm() {
         address as `0x${string}`
       );
 
-      console.log("Tokenize result:", result);
+      console.log("6. Tokenize result received:", result);
 
       if (result.success && result.hash) {
+        console.log("7. Transaction submitted! Hash:", result.hash);
         setTxHash(result.hash);
         
         // If tokenization is disabled, we're done after this receipt
         if (!formData.tokenizationEnabled) {
-          console.log("Property minted successfully without tokenization");
+          console.log("8. Property mint transaction submitted");
           return;
         }
 
+        console.log("9. Proceeding to RWA deployment...");
         // 4. If enabled, we proceed to RWA Deployment
         setCurrentStep("tokenizing");
-        const rwaHash = await deployStrataDeed(
+        
+        try {
+          const rwaHash = await deployStrataDeed(
             formData.targetRaise,
             address!,
             [] // Additional admins (auto-filled by hook)
-        );
+          );
 
-        if (rwaHash) {
+          if (rwaHash) {
+            console.log("10. RWA deployment submitted! Hash:", rwaHash);
             setRwaTxHash(rwaHash);
+          } else {
+            console.error("11. RWA deployment failed - no hash returned");
+            // Don't throw error here - the first transaction succeeded
+          }
+        } catch (rwaError: any) {
+          console.error("RWA deployment error:", rwaError);
+          // Don't throw - the NFT mint succeeded even if RWA fails
         }
       } else {
+        console.error("7. Tokenization failed:", {
+          success: result.success,
+          message: result.message,
+          mintError,
+          result
+        });
         throw new Error(result.message || mintError || "Transaction failed to initiate. Please check your wallet connection or balance.");
       }
       
     } catch (error: any) {
-      console.error("Mint Error:", error);
+      console.error("=== MINT FORM ERROR ===");
+      console.error("Error details:", error);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+      console.error("=== END ERROR ===");
+      
       setSubmitError(error.message || "Failed to mint property deed");
       setCurrentStep("idle");
+    } finally {
       setIsSubmitting(false);
+      console.log("=== MINT FORM DEBUG END ===");
     }
   };
   
   // Success View Component (Wait for both if tokenizing)
   const isFullySuccessful = formData.tokenizationEnabled 
-    ? (receipt?.status === "success" && rwaReceipt?.status === "success")
+    ? (receipt?.status === "success" && (rwaReceipt?.status === "success" || rwaTxHash))
     : (receipt?.status === "success");
 
   if (isFullySuccessful) {
@@ -232,10 +461,10 @@ function MintForm() {
           </div>
 
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
-            Deed Minted Successfully!
+            {formData.tokenizationEnabled ? "Property Tokenized Successfully!" : "Deed Minted Successfully!"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Your property deed for <span className="font-bold text-gray-900 dark:text-white">"{formData.title}"</span> has been securely tokenized on the Mantle Network.
+            Your property deed for <span className="font-bold text-gray-900 dark:text-white">"{formData.title}"</span> has been securely {formData.tokenizationEnabled ? "tokenized" : "minted"} on the Mantle Network.
           </p>
 
           <div className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 mb-8 border border-gray-100 dark:border-gray-800 text-left space-y-4">
@@ -246,6 +475,7 @@ function MintForm() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1 hover:underline"
+                  aria-label="View deed transaction on explorer"
                 >
                   {String(receipt?.transactionHash || txHash).slice(0, 8)}...{String(receipt?.transactionHash || txHash).slice(-6)}
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -259,6 +489,7 @@ function MintForm() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1 hover:underline"
+                    aria-label="View RWA deployment on explorer"
                   >
                     {String(rwaReceipt?.transactionHash || rwaTxHash).slice(0, 8)}...{String(rwaReceipt?.transactionHash || rwaTxHash).slice(-6)}
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -278,6 +509,7 @@ function MintForm() {
             <button
                onClick={() => router.push("/dashboard")}
                className="flex-1 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 group"
+               aria-label="Go to dashboard"
             >
               Go to Dashboard
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -301,6 +533,7 @@ function MintForm() {
                   });
                }}
                className="flex-1 px-6 py-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all flex items-center justify-center gap-2"
+               aria-label="Mint another property deed"
             >
               <Plus className="w-4 h-4" />
               Mint Another
@@ -397,6 +630,24 @@ function MintForm() {
           </p>
         </div>
 
+        {/* Network Status Indicator */}
+        <div className="mb-8">
+          <div className={`flex items-center gap-3 p-4 rounded-2xl ${chainId === 5003 ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50' : 'bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50'}`}>
+            <div className={`w-3 h-3 rounded-full ${chainId === 5003 ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
+            <div className="flex-1">
+              <div className="font-semibold text-gray-900 dark:text-white">
+                {chainId === 5003 ? 'Connected to Mantle Sepolia' : 'Wrong Network'}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {chainId === 5003 
+                  ? 'You can mint property deeds on this network.' 
+                  : 'Please switch to Mantle Sepolia (Chain ID: 5003) in your wallet.'}
+              </div>
+            </div>
+            <Globe className="w-5 h-5 text-gray-400" />
+          </div>
+        </div>
+
         {/* Global Error Alert */}
         <AnimatePresence mode="wait">
           {(submitError || mintError) && (
@@ -405,6 +656,8 @@ function MintForm() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               className="mb-8 p-6 bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-3xl flex items-start gap-4 shadow-xl shadow-red-500/5 backdrop-blur-sm"
+              role="alert"
+              aria-live="assertive"
             >
               <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/40 flex items-center justify-center flex-shrink-0">
                  <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
@@ -418,12 +671,14 @@ function MintForm() {
                   <button 
                     onClick={() => setSubmitError(null)}
                     className="px-4 py-2 bg-white dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-bold rounded-lg border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/50 transition-all"
+                    aria-label="Dismiss error"
                   >
                     Dismiss
                   </button>
                   <button 
                     onClick={() => window.location.reload()}
                     className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/20"
+                    aria-label="Retry page"
                   >
                     Retry Page
                   </button>
@@ -432,6 +687,7 @@ function MintForm() {
               <button 
                  onClick={() => setSubmitError(null)}
                  className="p-2 text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-xl transition-all"
+                 aria-label="Close error"
               >
                  <Plus className="w-5 h-5 rotate-45" />
               </button>
@@ -500,57 +756,84 @@ function MintForm() {
               {/* Property Details Inputs */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Property Title <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="title"
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                    className={`w-full border ${formErrors.title ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'} rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500`}
                     placeholder="e.g. Sunset Villa"
                     required
+                    aria-invalid={!!formErrors.title}
+                    aria-describedby={formErrors.title ? "title-error" : undefined}
                   />
+                  {formErrors.title && (
+                    <p id="title-error" className="text-sm text-red-600 dark:text-red-400">
+                      {formErrors.title}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Location <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="location"
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
-                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                    className={`w-full border ${formErrors.location ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'} rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500`}
                     placeholder="e.g. 123 Ocean Dr, Miami, FL"
                     required
+                    aria-invalid={!!formErrors.location}
+                    aria-describedby={formErrors.location ? "location-error" : undefined}
                   />
+                  {formErrors.location && (
+                    <p id="location-error" className="text-sm text-red-600 dark:text-red-400">
+                      {formErrors.location}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label htmlFor="valuation" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Valuation (USD) <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="valuation"
                     name="valuation"
                     value={formData.valuation}
                     onChange={handleInputChange}
-                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                    className={`w-full border ${formErrors.valuation ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'} rounded-lg px-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500`}
                     placeholder="e.g. 500000"
                     type="number"
+                    min="0"
                     step="0.01"
                     required
+                    aria-invalid={!!formErrors.valuation}
+                    aria-describedby={formErrors.valuation ? "valuation-error" : undefined}
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Initial estimated value of the property in USD.
-                  </p>
+                  {formErrors.valuation ? (
+                    <p id="valuation-error" className="text-sm text-red-600 dark:text-red-400">
+                      {formErrors.valuation}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Initial estimated value of the property in USD.
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                   <label htmlFor="propertyType" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Property Type
                   </label>
                   <select
+                    id="propertyType"
                     name="propertyType"
                     value={formData.propertyType}
                     onChange={handleInputChange}
@@ -565,10 +848,11 @@ function MintForm() {
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Description
                   </label>
                   <textarea
+                    id="description"
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
@@ -594,26 +878,35 @@ function MintForm() {
                   </h4>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                     Recommended: Property Deed, Owner ID, and Valuation Reports.
+                    <br />
+                    <span className="text-xs">Max 5MB per file. Supported: JPEG, PNG, GIF, WebP, PDF</span>
                   </p>
                   <p className="text-xs text-blue-500 dark:text-blue-400 mb-4 font-medium flex items-center justify-center gap-1">
-                    <CheckCircle className="w-3 h-3" />
+                    <Shield className="w-3 h-3" />
                     Files are encrypted & stored privately via ZK-Commitments.
                   </p>
                   
                   <input
                     type="file"
                     multiple
-                    accept="image/*,.pdf,.doc,.docx"
+                    accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
                     className="hidden"
                     id="file-upload"
                     onChange={(e) => e.target.files && handleFileSelect(Array.from(e.target.files))}
                   />
                   <label
                     htmlFor="file-upload"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors shadow-sm"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && document.getElementById('file-upload')?.click()}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    aria-label="Browse files to upload"
                   >
                     Browse Files
                   </label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                    {selectedFiles.length} of 5 files selected
+                  </p>
                 </div>
 
                 {/* Selected Files List */}
@@ -686,8 +979,8 @@ function MintForm() {
                           <button
                             type="button"
                             onClick={() => handleRemoveFile(index)}
-                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                            aria-label="Remove file"
+                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                            aria-label={`Remove ${file.name}`}
                           >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -716,22 +1009,24 @@ function MintForm() {
                     <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, tokenizationEnabled: !prev.tokenizationEnabled }))}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                             formData.tokenizationEnabled 
                             ? "bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 shadow-sm" 
                             : "text-gray-500"
                         }`}
+                        aria-label="Enable tokenization"
                     >
                         Enabled
                     </button>
                     <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, tokenizationEnabled: !prev.tokenizationEnabled }))}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-gray-500 ${
                             !formData.tokenizationEnabled 
                             ? "bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 shadow-sm" 
                             : "text-gray-500"
                         }`}
+                        aria-label="Disable tokenization"
                     >
                         Disabled
                     </button>
@@ -745,14 +1040,15 @@ function MintForm() {
                     className="grid sm:grid-cols-2 gap-6 bg-emerald-50/30 dark:bg-emerald-900/5 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800/30"
                   >
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Target Raise (USD)
+                      <label htmlFor="targetRaise" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Target Raise (USD) <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <DollarSign className="w-4 h-4 text-emerald-500" />
                         </div>
                         <input
+                            id="targetRaise"
                             name="targetRaise"
                             type="number"
                             value={formData.targetRaise}
@@ -760,62 +1056,103 @@ function MintForm() {
                                 const val = e.target.value;
                                 if (Number(val) > Number(formData.valuation)) return;
                                 setFormData(prev => ({ ...prev, targetRaise: val }));
+                                if (formErrors.targetRaise) {
+                                  setFormErrors(prev => ({ ...prev, targetRaise: '' }));
+                                }
                             }}
-                            className="w-full border border-emerald-200 dark:border-emerald-800/50 rounded-lg pl-9 pr-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                            className={`w-full border ${formErrors.targetRaise ? 'border-red-300 dark:border-red-600' : 'border-emerald-200 dark:border-emerald-800/50'} rounded-lg pl-9 pr-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all`}
                             placeholder="Amount to raise"
+                            min="0"
+                            step="0.01"
+                            aria-invalid={!!formErrors.targetRaise}
+                            aria-describedby={formErrors.targetRaise ? "targetRaise-error" : undefined}
                         />
                       </div>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">
-                        Max raise: ${formData.valuation || "0"} (100% equity)
-                      </p>
+                      {formErrors.targetRaise ? (
+                        <p id="targetRaise-error" className="text-[10px] text-red-600 dark:text-red-400">
+                          {formErrors.targetRaise}
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                          Max raise: ${formData.valuation || "0"} (100% equity)
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Total Fractional Supply
+                      <label htmlFor="tokenSupply" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Total Fractional Supply <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Target className="w-4 h-4 text-emerald-500" />
                         </div>
                         <input
+                            id="tokenSupply"
                             name="tokenSupply"
                             type="number"
                             value={formData.tokenSupply}
-                            onChange={(e) => setFormData(prev => ({ ...prev, tokenSupply: e.target.value }))}
-                            className="w-full border border-emerald-200 dark:border-emerald-800/50 rounded-lg pl-9 pr-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                            onChange={(e) => {
+                              setFormData(prev => ({ ...prev, tokenSupply: e.target.value }));
+                              if (formErrors.tokenSupply) {
+                                setFormErrors(prev => ({ ...prev, tokenSupply: '' }));
+                              }
+                            }}
+                            className={`w-full border ${formErrors.tokenSupply ? 'border-red-300 dark:border-red-600' : 'border-emerald-200 dark:border-emerald-800/50'} rounded-lg pl-9 pr-4 py-3 text-base bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all`}
                             placeholder="e.g. 1000"
+                            min="1"
+                            step="1"
+                            aria-invalid={!!formErrors.tokenSupply}
+                            aria-describedby={formErrors.tokenSupply ? "tokenSupply-error" : undefined}
                         />
                       </div>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">
-                        Number of RWA tokens to mint
-                      </p>
+                      {formErrors.tokenSupply ? (
+                        <p id="tokenSupply-error" className="text-[10px] text-red-600 dark:text-red-400">
+                          {formErrors.tokenSupply}
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                          Number of RWA tokens to mint
+                        </p>
+                      )}
                     </div>
 
                     {/* ROI & Price Summary */}
                     <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-emerald-100 dark:border-emerald-800/30">
                         <div className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-emerald-50 dark:border-emerald-900/50">
-                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight">Token Price</span>
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight flex items-center gap-1">
+                              <DollarSign className="w-2.5 h-2.5" />
+                              Token Price
+                            </span>
                             <div className="text-lg font-black text-gray-900 dark:text-white">
-                                ${formData.targetRaise && formData.tokenSupply ? (Number(formData.targetRaise) / Number(formData.tokenSupply)).toFixed(2) : "0.00"}
+                                ${tokenDetails?.price || "0.00"}
                             </div>
                         </div>
                         <div className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-emerald-50 dark:border-emerald-900/50">
-                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight">Equity Offered</span>
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight flex items-center gap-1">
+                              <PieChart className="w-2.5 h-2.5" />
+                              Equity Offered
+                            </span>
                             <div className="text-lg font-black text-emerald-600 dark:text-emerald-400">
-                                {formData.targetRaise && formData.valuation ? ((Number(formData.targetRaise) / Number(formData.valuation)) * 100).toFixed(1) : "0.0"}%
+                                {tokenDetails?.equity || "0.0"}%
                             </div>
                         </div>
                         <div className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-emerald-50 dark:border-emerald-900/50">
-                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight">Status</span>
-                            <div className="text-sm font-bold text-gray-600 dark:text-gray-300 mt-1">
-                                Ready to Mint
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight flex items-center gap-1">
+                              <Target className="w-2.5 h-2.5" />
+                              Tokens/1%
+                            </span>
+                            <div className="text-lg font-black text-gray-900 dark:text-white">
+                                {tokenDetails?.tokensPerPercent || "0"}
                             </div>
                         </div>
                         <div className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-emerald-50 dark:border-emerald-900/50">
-                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight">Network</span>
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tight flex items-center gap-1">
+                              <Zap className="w-2.5 h-2.5" />
+                              Network
+                            </span>
                             <div className="text-sm font-bold text-gray-600 dark:text-gray-300 mt-1 flex items-center gap-1">
-                                <Zap className="w-3 h-3 text-amber-500" />
+                                <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
                                 Mantle L2
                             </div>
                         </div>
@@ -828,18 +1165,19 @@ function MintForm() {
               <div className="pt-6 mt-8 border-t border-gray-200 dark:border-gray-700">
                 <button
                   type="submit"
-                  disabled={isProcessing || !isConnected}
+                  disabled={isProcessing || !isConnected || chainId !== 5003}
                   className={`w-full px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center ${
-                    isProcessing || !isConnected 
+                    isProcessing || !isConnected || chainId !== 5003
                       ? "bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 cursor-not-allowed opacity-80" 
                       : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-600 hover:shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
                   }`}
+                  aria-label={formData.tokenizationEnabled ? "Mint and tokenize property" : "Mint property deed"}
                 >
                   <MintButtonContent />
                 </button>
                 
                 {!isConnected && (
-                    <p className="text-center text-sm text-red-500 mt-3 font-medium">
+                    <p className="text-center text-sm text-red-500 mt-3 font-medium" role="alert">
                         Wallet not connected. Please connect via the navigation bar.
                     </p>
                 )}
@@ -856,11 +1194,15 @@ function MintForm() {
   );
 }
 
+// Wrap with error boundary
+const MintFormWithErrorBoundary = withErrorBoundary(MintFormContent);
+
+// Main Page Component
 export default function MintPage() {
   return (
     <AuthGuard>
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
           <div className="text-center">
             <div className="w-16 h-16 mx-auto mb-4 relative">
               <Loader2 className="w-16 h-16 text-blue-600 dark:text-blue-400 animate-spin" />
@@ -871,7 +1213,7 @@ export default function MintPage() {
           </div>
         </div>
       }>
-        <MintForm />
+        <MintFormWithErrorBoundary />
       </Suspense>
     </AuthGuard>
   );
