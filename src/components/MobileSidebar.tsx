@@ -1,7 +1,7 @@
 /** @format */
 "use client";
-
 import Link from "next/link";
+import Image from "next/image";
 import {
 	X,
 	Home,
@@ -77,37 +77,40 @@ export default function MobileSidebar({
 				aria-hidden="true"
 			/>
 
-			{/* Mobile Menu Panel - Left Sidebar */}
-			<div className="fixed inset-y-0 left-0 z-50 w-72 sm:w-76 lg:hidden animate-in slide-in-from-left-4 duration-300">
-				<div className="h-full bg-white dark:bg-gray-900 shadow-3xl overflow-y-auto">
+			{/* Mobile Menu Panel - Clean & Consistent */}
+			<div className="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 lg:hidden animate-in slide-in-from-left-4 duration-300">
+				<div className="h-full bg-gray-900 border-r border-gray-800 shadow-2xl overflow-y-auto">
 					<div className="p-5 sm:p-6">
-						{/* Close Button at Top */}
-						<div className="flex justify-end mb-6">
-							<button
-								onClick={onClose}
-								className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
-								aria-label="Close menu">
-								<X className="w-5 h-5" />
-							</button>
-						</div>
-
-						{/* Sidebar Header */}
-						<div className="flex items-center justify-between gap-3 mb-6 pb-6 border-b border-gray-100 dark:border-gray-800">
+						{/* Header Section */}
+						<div className="flex items-center justify-between mb-8">
+							{/* Logo/Brand - Exactly matching navbar */}
 							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400 rounded-xl flex items-center justify-center">
-									<span className="text-white font-bold text-sm sm:text-base">
-										SD
-									</span>
+								<div className="relative w-10 h-10">
+									<Image
+										src="/logo.png"
+										alt="StrataDeed Logo"
+										fill
+										className="object-contain"
+										sizes="40px"
+									/>
 								</div>
 								<div className="flex flex-col">
-									<span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+									<span className="text-xl font-bold text-white leading-tight">
 										StrataDeed
 									</span>
-									<span className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">
-										Property Tokenization
+									<span className="text-xs text-blue-300/90 font-medium uppercase tracking-[0.15em] leading-none mt-0.5">
+										Tokenization
 									</span>
 								</div>
 							</div>
+
+							{/* Close Button */}
+							<button
+								onClick={onClose}
+								className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors duration-200"
+								aria-label="Close menu">
+								<X className="w-5 h-5" />
+							</button>
 						</div>
 
 						{/* Mobile Navigation */}

@@ -129,37 +129,46 @@ export default function Navbar() {
 							</button>
 						</div>
 
-						{/* Brand Logo - SIMPLIFIED: JUST THE LOGO */}
-						<div className="lg:flex items-center gap-4 lg:gap-6 flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+						{/* Brand Logo - REFINED SIZE & TYPOGRAPHY */}
+						<div className="lg:flex items-center gap-3 lg:gap-4 flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
 							<Link
 								href="/"
-								className="flex items-center gap-4"
+								className="flex items-center gap-3 lg:gap-4 hover:opacity-90 transition-opacity duration-300"
 								aria-label="StrataDeed Home">
-								{/* Just the logo image, no container, no effects */}
-								<Image
-									src="/logo.jpg"
-									alt="StrataDeed Logo"
-									width={120}
-									height={120}
-									className="object-contain"
-									priority
-								/>
+								{/* Logo with optimal size */}
+								<div className="relative w-10 h-10 lg:w-12 lg:h-12">
+									<Image
+										src="/logo.png"
+										alt="StrataDeed Logo"
+										fill
+										className="object-contain"
+										priority
+										sizes="(max-width: 1024px) 40px, 48px"
+									/>
+								</div>
 
-								{/* Optional: Keep text branding if you want */}
+								{/* Text branding - improved typography */}
 								<div className="hidden lg:flex flex-col">
-									<span className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight tracking-tight">
+									<span className="text-2xl xl:text-3xl font-bold text-white leading-tight tracking-tight">
 										StrataDeed
 									</span>
-									<span className="text-sm text-blue-300 font-semibold uppercase tracking-[0.2em] leading-none mt-1">
+									<span className="text-xs xl:text-sm text-blue-300/90 font-medium uppercase tracking-[0.15em] leading-none mt-0.5">
 										Property Tokenization
+									</span>
+								</div>
+
+								{/* Mobile: Only show brand name without tagline */}
+								<div className="lg:hidden flex flex-col">
+									<span className="text-lg font-bold text-white leading-tight">
+										StrataDeed
 									</span>
 								</div>
 							</Link>
 						</div>
-
-						{/* Desktop Navigation - SOLID STYLING */}
-						<nav className="hidden lg:flex items-center justify-center flex-1 mx-8 xl:mx-12">
+						{/* Desktop Navigation */}
+						<nav className="hidden lg:flex items-center justify-center flex-1 mx-8 xl:mx-12 2xl:mx-16">
 							<div className="relative">
+								<div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-transparent to-cyan-400/10 rounded-full blur-sm" />
 								<div className="relative flex items-center gap-6 xl:gap-8">
 									{navItems.map((item) => {
 										const Icon = item.icon;
@@ -170,28 +179,35 @@ export default function Navbar() {
 												key={item.href}
 												href={item.href}
 												className={cn(
-													"flex items-center gap-2 text-sm font-semibold transition-all duration-300 relative px-3 py-2 rounded-lg",
+													"flex items-center gap-2 text-sm font-medium transition-all duration-300 relative group/nav",
 													active
-														? "text-white bg-blue-600 shadow-md"
-														: "text-gray-300 hover:text-white hover:bg-gray-800",
+														? "text-blue-600 dark:text-blue-400"
+														: "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400",
 												)}
 												aria-current={active ? "page" : undefined}>
 												<Icon
 													className={cn(
-														"w-5 h-5 transition-all duration-300",
+														"w-4 h-4 transition-all duration-300",
 														active
-															? "text-white"
-															: "text-gray-400 group-hover:text-white",
+															? "text-blue-600 dark:text-blue-400"
+															: "text-gray-500 dark:text-gray-400 group-hover/nav:text-blue-600 dark:group-hover/nav:text-blue-400",
 													)}
 												/>
-												<span className="relative">{item.label}</span>
+												<span className="relative">
+													{item.label}
+													{active && (
+														<div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
+													)}
+													{!active && (
+														<div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-cyan-400/0 rounded-full scale-x-0 group-hover/nav:scale-x-100 transition-transform duration-300 origin-center" />
+													)}
+												</span>
 											</Link>
 										);
 									})}
 								</div>
 							</div>
 						</nav>
-
 						{/* User & Wallet Actions - SOLID STYLING */}
 						<div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
 							{isConnected ? (
