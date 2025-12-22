@@ -180,14 +180,7 @@ export default function PropertyCard({
 										${property.price.toLocaleString()}
 									</div>
 								</div>
-								<div className="text-right">
-									<div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-0.5 font-medium">
-										Min. Buy-in
-									</div>
-									<div className="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400">
-										$50
-									</div>
-								</div>
+								
 							</div>
 
 							<button

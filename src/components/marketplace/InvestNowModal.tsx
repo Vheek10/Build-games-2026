@@ -122,7 +122,7 @@ export default function InvestNowModal({
 
 	// For demo purposes, use mock data since contract doesn't exist
 	const tokenPriceNum = property.price / 1000; // Assuming 1000 tokens total
-	const minInvestmentNum = tokenPriceNum * 10; // Minimum 10 tokens
+	const minInvestmentNum = 50; // Minimum 2 tokens
 	const maxInvestmentNum = tokenPriceNum * 100; // Maximum 100 tokens per transaction
 	const totalTokensNum = 1000; // Mock total token supply
 	const availableTokensNum = 750; // Mock available tokens (75%)
@@ -687,8 +687,8 @@ export default function InvestNowModal({
 											<div>
 												<h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
 													{isMockMode
-														? "Demo Successful! 🎉"
-														: "Investment Successful! 🎉"}
+														? "Demo Successful! "
+														: "Investment Successful! "}
 												</h3>
 												<p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
 													You now own {selectedTokens} tokens in{" "}
