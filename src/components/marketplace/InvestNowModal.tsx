@@ -29,6 +29,8 @@ import {
 } from "wagmi";
 import { parseEther, formatEther } from "viem";
 import { motion, AnimatePresence } from "framer-motion";
+import MarketplacePage from "@/app/marketplace/page";
+import Dashboard from "@/app/dashboard/page";
 
 interface Property {
 	id: number;
@@ -811,7 +813,7 @@ export default function InvestNowModal({
 											onClick={() => {
 												onClose();
 												// Navigate to portfolio page
-												window.location.href = "/portfolio";
+												window.location.href = "/dashboard";
 											}}
 											className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-teal-600 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
 											<TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
