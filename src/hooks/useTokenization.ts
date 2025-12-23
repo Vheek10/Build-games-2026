@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { parseEventLogs } from 'viem';
 
-// Your contract ABI
+// Your contract ABI - Updated to match actual StrataDeedNFT contract
 const TOKENIZATION_ABI = [
   {
     "anonymous": false,
@@ -41,6 +41,11 @@ const TOKENIZATION_ABI = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
         "internalType": "string",
         "name": "propertyId",
         "type": "string"
@@ -51,22 +56,12 @@ const TOKENIZATION_ABI = [
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "mintFee",
-        "type": "uint256"
-      },
-      {
         "internalType": "bytes32",
         "name": "privateCommitment",
         "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
       }
     ],
-    "name": "tokenizeProperty",
+    "name": "mintPropertyDeed",
     "outputs": [
       {
         "internalType": "uint256",
@@ -113,27 +108,47 @@ export function useTokenization() {
     setError(null);
     
     try {
+      console.log('=== TOKENIZATION DEBUG START ===');
+      console.log('Contract Address:', TOKENIZATION_CONTRACT_ADDRESS);
       console.log('Starting tokenization with params:', {
+        to: owner,
         propertyId,
-        metadataURI: metadataURI.substring(0, 50) + '...',
-        mintFee,
+        metadataURI: metadataURI.substring(0, 100) + '...',
+        metadataURILength: metadataURI.length,
         privateCommitment,
-        owner
+        mintFee,
       });
 
-      // Convert mintFee to Wei (using BigInt constructor without literal)
-      const feeWei = BigInt(mintFee) || BigInt(0); // Changed from 0n to BigInt(0)
+      // Validate inputs
+      if (!propertyId || propertyId.trim().length === 0) {
+        throw new Error('Property ID cannot be empty');
+      }
 
-      // Call the contract
+      if (!metadataURI || metadataURI.trim().length === 0) {
+        throw new Error('Metadata URI cannot be empty');
+      }
+
+      if (!owner || owner === '0x0000000000000000000000000000000000000000') {
+        throw new Error('Invalid owner address');
+      }
+
+      // Convert mintFee to Wei (using BigInt constructor without literal)
+      const feeWei = BigInt(mintFee) || BigInt(0);
+      console.log('Fee in Wei:', feeWei.toString());
+
+      // Call the contract with correct function name and parameter order
+      console.log('Calling mintPropertyDeed...');
       const hash = await writeContractAsync({
         address: TOKENIZATION_CONTRACT_ADDRESS,
         abi: TOKENIZATION_ABI,
-        functionName: 'tokenizeProperty',
-        args: [propertyId, metadataURI, feeWei, privateCommitment, owner],
+        functionName: 'mintPropertyDeed',
+        args: [owner, propertyId, metadataURI, privateCommitment],
         value: feeWei,
       });
 
-      console.log('Transaction submitted:', hash);
+      console.log('Transaction submitted successfully!');
+      console.log('Transaction hash:', hash);
+      console.log('=== TOKENIZATION DEBUG END ===');
       setTxHash(hash);
 
       // Wait for transaction receipt
@@ -149,20 +164,39 @@ export function useTokenization() {
       throw new Error('Transaction failed to submit');
 
     } catch (err: any) {
-      console.error('Tokenization error:', err);
+      console.error('=== TOKENIZATION ERROR ===');
+      console.error('Full error:', err);
+      console.error('Error message:', err.message);
+      console.error('Error details:', err.details);
+      console.error('Error cause:', err.cause);
       
       let errorMessage = 'Failed to tokenize property';
       
-      if (err.message?.includes('User rejected')) {
+      // Enhanced error messages
+      if (err.message?.includes('User rejected') || err.message?.includes('User denied')) {
         errorMessage = 'Transaction rejected by user';
       } else if (err.message?.includes('insufficient funds')) {
-        errorMessage = 'Insufficient funds for transaction';
+        errorMessage = 'Insufficient funds for transaction. Please add more MNT to your wallet.';
       } else if (err.message?.includes('network changed')) {
-        errorMessage = 'Please check your network connection';
+        errorMessage = 'Network changed. Please ensure you are on Mantle Sepolia.';
+      } else if (err.message?.includes('Property already tokenized')) {
+        errorMessage = 'This property ID has already been tokenized. Please use a different property ID.';
+      } else if (err.message?.includes('Empty property ID')) {
+        errorMessage = 'Property ID cannot be empty';
+      } else if (err.message?.includes('execution reverted') || err.message?.includes('reverted')) {
+        // Contract revert - provide more context
+        errorMessage = 'Contract execution failed. This could be due to:\n' +
+          '1. The contract may not be properly initialized\n' +
+          '2. The property ID might already exist\n' +
+          '3. There may be insufficient gas\n' +
+          '4. The contract address might be incorrect\n\n' +
+          'Please check the browser console for more details.';
       } else if (err.message) {
         errorMessage = err.message;
       }
       
+      console.error('Final error message:', errorMessage);
+      console.error('=== ERROR DEBUG END ===');
       setError(errorMessage);
       
       return {

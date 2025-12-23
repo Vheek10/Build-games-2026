@@ -1,6 +1,32 @@
 /** @format */
 
-export const sampleProperties = [
+export interface Property {
+	id: number;
+	title: string;
+	description: string;
+	location: string;
+	price: number;
+	bedrooms: number;
+	bathrooms: number;
+	squareFeet: number;
+	capacity: number;
+	views: number;
+	isFeatured: boolean;
+	country: string;
+	createdAt: string;
+	type: string;
+	rating?: number;
+	investmentReturn?: number;
+	image?: string;
+	// Minted property specific fields
+	isMinted?: boolean;
+	txHash?: string;
+	tokenId?: string;
+	metadataURI?: string;
+	propertyType?: string;
+}
+
+export const sampleProperties: Property[] = [
 	{
 		id: 1,
 		title: "Luxury Penthouse with Ocean View",

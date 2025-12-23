@@ -58,6 +58,14 @@ const complianceFeatures = [
     imageIndex: 1,
   },
   {
+    icon: Lock,
+    title: "Zero-Knowledge Privacy",
+    description: "Prove compliance without revealing personal data",
+    metric: "Full Privacy",
+    color: "purple",
+    imageIndex: 2,
+  },
+  {
     icon: Database,
     title: "Blockchain Records",
     description: "Permanent, tamper-proof transaction history",
@@ -84,6 +92,13 @@ export default function ComplianceSection() {
     securityUptime: 0,
   });
 
+  // Touch/Swipe state
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgressAnimations({
@@ -96,6 +111,33 @@ export default function ComplianceSection() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle touch start
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  // Handle touch move
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  // Handle touch end
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && activeFeature < complianceFeatures.length - 1) {
+      setActiveFeature(activeFeature + 1);
+    }
+    if (isRightSwipe && activeFeature > 0) {
+      setActiveFeature(activeFeature - 1);
+    }
+  };
 
   const currentImage =
     REAL_ESTATE_IMAGES[complianceFeatures[activeFeature].imageIndex];
@@ -111,6 +153,8 @@ export default function ComplianceSection() {
           return 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800';
         case 'emerald':
           return 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
+        case 'purple':
+          return 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800';
         case 'indigo':
           return 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800';
         case 'cyan':
@@ -132,6 +176,8 @@ export default function ComplianceSection() {
           return 'text-blue-600 dark:text-blue-400';
         case 'emerald':
           return 'text-emerald-600 dark:text-emerald-400';
+        case 'purple':
+          return 'text-purple-600 dark:text-purple-400';
         case 'indigo':
           return 'text-indigo-600 dark:text-indigo-400';
         case 'cyan':
@@ -153,6 +199,8 @@ export default function ComplianceSection() {
           return 'bg-blue-500/10';
         case 'emerald':
           return 'bg-emerald-500/10';
+        case 'purple':
+          return 'bg-purple-500/10';
         case 'indigo':
           return 'bg-indigo-500/10';
         case 'cyan':
@@ -219,14 +267,14 @@ export default function ComplianceSection() {
 
         {/* Feature Navigation - Fixed for mobile */}
         <div className="mb-8">
-          <div className="flex overflow-x-auto gap-2 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex overflow-x-auto gap-2 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory scrollbar-hide">
             {complianceFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <button
                   key={feature.title}
                   onClick={() => setActiveFeature(index)}
-                  className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg whitespace-nowrap transition-all min-w-fit ${getFeatureButtonClasses(index)}`}
+                  className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg whitespace-nowrap transition-all min-w-fit snap-start ${getFeatureButtonClasses(index)}`}
                 >
                   <div className={`p-2 rounded-lg ${getIconBgClasses(index)}`}>
                     <Icon className={`w-4 h-4 ${getIconClasses(index)}`} />
@@ -246,12 +294,17 @@ export default function ComplianceSection() {
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
           {/* Image */}
-          <div className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
+          <div 
+            className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden touch-pan-y"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <Image
               src={currentImage.url}
               alt={currentImage.alt}
               fill
-              className="object-cover"
+              className="object-cover transition-opacity duration-300"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
               priority
             />

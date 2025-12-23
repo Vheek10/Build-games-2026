@@ -29,6 +29,9 @@ import { useStrataDeed } from "@/hooks/useStrataDeed";
 import { useRouter } from "next/navigation";
 import AuthGuard from "@/components/AuthGuard";
 import { motion, AnimatePresence } from "framer-motion";
+import { saveProperty, getNextPropertyId } from "@/lib/propertyStorage";
+import { sampleProperties } from "@/lib/dummy-data";
+import type { Property } from "@/lib/dummy-data";
 
 // Error Boundary Component
 function withErrorBoundary(WrappedComponent: React.ComponentType) {
@@ -450,6 +453,48 @@ function MintFormContent() {
 		? receipt?.status === "success" &&
 		  (rwaReceipt?.status === "success" || rwaTxHash)
 		: receipt?.status === "success";
+
+	// Save property to localStorage when minting is successful
+	useEffect(() => {
+		if (isFullySuccessful && formData.title) {
+			// Check if already saved to avoid duplicates
+			const savedKey = `property_saved_${txHash}`;
+			if (localStorage.getItem(savedKey)) {
+				return;
+			}
+
+			// Create property object
+			const newProperty: Property = {
+				id: getNextPropertyId(sampleProperties),
+				title: formData.title,
+				description: formData.description || "Property minted via StrataDeed",
+				location: formData.location,
+				price: Number(formData.valuation),
+				bedrooms: formData.propertyType === "residential" ? 3 : 0,
+				bathrooms: formData.propertyType === "residential" ? 2 : 0,
+				squareFeet: formData.propertyType === "commercial" ? 5000 : 2000,
+				capacity: formData.propertyType === "commercial" ? 20 : 6,
+				views: 0,
+				isFeatured: false,
+				country: formData.location.split(",").pop()?.trim() || "Unknown",
+				createdAt: new Date().toISOString().split("T")[0],
+				type: formData.propertyType === "residential" ? "Apartments" : "Commercial",
+				rating: undefined,
+				investmentReturn: formData.tokenizationEnabled
+					? Number(tokenDetails?.equity) || 8
+					: undefined,
+				image: "/images/unsplash-7fde63acd811.jpg", // Default placeholder
+				isMinted: true,
+				txHash: txHash,
+				propertyType: formData.propertyType,
+			};
+
+			// Save to localStorage
+			saveProperty(newProperty);
+			localStorage.setItem(savedKey, "true");
+			console.log("Property saved to marketplace:", newProperty);
+		}
+	}, [isFullySuccessful, formData, txHash, tokenDetails]);
 
 	if (isFullySuccessful) {
 		return (

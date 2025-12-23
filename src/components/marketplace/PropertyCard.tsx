@@ -33,6 +33,8 @@ interface Property {
 	type: string;
 	investmentReturn?: number;
 	rating?: number;
+	isMinted?: boolean;
+	txHash?: string;
 }
 
 interface PropertyCardProps {
@@ -77,6 +79,11 @@ export default function PropertyCard({
 								<div className="px-2 py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded shadow-sm flex items-center gap-1 backdrop-blur-sm">
 									<TrendingUp className="w-3 h-3" />
 									{property.investmentReturn}% Yield
+								</div>
+							)}
+							{property.isMinted && (
+								<div className="px-2 py-1 bg-purple-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded shadow-sm backdrop-blur-sm">
+									Minted
 								</div>
 							)}
 						</div>
@@ -168,27 +175,27 @@ export default function PropertyCard({
 									style={{ width: `${fundingProgress}%` }}
 								/>
 							</div>
-						</div>
 
-						<div className="mt-auto">
-							<div className="flex justify-between items-end mb-4">
-								<div>
-									<div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-0.5 font-medium">
-										Asset Value
+							<div className="mt-auto">
+								<div className="flex justify-between items-end mb-4">
+									<div>
+										<div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-0.5 font-medium">
+											Asset Value
+										</div>
+										<div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+											${property.price.toLocaleString()}
+										</div>
 									</div>
-									<div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-										${property.price.toLocaleString()}
-									</div>
+									
 								</div>
-								
-							</div>
 
-							<button
-								onClick={handleInvestClick}
-								className="w-full px-4 py-3 bg-white text-gray-900  font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-sm border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400">
-								Invest Now
-								<ArrowRight className="w-4 h-4" />
-							</button>
+								<button
+									onClick={handleInvestClick}
+									className="w-full px-4 py-3 bg-white text-gray-900  font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm shadow-sm border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400">
+									Invest Now
+									<ArrowRight className="w-4 h-4" />
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

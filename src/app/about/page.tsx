@@ -61,7 +61,7 @@ export default function About() {
       image: "/images/unsplash-5185137a7f0f.jpg"
     },
     { 
-      value: "2024", 
+      value: "2025", 
       label: "Founded",
       description: "Next-gen real estate platform",
       icon: Building2,

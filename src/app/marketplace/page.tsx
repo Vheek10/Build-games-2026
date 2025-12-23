@@ -1,8 +1,10 @@
 /** @format */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { sampleProperties } from "../../lib/dummy-data";
+import { getAllProperties } from "../../lib/propertyStorage";
+import type { Property } from "../../lib/dummy-data";
 import { Search, X } from "lucide-react";
 
 import AuthGuard from "@/components/AuthGuard";
@@ -22,10 +24,32 @@ const demoImages = [
 export default function MarketplacePage() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [showSearch, setShowSearch] = useState(false);
+	const [allProperties, setAllProperties] = useState<Property[]>([]);
+
+	// Load properties on mount and when localStorage changes
+	useEffect(() => {
+		const loadProperties = () => {
+			const properties = getAllProperties(sampleProperties);
+			setAllProperties(properties);
+			console.log(`Loaded ${properties.length} properties (${properties.filter(p => p.isMinted).length} minted)`);
+		};
+
+		loadProperties();
+
+		// Listen for storage events (when properties are added in another tab)
+		const handleStorageChange = (e: StorageEvent) => {
+			if (e.key === "stratadeed_minted_properties") {
+				loadProperties();
+			}
+		};
+
+		window.addEventListener("storage", handleStorageChange);
+		return () => window.removeEventListener("storage", handleStorageChange);
+	}, []);
 
 	// Filter properties
 	const filteredProperties = useMemo(() => {
-		let filtered = [...sampleProperties];
+		let filtered = [...allProperties];
 
 		if (searchQuery) {
 			filtered = filtered.filter(
@@ -39,7 +63,7 @@ export default function MarketplacePage() {
 		}
 
 		return filtered.slice(0, 9);
-	}, [searchQuery]);
+	}, [searchQuery, allProperties]);
 
 	const clearFilters = () => {
 		setSearchQuery("");

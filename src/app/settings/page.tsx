@@ -2,12 +2,11 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, Bell, Wallet, User } from "lucide-react";
+import { Settings, Wallet, Shield } from "lucide-react";
 import AuthGuard from "@/components/AuthGuard";
+import Link from "next/link";
 
 const SettingsPage = () => {
-	const [emailUpdates, setEmailUpdates] = useState(true);
-
 	return (
 		<AuthGuard>
 			<div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -22,36 +21,21 @@ const SettingsPage = () => {
 						</div>
 						<div>
 							<h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50">
-								Account settings
+								Account Settings
 							</h1>
 							<p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-								Basic controls for your StrataDeed profile, wallet and
-								notifications.
+								Manage your wallet connection and privacy preferences.
 							</p>
 						</div>
 					</header>
 
 					<div className="space-y-6">
-						{/* Profile */}
-						<section className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-3">
-							<div className="flex items-center gap-2">
-								<User className="w-4 h-4 text-blue-500" />
-								<h2 className="text-sm font-semibold text-gray-900 dark:text-gray-50">
-									Profile
-								</h2>
-							</div>
-							<p className="text-xs text-gray-600 dark:text-gray-400">
-								Your identity in StrataDeed is tied to your connected wallet.
-								Profile details will be editable in a later version.
-							</p>
-						</section>
-
 						{/* Wallet */}
 						<section className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-3">
 							<div className="flex items-center gap-2">
 								<Wallet className="w-4 h-4 text-emerald-500" />
 								<h2 className="text-sm font-semibold text-gray-900 dark:text-gray-50">
-									Wallet
+									Wallet Connection
 								</h2>
 							</div>
 							<p className="text-xs text-gray-600 dark:text-gray-400">
@@ -60,39 +44,49 @@ const SettingsPage = () => {
 							</p>
 						</section>
 
-						{/* Notifications */}
-						<section className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-4">
+						{/* Privacy & Identity */}
+						<section className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-3">
 							<div className="flex items-center gap-2">
-								<Bell className="w-4 h-4 text-amber-500" />
+								<Shield className="w-4 h-4 text-purple-500" />
 								<h2 className="text-sm font-semibold text-gray-900 dark:text-gray-50">
-									Notifications
+									Privacy & Identity
 								</h2>
 							</div>
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-										Email updates
-									</p>
-									<p className="text-xs text-gray-600 dark:text-gray-400">
-										Allow StrataDeed to email you about important account
-										activity.
-									</p>
-								</div>
-								<button
-									onClick={() => setEmailUpdates((v) => !v)}
-									className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-										emailUpdates
-											? "bg-blue-500"
-											: "bg-gray-300 dark:bg-gray-700"
-									}`}>
-									<span
-										className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-											emailUpdates ? "translate-x-6" : "translate-x-1"
-										}`}
-									/>
-								</button>
-							</div>
+							<p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
+								Your identity is tied to your connected wallet. Manage your
+								zero-knowledge credentials and encrypted documents in the Vault.
+							</p>
+							<Link
+								href="/vault"
+								className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors"
+							>
+								<Shield className="w-4 h-4" />
+								Open Identity Vault
+							</Link>
 						</section>
+
+						{/* Network */}
+						<section className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-3">
+							<div className="flex items-center gap-2">
+								<div className="w-4 h-4 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400" />
+								<h2 className="text-sm font-semibold text-gray-900 dark:text-gray-50">
+									Network
+								</h2>
+							</div>
+							<p className="text-xs text-gray-600 dark:text-gray-400">
+								StrataDeed operates on Mantle Sepolia Testnet (Chain ID: 5003).
+								Ensure your wallet is connected to the correct network.
+							</p>
+						</section>
+
+						{/* Privacy Notice */}
+						<div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+							<p className="text-xs text-blue-700 dark:text-blue-300">
+								<strong>Privacy First:</strong> StrataDeed uses zero-knowledge
+								proofs to protect your identity. Your personal data never leaves
+								your device.
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>

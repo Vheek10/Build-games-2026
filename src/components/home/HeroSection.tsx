@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, Globe, Shield, Building } from "lucide-react";
+import { ArrowRight, Sparkles, Globe, Shield, Building, Lock } from "lucide-react";
 import Image from "next/image";
 
 export default function HeroSection() {

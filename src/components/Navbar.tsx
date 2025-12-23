@@ -113,7 +113,7 @@ export default function Navbar() {
 				{/* REMOVED background glow effects */}
 
 				<div className="relative mx-auto w-full max-w-screen-2xl">
-					<div className="flex items-center justify-between h-20 lg:h-24">
+					<div className="flex items-center justify-between h-16 lg:h-20">
 						{/* Mobile Menu Toggle */}
 						<div className="flex lg:hidden items-center flex-shrink-0">
 							<button
@@ -246,6 +246,13 @@ export default function Navbar() {
 															</div>
 														</div>
 														<div className="p-2 bg-gray-800">
+															<Link
+																href="/vault"
+																className="flex items-center gap-3 px-4 py-3 text-sm text-gray-200 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
+																onClick={() => setIsUserMenuOpen(false)}>
+																<User className="w-4 h-4" />
+																Vault
+															</Link>
 															<Link
 																href="/dashboard"
 																className="flex items-center gap-3 px-4 py-3 text-sm text-gray-200 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
