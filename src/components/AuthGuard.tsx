@@ -12,11 +12,11 @@ interface AuthGuardProps {
 }
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isConnected, isReconnecting } = useAccount();
+  const { isConnected, isReconnecting, status } = useAccount();
   const router = useRouter();
 
-  // If wallet is attempting to reconnect, show loader
-  if (isReconnecting) {
+  // If wallet is attempting to reconnect or connect, show loader
+  if (isReconnecting || status === "connecting") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center gap-4">

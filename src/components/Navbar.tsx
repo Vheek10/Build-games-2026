@@ -253,13 +253,7 @@ export default function Navbar() {
 																<User className="w-4 h-4" />
 																Vault
 															</Link>
-															<Link
-																href="/dashboard"
-																className="flex items-center gap-3 px-4 py-3 text-sm text-gray-200 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
-																onClick={() => setIsUserMenuOpen(false)}>
-																<Briefcase className="w-4 h-4" />
-																Dashboard
-															</Link>
+
 															<Link
 																href="/settings"
 																className="flex items-center gap-3 px-4 py-3 text-sm text-gray-200 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
