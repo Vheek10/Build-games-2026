@@ -199,10 +199,10 @@ export function useTokenization() {
 				err.message?.includes("execution reverted") ||
 				err.message?.includes("reverted")
 			) {
-				// For any contract revert, show incorrect credentials
-				errorMessage = "incorrect property information";
+				// For any contract revert, show incorrect property credentials
+				errorMessage = "incorrect property credentials";
 			} else if (err.message) {
-				errorMessage = "incorrect credentials";
+				errorMessage = "incorrect property credentials";
 			}
 
 			console.error("Final error message:", errorMessage);

@@ -14,7 +14,8 @@ const montserrat = Montserrat({
 
 export const metadata = {
 	title: "StrataDeed — Tokenized Property Deeds on Mantle",
-	description: "Mint, list, and discover tokenized property deeds on the Mantle Network.",
+	description:
+		"Mint, list, and discover tokenized property deeds on the Mantle Network.",
 };
 
 /**
@@ -32,7 +33,16 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className="dark">
+		<html
+			lang="en"
+			className="dark">
+			<head>
+				<link
+					rel="icon"
+					href="/logo.png"
+					type="image/png"
+				/>
+			</head>
 			<body className={montserrat.className + " antialiased"}>
 				<Web3Provider>
 					<div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
