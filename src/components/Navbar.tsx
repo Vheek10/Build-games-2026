@@ -87,89 +87,72 @@ export default function Navbar() {
 		};
 	}, [isMobileMenuOpen]);
 
-	// =========================================
-	// Helpers
-	// =========================================
-
 	const isActive = (href: string) => {
 		if (href === "/") return pathname === href;
 		return pathname === href || pathname?.startsWith(`${href}/`);
 	};
 
-	// =========================================
-	// Render
-	// =========================================
-
 	return (
 		<>
-			{/* Main Header - REMOVED GLASS EFFECT */}
+			{/* Main Header  */}
 			<header
 				className={cn(
 					"sticky top-0 z-50 w-full transition-all duration-300",
 					isScrolled ? "bg-gray-900 shadow-lg" : "bg-gray-900",
 					"border-b border-gray-700",
-					"px-4 sm:px-6 lg:px-8",
+					"px-3 sm:px-4 md:px-6 lg:px-8",
 				)}>
-				{/* REMOVED background glow effects */}
-
 				<div className="relative mx-auto w-full max-w-screen-2xl">
-					<div className="flex items-center justify-between h-16 lg:h-20">
+					<div className="flex items-center justify-between h-14 sm:h-16 md:h-[72px] lg:h-20 relative">
 						{/* Mobile Menu Toggle */}
-						<div className="flex lg:hidden items-center flex-shrink-0">
+						<div className="flex lg:hidden items-center flex-shrink-0 z-10">
 							<button
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-								className="p-2 text-gray-300 hover:text-blue-400 transition-all duration-300"
+								className="p-1.5 sm:p-2 md:p-2.5 text-gray-300 hover:text-blue-400 transition-all duration-300 rounded-md hover:bg-gray-800"
 								aria-label="Toggle menu"
 								aria-expanded={isMobileMenuOpen}>
 								{isMobileMenuOpen ? (
-									<X className="w-6 h-6" />
+									<X className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6" />
 								) : (
-									<Menu className="w-6 h-6" />
+									<Menu className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6" />
 								)}
 							</button>
 						</div>
 
-						{/* Brand Logo - REFINED SIZE & TYPOGRAPHY */}
-						<div className="lg:flex items-center gap-3 lg:gap-4 flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+						{/* Brand Logo - Centered on mobile/medium, left-aligned on large screens */}
+						<div className="absolute left-1/2 transform -translate-x-1/2 md:left-1/2 md:transform md:-translate-x-1/2 lg:relative lg:left-0 lg:transform-none flex items-center gap-2 sm:gap-3 md:gap-3 lg:gap-4 flex-shrink-0 z-10">
 							<Link
 								href="/"
-								className="flex items-center gap-3 lg:gap-4 hover:opacity-90 transition-opacity duration-300"
+								className="flex items-center gap-2 sm:gap-3 md:gap-3 lg:gap-4 hover:opacity-90 transition-opacity duration-300"
 								aria-label="StrataDeed Home">
 								{/* Logo with optimal size */}
-								<div className="relative w-10 h-10 lg:w-12 lg:h-12">
+								<div className="relative w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 xl:w-14 xl:h-14 flex-shrink-0">
 									<Image
 										src="/logo.png"
 										alt="StrataDeed Logo"
 										fill
 										className="object-contain"
 										priority
-										sizes="(max-width: 1024px) 40px, 48px"
+										sizes="(max-width: 640px) 40px, (max-width: 1024px) 44px, (max-width: 1280px) 48px, 56px"
 									/>
 								</div>
 
-								{/* Text branding - improved typography */}
+								{/* Text branding - improved typography - Hidden on small/medium screens */}
 								<div className="hidden lg:flex flex-col">
-									<span className="text-2xl xl:text-3xl font-bold text-white leading-tight tracking-tight">
+									<span className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold text-white leading-tight tracking-tight">
 										StrataDeed
 									</span>
-									<span className="text-xs xl:text-sm text-blue-300/90 font-medium uppercase tracking-[0.15em] leading-none mt-0.5">
+									<span className="text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-blue-300/90 font-medium uppercase tracking-[0.15em] leading-none mt-0.5">
 										Property Tokenization
-									</span>
-								</div>
-
-								{/* Mobile: Only show brand name without tagline */}
-								<div className="lg:hidden flex flex-col">
-									<span className="text-lg font-bold text-white leading-tight">
-										StrataDeed
 									</span>
 								</div>
 							</Link>
 						</div>
 						{/* Desktop Navigation */}
-						<nav className="hidden lg:flex items-center justify-center flex-1 mx-8 xl:mx-12 2xl:mx-16">
+						<nav className="hidden lg:flex items-center justify-center flex-1 mx-4 lg:mx-8 xl:mx-12 2xl:mx-16">
 							<div className="relative">
 								<div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-transparent to-cyan-400/10 rounded-full blur-sm" />
-								<div className="relative flex items-center gap-6 xl:gap-8">
+								<div className="relative flex items-center gap-4 lg:gap-6 xl:gap-8">
 									{navItems.map((item) => {
 										const Icon = item.icon;
 										const active = isActive(item.href);
@@ -179,7 +162,7 @@ export default function Navbar() {
 												key={item.href}
 												href={item.href}
 												className={cn(
-													"flex items-center gap-2 text-sm font-medium transition-all duration-300 relative group/nav",
+													"flex items-center gap-1.5 lg:gap-2 text-xs lg:text-sm font-medium transition-all duration-300 relative group/nav",
 													active
 														? "text-blue-600 dark:text-blue-400"
 														: "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400",
@@ -187,7 +170,7 @@ export default function Navbar() {
 												aria-current={active ? "page" : undefined}>
 												<Icon
 													className={cn(
-														"w-4 h-4 transition-all duration-300",
+														"w-3.5 h-3.5 lg:w-4 lg:h-4 transition-all duration-300",
 														active
 															? "text-blue-600 dark:text-blue-400"
 															: "text-gray-500 dark:text-gray-400 group-hover/nav:text-blue-600 dark:group-hover/nav:text-blue-400",
@@ -209,14 +192,14 @@ export default function Navbar() {
 							</div>
 						</nav>
 						{/* User & Wallet Actions - SOLID STYLING */}
-						<div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
+						<div className="flex items-center gap-2 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 flex-shrink-0 z-10">
 							{isConnected ? (
 								<div className="flex items-center gap-3">
 									{/* Connected State (Desktop) */}
-									<div className="hidden lg:flex items-center gap-3">
-										<div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-700 text-white rounded-lg border border-emerald-600 shadow-md">
-											<CheckCircle className="w-4 h-4" />
-											<span className="text-sm font-semibold">
+									<div className="hidden lg:flex items-center gap-2 xl:gap-3">
+										<div className="flex items-center gap-2 px-3 lg:px-4 xl:px-4 py-2 lg:py-2.5 xl:py-2.5 bg-emerald-700 text-white rounded-lg border border-emerald-600 shadow-md">
+											<CheckCircle className="w-3.5 h-3.5 lg:w-4 lg:h-4 flex-shrink-0" />
+											<span className="text-xs lg:text-sm font-semibold whitespace-nowrap">
 												{address?.slice(0, 6)}...{address?.slice(-4)}
 											</span>
 										</div>
@@ -224,8 +207,8 @@ export default function Navbar() {
 										<div className="relative">
 											<button
 												onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-												className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 text-gray-200 hover:bg-gray-700 rounded-lg border border-gray-700 transition-colors shadow-md">
-												<User className="w-4 h-4" />
+												className="flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 xl:px-4 py-2 lg:py-2.5 xl:py-2.5 bg-gray-800 text-gray-200 hover:bg-gray-700 rounded-lg border border-gray-700 transition-colors shadow-md">
+												<User className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
 												<ChevronDown className="w-3 h-3" />
 											</button>
 
@@ -292,14 +275,19 @@ export default function Navbar() {
 
 												if (!ready)
 													return (
-														<div className="w-24 h-9 bg-gray-800 rounded-lg animate-pulse" />
+														<div className="w-20 sm:w-24 md:w-28 h-8 sm:h-9 md:h-10 bg-gray-800 rounded-lg animate-pulse" />
 													);
 												if (connected) {
 													return (
 														<button
 															onClick={openAccountModal}
-															className="px-4 py-2 bg-emerald-700 text-emerald-100 rounded-lg text-sm font-semibold border border-emerald-600">
-															{account.displayName.slice(0, 8)}...
+															className="px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 bg-emerald-700 text-emerald-100 rounded-lg text-xs sm:text-sm md:text-sm font-semibold border border-emerald-600 whitespace-nowrap hover:bg-emerald-600 transition-colors">
+															<span className="hidden sm:inline">
+																{account.displayName.slice(0, 8)}...
+															</span>
+															<span className="sm:hidden">
+																{account.displayName.slice(0, 4)}...
+															</span>
 														</button>
 													);
 												}
@@ -317,17 +305,17 @@ export default function Navbar() {
 												mounted && authenticationStatus !== "loading";
 											if (!ready)
 												return (
-													<div className="w-24 h-10 bg-gray-800 rounded-lg animate-pulse" />
+													<div className="w-20 sm:w-24 h-8 sm:h-9 md:h-10 bg-gray-800 rounded-lg animate-pulse" />
 												);
 
 											return (
 												<button
 													onClick={openConnectModal}
-													className="px-6 py-3 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-md border border-blue-500">
-													<span className="hidden sm:inline">
+													className="px-3 sm:px-4 md:px-5 lg:px-5 xl:px-6 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 xl:py-3 bg-blue-600 text-white text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-md border border-blue-500 whitespace-nowrap">
+													<span className="hidden md:inline">
 														Connect Wallet
 													</span>
-													<span className="sm:hidden">Connect</span>
+													<span className="md:hidden">Connect</span>
 												</button>
 											);
 										}}
