@@ -332,7 +332,7 @@ PRIVATE_KEY=...
 ## Tech Stack Deep Dive
 
 *   **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4
-*   **Smart Contracts**: Solidity 0.8.24, Hardhat
+*   **Smart Contracts**: Solidity 0.8.20, Hardhat, Foundry
 *   **Web3**: Wagmi v3, Viem, RainbowKit
 *   **Network**: Mantle Sepolia Testnet
 
