@@ -27,7 +27,6 @@ contract StrataDeedRWA is
 {
 
     // Constants (Storage Slot-Safe)
-    // =========================================
 
     uint256 public constant SCALE = 1e18;
     uint256 public constant PROPERTY_TOKEN_SUPPLY = 1_000 * SCALE;

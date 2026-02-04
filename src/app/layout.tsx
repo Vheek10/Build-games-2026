@@ -1,21 +1,20 @@
 /** @format */
 
 import "./globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
 
 import { Montserrat } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Web3Provider } from "@/providers/web3-provider";
+import { SuietProvider } from "@/providers/suiet-provider";
 const montserrat = Montserrat({
 	subsets: ["latin"],
 	weight: ["400", "600", "700", "800"],
 });
 
 export const metadata = {
-	title: "StrataDeed — Tokenized Property Deeds on Mantle",
+	title: "StrataDeed — Tokenized Property Deeds on Sui",
 	description:
-		"Mint, list, and discover tokenized property deeds on the Mantle Network.",
+		"Mint, list, and discover tokenized property deeds on the Sui Network.",
 };
 
 /**
@@ -33,9 +32,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html
-			lang="en"
-			className="dark">
+		<html lang="en">
 			<head>
 				<link
 					rel="icon"
@@ -43,14 +40,14 @@ export default function RootLayout({
 					type="image/png"
 				/>
 			</head>
-			<body className={montserrat.className + " antialiased"}>
-				<Web3Provider>
-					<div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+			<body className={montserrat.className + " antialiased bg-white text-slate-900"}>
+				<SuietProvider>
+					<div className="min-h-screen flex flex-col bg-white text-slate-900">
 						<Navbar />
 						<main className="flex-1 w-full">{children}</main>
 						<Footer />
 					</div>
-				</Web3Provider>
+				</SuietProvider>
 			</body>
 		</html>
 	);

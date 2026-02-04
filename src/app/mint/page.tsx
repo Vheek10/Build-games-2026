@@ -22,8 +22,7 @@ import {
 	Globe,
 	Shield,
 } from "lucide-react";
-import { useAccount, useWaitForTransactionReceipt, useChainId } from "wagmi";
-import { keccak256, encodePacked } from "viem";
+import { keccak256 } from "@mysten/sui/utils";
 import { useTokenization } from "@/hooks/useTokenization";
 import { useStrataDeed } from "@/hooks/useStrataDeed";
 import { useRouter } from "next/navigation";
@@ -32,6 +31,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { saveProperty, getNextPropertyId } from "@/lib/propertyStorage";
 import { sampleProperties } from "@/lib/dummy-data";
 import type { Property } from "@/lib/dummy-data";
+import { useSuiWallet } from "@/providers/suiet-provider";
 
 // Error Boundary Component
 function withErrorBoundary(WrappedComponent: React.ComponentType) {
@@ -93,21 +93,18 @@ function withErrorBoundary(WrappedComponent: React.ComponentType) {
 
 // Main Form Component - Completely standalone
 function MintFormContent() {
-	const { address, isConnected } = useAccount();
+	const { address, connected } = useSuiWallet();
 	const {
 		tokenizeProperty,
 		loading: isMinting,
 		error: mintError,
 	} = useTokenization();
 	const { deployStrataDeed, isDeploying } = useStrataDeed();
-	const chainId = useChainId();
 	const router = useRouter();
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-	const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
-	const [rwaTxHash, setRwaTxHash] = useState<`0x${string}` | undefined>(
-		undefined,
-	);
+	const [txHash, setTxHash] = useState<string | undefined>(undefined);
+	const [rwaTxHash, setRwaTxHash] = useState<string | undefined>(undefined);
 	const [submitError, setSubmitError] = useState<string | null>(null);
 	const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 	const [currentStep, setCurrentStep] = useState<
@@ -115,15 +112,9 @@ function MintFormContent() {
 	>("idle");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const { data: receipt, isLoading: isWaitingReceipt } =
-		useWaitForTransactionReceipt({
-			hash: txHash,
-		});
-
-	const { data: rwaReceipt, isLoading: isWaitingRwaReceipt } =
-		useWaitForTransactionReceipt({
-			hash: rwaTxHash,
-		});
+	const isWaitingReceipt = false;
+	const rwaReceipt = undefined;
+	const isWaitingRwaReceipt = false;
 
 	// Completely standalone form data - no property card data
 	const [formData, setFormData] = useState({
@@ -137,16 +128,14 @@ function MintFormContent() {
 		tokenSupply: "1000",
 	});
 
-	// Real-time network validation
+	// Real-time network validation - for Sui we simply check wallet connection
 	useEffect(() => {
-		if (chainId && chainId !== 5003) {
-			setSubmitError(
-				"Please switch your network to Mantle Sepolia (5003) to mint property deeds.",
-			);
+		if (!connected) {
+			setSubmitError("Please connect your Sui wallet to mint property deeds.");
 		} else {
 			setSubmitError(null);
 		}
-	}, [chainId]);
+	}, [connected]);
 
 	// Enhanced file validation
 	const validateFile = (file: File): string | null => {
@@ -305,15 +294,7 @@ function MintFormContent() {
 			return;
 		}
 
-		// Network validation
-		if (chainId !== 5003) {
-			setSubmitError(
-				"Please switch your network to Mantle Sepolia (5003) to mint property deeds.",
-			);
-			return;
-		}
-
-		if (!isConnected || !address) {
+		if (!connected || !address) {
 			setSubmitError("Wallet not connected. Please connect your wallet.");
 			return;
 		}
@@ -323,9 +304,8 @@ function MintFormContent() {
 
 		console.log("=== MINT FORM DEBUG START ===");
 		console.log("Form data:", formData);
-		console.log("Connected:", isConnected);
+		console.log("Connected:", connected);
 		console.log("Address:", address);
-		console.log("Chain ID:", chainId);
 
 		try {
 			console.log("Generating metadata...");
@@ -369,16 +349,12 @@ function MintFormContent() {
 				valuation: formData.valuation,
 				files: selectedFiles.map((f) => ({
 					name: f.name,
-					hash: keccak256(
-						encodePacked(["string"], [f.name + f.size + f.lastModified]),
-					),
+					hash: keccak256(f.name + f.size + f.lastModified),
 				})),
 				salt: propertyId,
 				timestamp: Date.now(),
 			});
-			const privateCommitment = keccak256(
-				encodePacked(["string"], [privateDataString]),
-			);
+			const privateCommitment = keccak256(privateDataString);
 
 			console.log("Calling tokenizeProperty hook...");
 
@@ -388,7 +364,7 @@ function MintFormContent() {
 				metadataURI,
 				"0",
 				privateCommitment,
-				address as `0x${string}`,
+				address,
 			);
 
 			console.log("Tokenize result received:", result);
@@ -449,10 +425,7 @@ function MintFormContent() {
 	};
 
 	// Success View Component
-	const isFullySuccessful = formData.tokenizationEnabled
-		? receipt?.status === "success" &&
-		  (rwaReceipt?.status === "success" || rwaTxHash)
-		: receipt?.status === "success";
+	const isFullySuccessful = !!txHash;
 
 	// Save property to localStorage when minting is successful
 	useEffect(() => {
@@ -521,23 +494,21 @@ function MintFormContent() {
 							"{formData.title}"
 						</span>{" "}
 						has been securely{" "}
-						{formData.tokenizationEnabled ? "tokenized" : "minted"} on the
-						Mantle Network.
+						{formData.tokenizationEnabled ? "tokenized" : "minted"} on the Sui
+						Network.
 					</p>
 
 					<div className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 mb-8 border border-gray-100 dark:border-gray-800 text-left space-y-4">
 						<div className="flex justify-between items-center text-sm">
-							<span className="text-gray-500">Deed NFT Transaction</span>
+							<span className="text-gray-500">Deed Object Transaction</span>
 							<a
-								href={`https://explorer.sepolia.mantle.xyz/tx/${
-									receipt?.transactionHash || txHash
-								}`}
+								href={`https://suivision.xyz/txblock/${txHash}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1 hover:underline"
 								aria-label="View deed transaction on explorer">
-								{String(receipt?.transactionHash || txHash).slice(0, 8)}...
-								{String(receipt?.transactionHash || txHash).slice(-6)}
+								{String(txHash).slice(0, 8)}...
+								{String(txHash).slice(-6)}
 								<ExternalLink className="w-3.5 h-3.5" />
 							</a>
 						</div>
@@ -545,16 +516,13 @@ function MintFormContent() {
 							<div className="flex justify-between items-center text-sm">
 								<span className="text-gray-500">RWA Token Deployment</span>
 								<a
-									href={`https://explorer.sepolia.mantle.xyz/tx/${
-										rwaReceipt?.transactionHash || rwaTxHash
-									}`}
+									href={`https://suivision.xyz/txblock/${rwaTxHash}`}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1 hover:underline"
 									aria-label="View RWA deployment on explorer">
-									{String(rwaReceipt?.transactionHash || rwaTxHash).slice(0, 8)}
-									...
-									{String(rwaReceipt?.transactionHash || rwaTxHash).slice(-6)}
+									{String(rwaTxHash).slice(0, 8)}...
+									{String(rwaTxHash).slice(-6)}
 									<ExternalLink className="w-3.5 h-3.5" />
 								</a>
 							</div>
@@ -563,7 +531,7 @@ function MintFormContent() {
 							<span className="text-gray-500">Network</span>
 							<span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
 								<div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-								Mantle Sepolia
+								Sui Testnet
 							</span>
 						</div>
 					</div>
@@ -605,11 +573,7 @@ function MintFormContent() {
 	}
 
 	const isProcessing =
-		isSubmitting ||
-		isMinting ||
-		isWaitingReceipt ||
-		isDeploying ||
-		isWaitingRwaReceipt;
+		isSubmitting || isMinting || isWaitingReceipt || isDeploying || isWaitingRwaReceipt;
 
 	// Enhanced loading spinner with progress indicator
 	const LoadingSpinnerWithProgress = () => (
@@ -689,29 +653,27 @@ function MintFormContent() {
 					</p>
 				</div>
 
-				{/* Network Status Indicator */}
+				{/* Network / Wallet Status Indicator */}
 				<div className="mb-8">
 					<div
 						className={`flex items-center gap-3 p-4 rounded-2xl ${
-							chainId === 5003
+							connected
 								? "bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50"
 								: "bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50"
 						}`}>
 						<div
 							className={`w-3 h-3 rounded-full ${
-								chainId === 5003 ? "bg-emerald-500 animate-pulse" : "bg-red-500"
+								connected ? "bg-emerald-500 animate-pulse" : "bg-red-500"
 							}`}
 						/>
 						<div className="flex-1">
 							<div className="font-semibold text-gray-900 dark:text-white">
-								{chainId === 5003
-									? "Connected to Mantle Sepolia"
-									: "Wrong Network"}
+								{connected ? "Connected to Sui Testnet" : "Wallet Disconnected"}
 							</div>
 							<div className="text-sm text-gray-600 dark:text-gray-400">
-								{chainId === 5003
-									? "You can mint property deeds on this network."
-									: "Please switch to Mantle Sepolia (Chain ID: 5003) in your wallet."}
+								{connected
+									? "You can mint property deeds on Sui Testnet."
+									: "Please connect your Sui wallet to mint property deeds."}
 							</div>
 						</div>
 						<Globe className="w-5 h-5 text-gray-400" />
@@ -783,8 +745,8 @@ function MintFormContent() {
 									</h4>
 									<p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
 										{currentStep === "minting"
-											? "Minting your property deed NFT on Mantle Network..."
-											: "Deploying RWA token contract for fractional ownership..."}
+											? "Minting your property deed object on Sui..."
+											: "Deploying RWA token object for fractional ownership on Sui..."}
 									</p>
 									<div className="mt-3 flex items-center gap-3">
 										<div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
@@ -1305,9 +1267,9 @@ function MintFormContent() {
 							<div className="pt-6 mt-8 border-t border-gray-200 dark:border-gray-700">
 								<button
 									type="submit"
-									disabled={isProcessing || !isConnected || chainId !== 5003}
+									disabled={isProcessing || !connected}
 									className={`w-full px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center ${
-										isProcessing || !isConnected || chainId !== 5003
+										isProcessing || !connected
 											? "bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700 cursor-not-allowed opacity-80"
 											: "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-600 hover:shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
 									}`}
@@ -1319,7 +1281,7 @@ function MintFormContent() {
 									<MintButtonContent />
 								</button>
 
-								{!isConnected && (
+								{!connected && (
 									<p
 										className="text-center text-sm text-red-500 mt-3 font-medium"
 										role="alert">
@@ -1329,8 +1291,8 @@ function MintFormContent() {
 
 								<p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center px-4">
 									By minting, you agree to the StrataDeed Terms of Service. A
-									gas fee ($MNT) will be required to execute this transaction on
-									the Mantle Network.
+									gas fee (SUI) will be required to execute this transaction on
+									the Sui Network.
 								</p>
 							</div>
 						</div>

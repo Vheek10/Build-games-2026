@@ -4,32 +4,18 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
+import { useSuiWallet } from "@/providers/suiet-provider";
 
 import { Loader2 } from "lucide-react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import ConnectWalletButton from "@/components/ConnectWalletButton";
 
 interface AuthGuardProps {
 	children: React.ReactNode;
 }
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-	const { isConnected, isReconnecting, status } = useAccount();
+	const { connected: isConnected } = useSuiWallet();
 	const router = useRouter();
-
-	// If wallet is attempting to reconnect or connect, show loader
-	if (isReconnecting || status === "connecting") {
-		return (
-			<div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-				<div className="flex flex-col items-center gap-4">
-					<Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-					<p className="text-sm text-gray-500 font-medium">
-						Verifying wallet...
-					</p>
-				</div>
-			</div>
-		);
-	}
 
 	// If simple checks fail (not connected and not reconnecting), redirect
 	// If simple checks fail (not connected and not reconnecting), show connect prompt
@@ -66,9 +52,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 					</p>
 
 					<div className="flex justify-center pt-4">
-						{/* Using RainbowKit Connect Button here would be ideal, but we can't easily import ConnectButton if this is a server component? No, AuthGuard is "use client" */}
-						{/* We need to import ConnectButton at the top first if we want to use it. */}
-						<AuthGuardConnectButton />
+						<ConnectWalletButton />
 					</div>
 				</div>
 			</div>
@@ -79,19 +63,4 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 	return <>{children}</>;
 }
 
-function AuthGuardConnectButton() {
-	return (
-		<ConnectButton.Custom>
-			{({ openConnectModal, mounted }) => {
-				if (!mounted) return null;
-				return (
-					<button
-						onClick={openConnectModal}
-						className="px-6 py-3 bg-linear-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
-						Connect Wallet
-					</button>
-				);
-			}}
-		</ConnectButton.Custom>
-	);
-}
+// Using the Sui wallet kit connect button wrapper

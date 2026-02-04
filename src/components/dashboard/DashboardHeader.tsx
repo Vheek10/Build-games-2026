@@ -1,7 +1,7 @@
 /** @format */
 
 import { Bell, Wifi, Zap } from "lucide-react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import ConnectWalletButton from "@/components/ConnectWalletButton";
 
 interface DashboardHeaderProps {
 	title: string;
@@ -27,23 +27,27 @@ export default function DashboardHeader({
 			</div>
 
 			<div className="flex flex-col sm:flex-row items-end sm:items-center gap-3 w-full lg:w-auto">
-                <div className="flex items-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 text-amber-500" />
-                        <span>Gas: <span className="text-gray-700 dark:text-gray-200">0.001 Gwei</span></span>
-                    </div>
-                    <div className="w-px h-3 bg-gray-300 dark:bg-gray-600" />
-                    <div className="flex items-center gap-1.5">
-                        <Wifi className="w-3.5 h-3.5 text-emerald-500" />
-                        <span className="text-emerald-600 dark:text-emerald-400">Mainnet</span>
-                    </div>
-                </div>
+				<div className="flex items-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
+					<div className="flex items-center gap-1.5">
+						<Zap className="w-3.5 h-3.5 text-amber-500" />
+						<span>
+							Gas:{" "}
+							<span className="text-gray-700 dark:text-gray-200">
+								0.001 Gwei
+							</span>
+						</span>
+					</div>
+					<div className="w-px h-3 bg-gray-300 dark:bg-gray-600" />
+					<div className="flex items-center gap-1.5">
+						<Wifi className="w-3.5 h-3.5 text-emerald-500" />
+						<span className="text-emerald-600 dark:text-emerald-400">
+							Mainnet
+						</span>
+					</div>
+				</div>
 
 				<div className="flex items-center gap-3">
-                    <ConnectButton showBalance={false} chainStatus="icon" accountStatus={{
-                        smallScreen: 'avatar',
-                        largeScreen: 'full',
-                    }} />
+					<ConnectWalletButton />
 					<div className="relative">
 						<button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
 							<Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />

@@ -4,26 +4,26 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAccount, useDisconnect } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { cn } from "@/lib/utils";
 import MobileSidebar from "./MobileSidebar";
 import Image from "next/image";
-// Icons
+import { ConnectButton } from "@suiet/wallet-kit";
+import { useSuiWallet } from "@/providers/suiet-provider";
+// Icons (Hugeicons)
 import {
-	Menu,
-	X,
-	Home,
-	Info,
-	Building,
-	Briefcase,
-	User,
-	LogOut,
-	Settings,
-	CheckCircle,
-	ChevronDown,
-	PlusCircle,
-} from "lucide-react";
+	Menu01Icon as Menu,
+	XCloseIcon as X,
+	Home01Icon as Home,
+	InformationCircleIcon as Info,
+	Building01Icon as Building,
+	Briefcase01Icon as Briefcase,
+	User01Icon as User,
+	Logout01Icon as LogOut,
+	Settings01Icon as Settings,
+	VerifiedCheckIcon as CheckCircle,
+	ChevronDownIcon as ChevronDown,
+	AddCircleIcon as PlusCircle,
+} from "hugeicons-react";
 
 // Navigation configuration
 const navItems = [
@@ -52,8 +52,7 @@ export default function Navbar() {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
 	const pathname = usePathname();
-	const { address, isConnected } = useAccount();
-	const { disconnect } = useDisconnect();
+	const { address, connected, disconnect } = useSuiWallet();
 
 	// =========================================
 	// Effects
@@ -98,8 +97,8 @@ export default function Navbar() {
 			<header
 				className={cn(
 					"sticky top-0 z-50 w-full transition-all duration-300",
-					isScrolled ? "bg-gray-900 shadow-lg" : "bg-gray-900",
-					"border-b border-gray-700",
+					isScrolled ? "bg-white/95 shadow-md backdrop-blur-sm" : "bg-white",
+					"border-b border-gray-200",
 					"px-3 sm:px-4 md:px-6 lg:px-8",
 				)}>
 				<div className="relative mx-auto w-full max-w-screen-2xl">
@@ -164,16 +163,16 @@ export default function Navbar() {
 												className={cn(
 													"flex items-center gap-1.5 lg:gap-2 text-xs lg:text-sm font-medium transition-all duration-300 relative group/nav",
 													active
-														? "text-blue-600 dark:text-blue-400"
-														: "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400",
+														? "text-blue-600"
+														: "text-gray-600 hover:text-blue-600",
 												)}
 												aria-current={active ? "page" : undefined}>
 												<Icon
 													className={cn(
 														"w-3.5 h-3.5 lg:w-4 lg:h-4 transition-all duration-300",
 														active
-															? "text-blue-600 dark:text-blue-400"
-															: "text-gray-500 dark:text-gray-400 group-hover/nav:text-blue-600 dark:group-hover/nav:text-blue-400",
+															? "text-blue-600"
+															: "text-gray-500 group-hover/nav:text-blue-600",
 													)}
 												/>
 												<span className="relative">
@@ -193,7 +192,7 @@ export default function Navbar() {
 						</nav>
 						{/* User & Wallet Actions - SOLID STYLING */}
 						<div className="flex items-center gap-2 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 flex-shrink-0 z-10">
-							{isConnected ? (
+							{connected ? (
 								<div className="flex items-center gap-3">
 									{/* Connected State (Desktop) */}
 									<div className="hidden lg:flex items-center gap-2 xl:gap-3">
@@ -260,66 +259,15 @@ export default function Navbar() {
 										</div>
 									</div>
 
-									{/* Mobile: RainbowKit Button */}
+									{/* Mobile: Wallet Connect Button */}
 									<div className="lg:hidden">
-										<ConnectButton.Custom>
-											{({
-												account,
-												openAccountModal,
-												authenticationStatus,
-												mounted,
-											}) => {
-												const ready =
-													mounted && authenticationStatus !== "loading";
-												const connected = ready && account;
-
-												if (!ready)
-													return (
-														<div className="w-20 sm:w-24 md:w-28 h-8 sm:h-9 md:h-10 bg-gray-800 rounded-lg animate-pulse" />
-													);
-												if (connected) {
-													return (
-														<button
-															onClick={openAccountModal}
-															className="px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 bg-emerald-700 text-emerald-100 rounded-lg text-xs sm:text-sm md:text-sm font-semibold border border-emerald-600 whitespace-nowrap hover:bg-emerald-600 transition-colors">
-															<span className="hidden sm:inline">
-																{account.displayName.slice(0, 8)}...
-															</span>
-															<span className="sm:hidden">
-																{account.displayName.slice(0, 4)}...
-															</span>
-														</button>
-													);
-												}
-												return null;
-											}}
-										</ConnectButton.Custom>
+										<ConnectButton />
 									</div>
 								</div>
 							) : (
 								<>
 									{/* Desktop & Mobile: Connect Button */}
-									<ConnectButton.Custom>
-										{({ openConnectModal, authenticationStatus, mounted }) => {
-											const ready =
-												mounted && authenticationStatus !== "loading";
-											if (!ready)
-												return (
-													<div className="w-20 sm:w-24 h-8 sm:h-9 md:h-10 bg-gray-800 rounded-lg animate-pulse" />
-												);
-
-											return (
-												<button
-													onClick={openConnectModal}
-													className="px-3 sm:px-4 md:px-5 lg:px-5 xl:px-6 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 xl:py-3 bg-blue-600 text-white text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-md border border-blue-500 whitespace-nowrap">
-													<span className="hidden md:inline">
-														Connect Wallet
-													</span>
-													<span className="md:hidden">Connect</span>
-												</button>
-											);
-										}}
-									</ConnectButton.Custom>
+									<ConnectButton />
 								</>
 							)}
 						</div>
@@ -332,7 +280,7 @@ export default function Navbar() {
 				onClose={() => setIsMobileMenuOpen(false)}
 				navItems={navItems}
 				isActive={isActive}
-				isConnected={isConnected}
+				isConnected={connected}
 				address={address}
 			/>
 		</>

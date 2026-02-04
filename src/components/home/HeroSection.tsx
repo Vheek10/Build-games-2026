@@ -2,42 +2,30 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, Globe, Shield, Building, Lock } from "lucide-react";
 import Image from "next/image";
+import {
+	ArrowRight01Icon as ArrowRight,
+	SparklesIcon as Sparkles,
+	Globe01Icon as Globe,
+	Shield01Icon as Shield,
+	Building01Icon as Building,
+	Lock01Icon as Lock,
+} from "hugeicons-react";
+import { Property3DViewer } from "@/components/Property3DViewer";
 
 export default function HeroSection() {
 	return (
-		<section className="relative min-h-screen flex items-center overflow-hidden bg-gray-900">
-			{/* Background Image with improved visibility */}
-			<div className="absolute inset-0 z-0">
-				{/* Enhanced Image Container */}
-				<div className="relative w-full h-full">
-					<Image
-						src="/hero.avif"
-						alt="Modern architectural building with clean lines"
-						fill
-						priority
-						className="object-cover object-center"
-						sizes="100vw"
-						quality={100}
-						style={{
-							objectPosition: "center 40%",
-							filter: "brightness(0.85) contrast(1.1)",
-						}}
-					/>
+		<section className="relative min-h-screen flex items-center overflow-hidden bg-gray-950">
+			{/* Fullscreen 3D background */}
+			<div className="absolute inset-0 pointer-events-none">
+				<div className="absolute inset-0 opacity-80">
+					<Property3DViewer className="w-full h-full" />
 				</div>
 
-				{/* Lighter gradient overlays to show more of the image */}
-				<div className="absolute inset-0 bg-gradient-to-br from-gray-900/70 via-gray-900/60 to-gray-900/50" />
-				<div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/50 to-transparent" />
-				<div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-blue-900/10 to-cyan-900/10" />
-
-				{/* Subtle vignette - reduced opacity */}
-				<div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.5) 100%)" />
-
-				{/* Additional lighting effects */}
-				<div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent" />
-				<div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gray-900/30 via-transparent to-transparent" />
+				{/* Atmospheric overlays */}
+				<div className="absolute inset-0 bg-radial-gradient(circle at top, rgba(56,189,248,0.18), transparent 55%)" />
+				<div className="absolute inset-0 bg-linear-to-br from-slate-950/85 via-slate-950/70 to-slate-950/40" />
+				<div className="absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
 			</div>
 
 			{/* Subtle pattern overlay - very transparent */}
@@ -47,8 +35,8 @@ export default function HeroSection() {
 
 			<div className="relative z-20 w-full">
 				<div className="w-full px-4 sm:px-6 lg:px-8">
-					<div className="max-w-6xl mx-auto">
-						<div className="text-center">
+					<div className="max-w-6xl mx-auto grid lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
+						<div className="text-center lg:text-left">
 							{/* Semi-transparent badge - Mobile responsive */}
 							<div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 lg:px-5 lg:py-2.5 bg-gray-800/40 backdrop-blur-md rounded-full mb-6 sm:mb-8 lg:mb-10 border border-gray-700/30">
 								<Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 animate-pulse" />
@@ -132,7 +120,7 @@ export default function HeroSection() {
 							</div>
 
 							{/* CTA Buttons - Stack on mobile */}
-							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-12 sm:mb-14 lg:mb-16 px-4 w-full max-w-md sm:max-w-none mx-auto">
+							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-12 sm:mb-14 lg:mb-16 px-4 w-full max-w-md sm:max-w-none mx-auto lg:mx-0">
 								{/* Primary Button */}
 								<Link
 									href="/dashboard"
@@ -173,7 +161,7 @@ export default function HeroSection() {
 							</div>
 
 							{/* Trust indicators - Responsive grid */}
-							<div className="max-w-2xl mx-auto px-4">
+							<div className="max-w-2xl mx-auto lg:mx-0 px-4">
 								<div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4 md:gap-6">
 									{[
 										{ value: "100%", label: "Compliance" },
@@ -198,6 +186,85 @@ export default function HeroSection() {
 											<div className="h-1 w-6 mx-auto mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full group-hover:w-8 sm:group-hover:w-10 transition-all duration-300" />
 										</div>
 									))}
+								</div>
+							</div>
+						</div>
+						</div>
+
+						{/* Right column: floating card over 3D */}
+						<div className="hidden lg:block">
+							<div className="relative">
+								<div className="absolute -inset-1 bg-linear-to-tr from-blue-500/30 via-cyan-400/20 to-emerald-400/10 blur-2xl opacity-70" />
+								<div className="relative rounded-3xl border border-white/10 bg-slate-900/70 backdrop-blur-xl shadow-2xl shadow-cyan-500/20 p-6 space-y-5">
+									<div className="flex items-center justify-between gap-3">
+										<div>
+											<p className="text-xs font-semibold text-cyan-300 uppercase tracking-[0.2em]">
+												LIVE ON SUI
+											</p>
+											<p className="mt-1 text-sm text-slate-300">
+												ZK-powered property tokenization with real-time settlement.
+											</p>
+										</div>
+										<div className="flex items-center gap-2 rounded-full bg-slate-800/80 px-3 py-1 border border-slate-700">
+											<div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+											<span className="text-xs font-medium text-slate-100">
+												<Lock className="inline-block w-3 h-3 mr-1 align-[-2px]" />
+												ZK Privacy
+											</span>
+										</div>
+									</div>
+
+									<div className="grid grid-cols-3 gap-4 text-center text-xs">
+										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
+											<p className="text-[11px] text-slate-400 mb-1">
+												Avg. Finality
+											</p>
+											<p className="text-lg font-semibold text-slate-50">
+												&lt;2s
+											</p>
+										</div>
+										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
+											<p className="text-[11px] text-slate-400 mb-1">
+												Properties Modeled
+											</p>
+											<p className="text-lg font-semibold text-slate-50">
+												25K+
+											</p>
+										</div>
+										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
+											<p className="text-[11px] text-slate-400 mb-1">
+												Global Investors
+											</p>
+											<p className="text-lg font-semibold text-slate-50">
+												120+
+											</p>
+										</div>
+									</div>
+
+									<div className="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+										<div className="flex items-center gap-2">
+											<div className="flex -space-x-2">
+												{[1, 2, 3].map((i) => (
+													<div
+														key={i}
+														className="w-6 h-6 rounded-full border border-slate-900 bg-slate-700/80"
+													>
+														<Image
+															src="/logo.png"
+															alt=""
+															width={24}
+															height={24}
+															className="w-full h-full object-contain"
+														/>
+													</div>
+												))}
+											</div>
+											<span>Trusted by leading RealFi teams</span>
+										</div>
+										<span className="text-slate-500">
+											Backed by on-chain compliance rails
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>

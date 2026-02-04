@@ -22,7 +22,7 @@ import {
 	PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAccount, useDisconnect } from "wagmi";
+import { useSuiWallet } from "@/providers/suiet-provider";
 
 // Updated icon mapping for navigation items with more varied icons
 const navIcons = {
@@ -59,7 +59,7 @@ export default function MobileSidebar({
 	isConnected,
 	address,
 }: MobileSidebarProps) {
-	const { disconnect } = useDisconnect();
+	const { disconnect } = useSuiWallet();
 
 	if (!isOpen) return null;
 

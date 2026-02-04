@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 
 export default function Footer() {
 	return (
-		<footer className="bg-gray-900 border-t border-gray-800">
+		<footer className="bg-white border-t border-gray-200">
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				<div className="flex flex-col lg:flex-row justify-between items-center gap-8">
 					{/* Brand Section */}
@@ -38,8 +38,8 @@ export default function Footer() {
 							/>
 						</div>
 						<div>
-							<h2 className="text-xl font-bold text-white">StrataDeed</h2>
-							<p className="text-xs text-blue-300/90 font-medium uppercase tracking-[0.15em] mt-0.5">
+							<h2 className="text-xl font-bold text-gray-900">StrataDeed</h2>
+							<p className="text-xs text-blue-600/80 font-medium uppercase tracking-[0.15em] mt-0.5">
 								Property Tokenization
 							</p>
 						</div>
@@ -49,27 +49,27 @@ export default function Footer() {
 					<div className="flex flex-wrap justify-center gap-6 text-sm">
 						<Link
 							href="/about"
-							className="text-gray-400 hover:text-white transition-colors">
+							className="text-gray-500 hover:text-gray-900 transition-colors">
 							About
 						</Link>
 						<Link
 							href="/marketplace"
-							className="text-gray-400 hover:text-white transition-colors">
+							className="text-gray-500 hover:text-gray-900 transition-colors">
 							Marketplace
 						</Link>
 						<Link
 							href="/mint"
-							className="text-gray-400 hover:text-white transition-colors">
+							className="text-gray-500 hover:text-gray-900 transition-colors">
 							Mint
 						</Link>
 						<Link
 							href="/dashboard"
-							className="text-gray-400 hover:text-white transition-colors">
+							className="text-gray-500 hover:text-gray-900 transition-colors">
 							Dashboard
 						</Link>
 						<Link
 							href="/contact"
-							className="text-gray-400 hover:text-white transition-colors">
+							className="text-gray-500 hover:text-gray-900 transition-colors">
 							Contact
 						</Link>
 					</div>
@@ -95,7 +95,7 @@ export default function Footer() {
 				</div>
 
 				{/* Copyright */}
-				<div className="text-center mt-8 pt-6 border-t border-gray-800">
+					<div className="text-center mt-8 pt-6 border-t border-gray-200">
 					<p className="text-gray-500 text-sm">
 						© {new Date().getFullYear()} StrataDeed. Revolutionizing real estate
 						investment.

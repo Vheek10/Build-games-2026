@@ -18,10 +18,10 @@ import {
 	Sparkles,
 } from "lucide-react";
 import AuthGuard from "@/components/AuthGuard";
-import { useAccount } from "wagmi";
+import { useSuiWallet } from "@/providers/suiet-provider";
 
 export default function VaultPage() {
-	const { address, isConnected } = useAccount();
+	const { address, connected: isConnected } = useSuiWallet();
 	const [showPrivateKey, setShowPrivateKey] = useState(false);
 	const [copied, setCopied] = useState(false);
 
@@ -110,8 +110,7 @@ export default function VaultPage() {
 									<button
 										onClick={() => handleCopy(address)}
 										className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
-										aria-label="Copy address"
-									>
+										aria-label="Copy address">
 										{copied ? (
 											<Check className="w-4 h-4 text-green-500" />
 										) : (
@@ -148,16 +147,15 @@ export default function VaultPage() {
 						</div>
 
 						<p className="text-sm text-gray-600 dark:text-gray-400">
-							Your compliance credentials are stored as cryptographic commitments.
-							Prove eligibility without revealing personal data.
+							Your compliance credentials are stored as cryptographic
+							commitments. Prove eligibility without revealing personal data.
 						</p>
 
 						<div className="space-y-3">
 							{mockCredentials.map((credential) => (
 								<div
 									key={credential.id}
-									className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 rounded-xl border border-purple-100 dark:border-purple-800/30"
-								>
+									className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 rounded-xl border border-purple-100 dark:border-purple-800/30">
 									<div className="flex items-start justify-between mb-2">
 										<div className="flex-1">
 											<div className="font-semibold text-gray-900 dark:text-white mb-1">
@@ -230,12 +228,8 @@ export default function VaultPage() {
 							<ul className="text-xs text-amber-700 dark:text-amber-400 space-y-1">
 								<li>• Never share your private keys or seed phrase</li>
 								<li>• Use a hardware wallet for maximum security</li>
-								<li>
-									• Verify all transaction details before signing
-								</li>
-								<li>
-									• Keep your credentials backed up in a secure location
-								</li>
+								<li>• Verify all transaction details before signing</li>
+								<li>• Keep your credentials backed up in a secure location</li>
 							</ul>
 						</div>
 					</div>

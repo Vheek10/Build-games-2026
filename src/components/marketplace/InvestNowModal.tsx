@@ -21,13 +21,7 @@ import {
 	Home,
 	Coins,
 } from "lucide-react";
-import {
-	useAccount,
-	useWriteContract,
-	useWaitForTransactionReceipt,
-	useReadContract,
-} from "wagmi";
-import { parseEther, formatEther } from "viem";
+import { useSuiWallet } from "@/providers/suiet-provider";
 import { motion, AnimatePresence } from "framer-motion";
 import MarketplacePage from "@/app/marketplace/page";
 import Dashboard from "@/app/dashboard/page";
@@ -114,7 +108,7 @@ export default function InvestNowModal({
 	property,
 	imageUrl,
 }: InvestNowModalProps) {
-	const { address, isConnected, chainId } = useAccount();
+	const { address, connected: isConnected } = useSuiWallet();
 	const [investmentAmount, setInvestmentAmount] = useState<string>("");
 	const [selectedTokens, setSelectedTokens] = useState<number>(0);
 	const [step, setStep] = useState<"select" | "confirm" | "success">("select");
@@ -130,16 +124,22 @@ export default function InvestNowModal({
 	const availableTokensNum = 750; // Mock available tokens (75%)
 
 	// Contract interaction for investing (mock for now)
+	// Contract interaction stubs for Sui-only mode (mocked)
 	const {
 		data: hash,
 		writeContract,
 		isPending,
 		error: contractError,
-	} = useWriteContract();
-	const { isLoading: isConfirming, isSuccess: isConfirmed } =
-		useWaitForTransactionReceipt({
-			hash,
-		});
+	} = {
+		data: undefined,
+		writeContract: async () => ({}),
+		isPending: false,
+		error: null,
+	} as const;
+	const { isLoading: isConfirming, isSuccess: isConfirmed } = {
+		isLoading: false,
+		isSuccess: false,
+	} as const;
 
 	// Calculate investment values
 	const calculateTokens = (amount: number) =>
@@ -312,8 +312,8 @@ export default function InvestNowModal({
 		}).format(amount);
 	};
 
-	// Network validation
-	const isCorrectNetwork = chainId === 5003; // Mantle Sepolia
+	// Network validation - for Sui mode assume OK when connected
+	const isCorrectNetwork = !!isConnected;
 
 	return (
 		<AnimatePresence>
@@ -796,8 +796,8 @@ export default function InvestNowModal({
 											{isMockMode
 												? "Demo mode - No real transaction will occur"
 												: isPending
-												? "Waiting for wallet confirmation..."
-												: "Confirm the transaction in your wallet"}
+													? "Waiting for wallet confirmation..."
+													: "Confirm the transaction in your wallet"}
 										</p>
 									</div>
 								)}
