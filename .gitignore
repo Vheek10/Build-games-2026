@@ -41,22 +41,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# foundry
-broadcast/
-cache_forge/
-cache/
+# Move/Sui development
+/build/
+/dependencies/
+.move/
 
-# Foundry / Forge artifacts and deps
-# build outputs and compiled artifacts
-artifacts/
-out/
-
-# local forge/cache
-cache/
-cache_forge/
+# Sui transaction output
+*.txn
 
 # broadcast run output
-broadcast/**/run-*.json
+broadcast/
 
 # optional local libraries vendored for tests
 lib/forge-std/

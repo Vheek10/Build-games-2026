@@ -4,13 +4,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --webpack",
-		"build": "hardhat compile && next build --webpack",
+		"build": "next build --webpack",
 		"start": "next start",
-		"lint": "next lint",
-		"deploy:mantle": "hardhat run scripts/deploy.js --network mantleSepolia",
-		"test:contracts": "hardhat test",
-		"compile": "hardhat compile",
-		"test": "hardhat test"
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@mysten/sui": "^1.20.0",
@@ -45,7 +41,8 @@
 		"tailwindcss": "^4",
 		"ts-node": "^10.9.1",
 		"tslib": "^2.6.0",
-		"typescript": "^5"
+		"typescript": "^5",
+		"@mysten/sui.js": "^1.0.0"
 	},
 	"type": "module"
 }

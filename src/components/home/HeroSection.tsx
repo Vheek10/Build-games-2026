@@ -189,7 +189,6 @@ export default function HeroSection() {
 								</div>
 							</div>
 						</div>
-						</div>
 
 						{/* Right column: floating card over 3D */}
 						<div className="hidden lg:block">
@@ -202,7 +201,8 @@ export default function HeroSection() {
 												LIVE ON SUI
 											</p>
 											<p className="mt-1 text-sm text-slate-300">
-												ZK-powered property tokenization with real-time settlement.
+												ZK-powered property tokenization with real-time
+												settlement.
 											</p>
 										</div>
 										<div className="flex items-center gap-2 rounded-full bg-slate-800/80 px-3 py-1 border border-slate-700">
@@ -247,8 +247,7 @@ export default function HeroSection() {
 												{[1, 2, 3].map((i) => (
 													<div
 														key={i}
-														className="w-6 h-6 rounded-full border border-slate-900 bg-slate-700/80"
-													>
+														className="w-6 h-6 rounded-full border border-slate-900 bg-slate-700/80">
 														<Image
 															src="/logo.png"
 															alt=""

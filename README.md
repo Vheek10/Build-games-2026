@@ -1,23 +1,25 @@
+<!-- @format -->
+
 # StrataDeed
 
-> **Privacy-Preserving RealFi Platform on Mantle Network**  
-> *Bringing $300T Real Estate Onchain with Zero-Knowledge Compliance*
+> **Privacy-Preserving RealFi Platform on Sui Network**  
+> _Bringing $300T Real Estate Onchain with Zero-Knowledge Compliance_
 
-[![Built on Mantle](https://img.shields.io/badge/Built%20on-Mantle_Network-FF9D0A)](https://www.mantle.xyz/)
+[![Built on Sui](https://img.shields.io/badge/Built%20on-Sui-0099FF)](https://sui.io/)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
-[![Hardhat](https://img.shields.io/badge/Smart_Contracts-Hardhat-yellow)](https://hardhat.org/)
-[![Foundry](https://img.shields.io/badge/Smart_Contracts-Foundry-orange)](https://getfoundry.sh/)
+[![Move](https://img.shields.io/badge/Smart_Contracts-Move-4099FF)](https://github.com/MystenLabs/sui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Hackathon](https://img.shields.io/badge/Mantle_Hackathon-2025-blueviolet)](https://mantle.xyz/ecosystem/hackathon)
 
 ## Demo Video & Live App
+
 **Video Demo**: [Watch 3-Minute Walkthrough]()  
 **Live Demo**: [Try StrataDeed](https://strata-deed.vercel.app)  
-**Smart Contracts**: [Mantle Sepolia Explorer](https://explorer.sepolia.mantle.xyz/address/0x1983D02fDbD7fDBae10031598C363C55B3826C72)
+**Smart Contracts**: [Sui Mainnet](https://suiscan.xyz/)
 
 ---
 
 ## Table of Contents
+
 - [The Vision](#the-vision)
 - [Architecture](#architecture)
 - [ZK-KYC Innovation](#zk-kyc-innovation)
@@ -39,15 +41,17 @@
 **StrataDeed transforms illiquid real estate into liquid, accessible digital assets while preserving privacy and compliance.** We're building the first RealFi platform that balances institutional requirements with DeFi accessibility.
 
 ### The Problem We Solve
-| Problem | Traditional Solution | **StrataDeed's Solution** |
-|---------|---------------------|--------------------------|
-| **High Entry Barrier** | $50k+ minimum investments | **Fractional ownership from $100** |
-| **Illiquidity** | 30-60 day settlements | **24/7 trading on Mantle L2** |
-| **Privacy vs Compliance** | Choose one or the other | **ZK-KYC: Compliant yet private** |
-| **Paperwork & Middlemen** | Lawyers, brokers, banks | **Smart contracts automate everything** |
-| **Geographic Barriers** | Local investors only | **Global access via blockchain** |
+
+| Problem                   | Traditional Solution      | **StrataDeed's Solution**               |
+| ------------------------- | ------------------------- | --------------------------------------- |
+| **High Entry Barrier**    | $50k+ minimum investments | **Fractional ownership from $100**      |
+| **Illiquidity**           | 30-60 day settlements     | **24/7 trading on Mantle L2**           |
+| **Privacy vs Compliance** | Choose one or the other   | **ZK-KYC: Compliant yet private**       |
+| **Paperwork & Middlemen** | Lawyers, brokers, banks   | **Smart contracts automate everything** |
+| **Geographic Barriers**   | Local investors only      | **Global access via blockchain**        |
 
 ### Our Core Innovation
+
 1. **ERC-20 Tokenization** with built-in compliance hooks
 2. **ZK-ready KYC verification** (future: full ZK proofs)
 3. **Escrow vaults** for secure fund management
@@ -55,9 +59,6 @@
 5. **Professional dashboard** for institutional-grade management
 
 ---
-
-
-
 
 1. **Real-World Impact**: Targets $300T real estate market vs niche crypto use cases
 2. **Technical Depth**: Full stack - contracts + frontend + ZK roadmap
@@ -75,6 +76,7 @@
 ## Architecture
 
 ### System Overview
+
 ```mermaid
 graph TB
     subgraph "User Layer"
@@ -82,14 +84,14 @@ graph TB
         WC[RainbowKit Wallet Connect]
         DASH[Dashboard Analytics]
     end
-    
+
     subgraph "Application Layer"
         API[Next.js API Routes]
         AUTH[Authentication]
         KYC[ZK-KYC Service]
         ORACLE[Price Feeds]
     end
-    
+
     subgraph "Smart Contract Layer"
         subgraph "Mantle Sepolia"
             SC[StrataDeedRWA.sol]
@@ -97,19 +99,19 @@ graph TB
             TOKEN[ERC-20 Tokens]
         end
     end
-    
+
     subgraph "Compliance Layer"
         ZK[Zero-Keepass Proofs]
         VERIFY[Proof Verification]
         WHITELIST[KYC Whitelist]
     end
-    
+
     subgraph "Infrastructure"
         MANTLE[Mantle Network]
         IPFS[IPFS Storage]
         THEGRAPH[The Graph]
     end
-    
+
     UI --> API
     API --> SC
     SC --> MANTLE
@@ -124,9 +126,9 @@ graph TB
 
 StrataDeed implements a privacy-first approach to compliance.
 
-*   **Credential Hashing**: User credentials are hashed off-chain.
-*   **Zero-Knowledge Proofs**: Only the proof of compliance is submitted on-chain.
-*   **Selective Disclosure**: Users can prove they are eligible investors without revealing their exact identity or location.
+- **Credential Hashing**: User credentials are hashed off-chain.
+- **Zero-Knowledge Proofs**: Only the proof of compliance is submitted on-chain.
+- **Selective Disclosure**: Users can prove they are eligible investors without revealing their exact identity or location.
 
 ## Quick Start (30s)
 
@@ -140,9 +142,9 @@ StrataDeed implements a privacy-first approach to compliance.
 
 ### Prerequisites
 
-*   Node.js v20+
-*   MetaMask (configured for Mantle Sepolia)
-*   pnpm (recommended) or npm
+- Node.js v20+
+- MetaMask (configured for Mantle Sepolia)
+- pnpm (recommended) or npm
 
 ### Environment Variables
 
@@ -155,17 +157,18 @@ PRIVATE_KEY=...
 
 ## Tech Stack Deep Dive
 
-*   **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4
-*   **Smart Contracts**: Solidity 0.8.24, Hardhat, Foundry
-*   **Web3**: Wagmi v3, Viem, RainbowKit
-*   **Network**: Mantle Sepolia Testnet
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4
+- **Smart Contracts**: Move, Sui Framework
+- **Web3**: Sui.js, Suiet Wallet Kit
+- **Network**: Sui Mainnet / Testnet
 
-## Mantle Integration
+## Sui Integration
 
-We utilize Mantle's unique features:
+We leverage Sui's unique advantages:
 
-*   **Low Gas Fees**: Enabling micro-investments in real estate.
-*   **Fast Finality**: Instant settlement for secondary market trades.
+- **High Performance**: Throughput and low latency for real-time trading.
+- **Move Language**: Type-safe, secure smart contracts with built-in asset capabilities.
+- **Scalability**: Horizontal scaling with parallel execution.
 
 ## Contributing
 
@@ -179,23 +182,24 @@ We utilize Mantle's unique features:
 
 MIT License.
 
-> **Privacy-Preserving RealFi Platform on Mantle Network**  
-> *Bringing $300T Real Estate Onchain with Zero-Knowledge Compliance*
+> **Privacy-Preserving RealFi Platform on Sui Network**  
+> _Bringing $300T Real Estate Onchain with Zero-Knowledge Compliance_
 
-[![Built on Mantle](https://img.shields.io/badge/Built%20on-Mantle_Network-FF9D0A)](https://www.mantle.xyz/)
+[![Built on Sui](https://img.shields.io/badge/Built%20on-Sui-0099FF)](https://sui.io/)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
-[![Hardhat](https://img.shields.io/badge/Smart_Contracts-Hardhat-yellow)](https://hardhat.org/)
+[![Move](https://img.shields.io/badge/Smart_Contracts-Move-4099FF)](https://github.com/MystenLabs/sui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Hackathon](https://img.shields.io/badge/Mantle_Hackathon-2025-blueviolet)](https://mantle.xyz/ecosystem/hackathon)
 
 ## Demo Video & Live App
+
 **Video Demo**: [Watch 3-Minute Walkthrough]()  
 **Live Demo**: [Try StrataDeed](https://strata-deed.vercel.app)  
-**Smart Contracts**: [Mantle Sepolia Explorer](https://explorer.sepolia.mantle.xyz/address/0x1983D02fDbD7fDBae10031598C363C55B3826C72)
+**Smart Contracts**: [Sui Mainnet](https://suiscan.xyz/)
 
 ---
 
 ## Table of Contents
+
 - [The Vision](#the-vision)
 - [Architecture](#architecture)
 - [ZK-KYC Innovation](#zk-kyc-innovation)
@@ -217,15 +221,17 @@ MIT License.
 **StrataDeed transforms illiquid real estate into liquid, accessible digital assets while preserving privacy and compliance.** We're building the first RealFi platform that balances institutional requirements with DeFi accessibility.
 
 ### The Problem We Solve
-| Problem | Traditional Solution | **StrataDeed's Solution** |
-|---------|---------------------|--------------------------|
-| **High Entry Barrier** | $50k+ minimum investments | **Fractional ownership from $100** |
-| **Illiquidity** | 30-60 day settlements | **24/7 trading on Mantle L2** |
-| **Privacy vs Compliance** | Choose one or the other | **ZK-KYC: Compliant yet private** |
-| **Paperwork & Middlemen** | Lawyers, brokers, banks | **Smart contracts automate everything** |
-| **Geographic Barriers** | Local investors only | **Global access via blockchain** |
+
+| Problem                   | Traditional Solution      | **StrataDeed's Solution**               |
+| ------------------------- | ------------------------- | --------------------------------------- |
+| **High Entry Barrier**    | $50k+ minimum investments | **Fractional ownership from $100**      |
+| **Illiquidity**           | 30-60 day settlements     | **24/7 trading on Mantle L2**           |
+| **Privacy vs Compliance** | Choose one or the other   | **ZK-KYC: Compliant yet private**       |
+| **Paperwork & Middlemen** | Lawyers, brokers, banks   | **Smart contracts automate everything** |
+| **Geographic Barriers**   | Local investors only      | **Global access via blockchain**        |
 
 ### Our Core Innovation
+
 1. **ERC-20 Tokenization** with built-in compliance hooks
 2. **ZK-ready KYC verification** (future: full ZK proofs)
 3. **Escrow vaults** for secure fund management
@@ -233,9 +239,6 @@ MIT License.
 5. **Professional dashboard** for institutional-grade management
 
 ---
-
-
-
 
 1. **Real-World Impact**: Targets $300T real estate market vs niche crypto use cases
 2. **Technical Depth**: Full stack - contracts + frontend + ZK roadmap
@@ -253,6 +256,7 @@ MIT License.
 ## Architecture
 
 ### System Overview
+
 ```mermaid
 graph TB
     subgraph "User Layer"
@@ -260,14 +264,14 @@ graph TB
         WC[RainbowKit Wallet Connect]
         DASH[Dashboard Analytics]
     end
-    
+
     subgraph "Application Layer"
         API[Next.js API Routes]
         AUTH[Authentication]
         KYC[ZK-KYC Service]
         ORACLE[Price Feeds]
     end
-    
+
     subgraph "Smart Contract Layer"
         subgraph "Mantle Sepolia"
             SC[StrataDeedRWA.sol]
@@ -275,19 +279,19 @@ graph TB
             TOKEN[ERC-20 Tokens]
         end
     end
-    
+
     subgraph "Compliance Layer"
         ZK[Zero-Keepass Proofs]
         VERIFY[Proof Verification]
         WHITELIST[KYC Whitelist]
     end
-    
+
     subgraph "Infrastructure"
         MANTLE[Mantle Network]
         IPFS[IPFS Storage]
         THEGRAPH[The Graph]
     end
-    
+
     UI --> API
     API --> SC
     SC --> MANTLE
@@ -302,9 +306,9 @@ graph TB
 
 StrataDeed implements a privacy-first approach to compliance.
 
-*   **Credential Hashing**: User credentials are hashed off-chain.
-*   **Zero-Knowledge Proofs**: Only the proof of compliance is submitted on-chain.
-*   **Selective Disclosure**: Users can prove they are eligible investors without revealing their exact identity or location.
+- **Credential Hashing**: User credentials are hashed off-chain.
+- **Zero-Knowledge Proofs**: Only the proof of compliance is submitted on-chain.
+- **Selective Disclosure**: Users can prove they are eligible investors without revealing their exact identity or location.
 
 ## Quick Start (30s)
 
@@ -317,8 +321,8 @@ StrataDeed implements a privacy-first approach to compliance.
 
 ### Prerequisites
 
-*   Node.js v20+
-*   MetaMask (configured for Mantle Sepolia)
+- Node.js v20+
+- MetaMask (configured for Mantle Sepolia)
 
 ### Environment Variables
 
@@ -331,17 +335,17 @@ PRIVATE_KEY=...
 
 ## Tech Stack Deep Dive
 
-*   **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4
-*   **Smart Contracts**: Solidity 0.8.20, Hardhat, Foundry
-*   **Web3**: Wagmi v3, Viem, RainbowKit
-*   **Network**: Mantle Sepolia Testnet
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4
+- **Smart Contracts**: Solidity 0.8.20, Hardhat, Foundry
+- **Web3**: Wagmi v3, Viem, RainbowKit
+- **Network**: Mantle Sepolia Testnet
 
 ## Mantle Integration
 
 We utilize Mantle's unique features:
 
-*   **Low Gas Fees**: Enabling micro-investments in real estate.
-*   **Fast Finality**: Instant settlement for secondary market trades.
+- **Low Gas Fees**: Enabling micro-investments in real estate.
+- **Fast Finality**: Instant settlement for secondary market trades.
 
 ## Contributing
 
