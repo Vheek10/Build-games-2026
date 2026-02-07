@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import MobileSidebar from "./MobileSidebar";
 import Image from "next/image";
-import { ConnectButton } from "@suiet/wallet-kit";
+import ConnectWalletButton from "./ConnectWalletButton";
 import { useSuiWallet } from "@/providers/suiet-provider";
 // Icons (Hugeicons)
 import {
@@ -97,8 +97,8 @@ export default function Navbar() {
 			<header
 				className={cn(
 					"sticky top-0 z-50 w-full transition-all duration-300",
-					isScrolled ? "bg-white/95 shadow-md backdrop-blur-sm" : "bg-white",
-					"border-b border-gray-200",
+					"bg-transparent",
+					"border-b border-transparent",
 					"px-3 sm:px-4 md:px-6 lg:px-8",
 				)}>
 				<div className="relative mx-auto w-full max-w-screen-2xl">
@@ -107,7 +107,7 @@ export default function Navbar() {
 						<div className="flex lg:hidden items-center flex-shrink-0 z-10">
 							<button
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-								className="p-1.5 sm:p-2 md:p-2.5 text-gray-300 hover:text-blue-400 transition-all duration-300 rounded-md hover:bg-gray-800"
+								className="p-1.5 sm:p-2 md:p-2.5 text-gray-700 hover:text-blue-600 transition-all duration-300 rounded-md"
 								aria-label="Toggle menu"
 								aria-expanded={isMobileMenuOpen}>
 								{isMobileMenuOpen ? (
@@ -261,13 +261,13 @@ export default function Navbar() {
 
 									{/* Mobile: Wallet Connect Button */}
 									<div className="lg:hidden">
-										<ConnectButton />
+										<ConnectWalletButton />
 									</div>
 								</div>
 							) : (
 								<>
 									{/* Desktop & Mobile: Connect Button */}
-									<ConnectButton />
+									<ConnectWalletButton />
 								</>
 							)}
 						</div>

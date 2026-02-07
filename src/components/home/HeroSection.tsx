@@ -14,17 +14,23 @@ import {
 
 export default function HeroSection() {
 	return (
-		<section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-white">
+		<section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent">
 			{/* Fullscreen video background - Optimized for all screen sizes */}
 			<div className="absolute inset-0 pointer-events-none overflow-hidden w-full h-full">
-				{/* Video container with aspect ratio */}
-				<div className="absolute inset-0 w-full h-full bg-gradient-to-b from-platinum-100 to-white">
+				{/* Video container with aspect ratio - Enhanced for large screens */}
+				<div className="absolute inset-0 w-full h-full bg-transparent">
 					<video
 						autoPlay
 						muted
 						loop
 						playsInline
-						className="absolute inset-0 w-full h-full object-cover will-change-transform"
+						className="absolute inset-0 w-full h-full object-cover will-change-transform saturate-105 contrast-110 brightness-110"
+						style={{
+							filter:
+								"brightness(1.15) contrast(1.15) saturate(1.1) drop-shadow(0 0 2px rgba(90, 127, 176, 0.1))",
+							objectFit: "cover",
+							objectPosition: "center",
+						}}
 						preload="auto"
 						poster="/hero.avif">
 						<source
@@ -35,13 +41,16 @@ export default function HeroSection() {
 					</video>
 				</div>
 
-				{/* Atmospheric overlays - Enhanced for better readability */}
-				<div className="absolute inset-0 bg-radial-gradient(circle at center, rgba(90,127,176,0.08), transparent 65%)" />
-				<div className="absolute inset-0 bg-linear-to-br from-white/8 via-white/3 to-transparent" />
-				<div className="absolute inset-0 bg-linear-to-t from-white/15 via-transparent to-transparent" />
+				{/* Atmospheric overlays - Enhanced for better readability with screen-size adjustment */}
+				<div className="absolute inset-0 bg-radial-gradient(circle at center, rgba(90,127,176,0.05) 0%, rgba(90,127,176,0.02) 50%, transparent 75%)" />
+				<div className="absolute inset-0 bg-linear-to-br from-white/5 via-white/2 to-transparent" />
+				<div className="absolute inset-0 bg-linear-to-t from-white/10 via-transparent to-transparent" />
 
-				{/* Vignette effect for better content readability */}
-				<div className="absolute inset-0 bg-radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.3) 100%)" />
+				{/* Refined vignette effect - more subtle for larger screens */}
+				<div className="absolute inset-0 bg-radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.2) 100%)" />
+
+				{/* Additional clarity enhancement for larger screens */}
+				<div className="hidden xl:block absolute inset-0 bg-radial-gradient(circle at 50% 40%, transparent 0%, rgba(255,255,255,0.05) 100%)" />
 			</div>
 
 			{/* Subtle pattern overlay - very transparent */}
@@ -203,24 +212,24 @@ export default function HeroSection() {
 							</div>
 						</div>
 
-						{/* Right column: floating card over 3D */}
+						{/* Right column: floating card */}
 						<div className="hidden lg:block">
 							<div className="relative">
-								<div className="absolute -inset-1 bg-linear-to-tr from-blue-500/30 via-cyan-400/20 to-emerald-400/10 blur-2xl opacity-70" />
-								<div className="relative rounded-3xl border border-white/10 bg-slate-900/70 backdrop-blur-xl shadow-2xl shadow-cyan-500/20 p-6 space-y-5">
+								<div className="absolute -inset-1 bg-gradient-to-tr from-blue-500/20 via-mist-400/15 to-emerald-400/10 blur-2xl opacity-60" />
+								<div className="relative rounded-3xl border border-platinum-300/40 bg-platinum-50/60 backdrop-blur-xl shadow-2xl shadow-blue-600/10 p-6 space-y-5">
 									<div className="flex items-center justify-between gap-3">
 										<div>
-											<p className="text-xs font-semibold text-cyan-300 uppercase tracking-[0.2em]">
+											<p className="text-xs font-semibold text-blue-700 uppercase tracking-[0.2em]">
 												LIVE ON SUI
 											</p>
-											<p className="mt-1 text-sm text-slate-300">
+											<p className="mt-1 text-sm text-gray-700">
 												ZK-powered property tokenization with real-time
 												settlement.
 											</p>
 										</div>
-										<div className="flex items-center gap-2 rounded-full bg-slate-800/80 px-3 py-1 border border-slate-700">
-											<div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-											<span className="text-xs font-medium text-slate-100">
+										<div className="flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 border border-emerald-300">
+											<div className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+											<span className="text-xs font-medium text-emerald-900">
 												<Lock className="inline-block w-3 h-3 mr-1 align-[-2px]" />
 												ZK Privacy
 											</span>
@@ -228,39 +237,39 @@ export default function HeroSection() {
 									</div>
 
 									<div className="grid grid-cols-3 gap-4 text-center text-xs">
-										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
-											<p className="text-[11px] text-slate-400 mb-1">
+										<div className="rounded-2xl bg-platinum-100/60 border border-platinum-300/40 px-3 py-3">
+											<p className="text-[11px] text-gray-700 mb-1">
 												Avg. Finality
 											</p>
-											<p className="text-lg font-semibold text-slate-50">
+											<p className="text-lg font-semibold text-gray-900">
 												&lt;2s
 											</p>
 										</div>
-										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
-											<p className="text-[11px] text-slate-400 mb-1">
+										<div className="rounded-2xl bg-platinum-100/60 border border-platinum-300/40 px-3 py-3">
+											<p className="text-[11px] text-gray-700 mb-1">
 												Properties Modeled
 											</p>
-											<p className="text-lg font-semibold text-slate-50">
+											<p className="text-lg font-semibold text-gray-900">
 												25K+
 											</p>
 										</div>
-										<div className="rounded-2xl bg-slate-900/80 border border-slate-700/80 px-3 py-3">
-											<p className="text-[11px] text-slate-400 mb-1">
+										<div className="rounded-2xl bg-platinum-100/60 border border-platinum-300/40 px-3 py-3">
+											<p className="text-[11px] text-gray-700 mb-1">
 												Global Investors
 											</p>
-											<p className="text-lg font-semibold text-slate-50">
+											<p className="text-lg font-semibold text-gray-900">
 												120+
 											</p>
 										</div>
 									</div>
 
-									<div className="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+									<div className="flex items-center justify-between text-[11px] text-gray-700 border-t border-platinum-200 pt-3">
 										<div className="flex items-center gap-2">
 											<div className="flex -space-x-2">
 												{[1, 2, 3].map((i) => (
 													<div
 														key={i}
-														className="w-6 h-6 rounded-full border border-slate-900 bg-slate-700/80">
+														className="w-6 h-6 rounded-full border border-white bg-platinum-300">
 														<Image
 															src="/logo.png"
 															alt=""
@@ -273,7 +282,7 @@ export default function HeroSection() {
 											</div>
 											<span>Trusted by leading RealFi teams</span>
 										</div>
-										<span className="text-slate-500">
+										<span className="text-gray-600">
 											Backed by on-chain compliance rails
 										</span>
 									</div>
@@ -288,23 +297,23 @@ export default function HeroSection() {
 			<div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20">
 				<div className="flex flex-col items-center">
 					<div className="animate-bounce">
-						<div className="w-6 h-10 sm:w-7 sm:h-12 border border-gray-600/50 rounded-full flex justify-center backdrop-blur-sm bg-gray-900/40 shadow-lg">
-							<div className="w-1.5 h-3 sm:h-4 bg-gradient-to-b from-blue-400 to-cyan-300 rounded-full mt-3 sm:mt-4 animate-pulse" />
+						<div className="w-6 h-10 sm:w-7 sm:h-12 border border-gray-400/50 rounded-full flex justify-center backdrop-blur-sm bg-platinum-200/30 shadow-lg">
+							<div className="w-1.5 h-3 sm:h-4 bg-gradient-to-b from-blue-600 to-mist-600 rounded-full mt-3 sm:mt-4 animate-pulse" />
 						</div>
 					</div>
-					<span className="text-xs text-gray-400 mt-2 sm:mt-3 tracking-wider font-medium">
+					<span className="text-xs text-gray-700 mt-2 sm:mt-3 tracking-wider font-medium">
 						EXPLORE
 					</span>
 				</div>
 			</div>
 
 			{/* Subtle decorative elements - Hide on mobile */}
-			<div className="absolute top-1/4 left-4 sm:left-8 w-0.5 h-20 sm:h-32 lg:h-40 bg-gradient-to-b from-blue-500/20 via-cyan-400/10 to-transparent hidden md:block" />
-			<div className="absolute bottom-1/3 right-4 sm:right-8 w-0.5 h-16 sm:h-24 lg:h-32 bg-gradient-to-b from-blue-500/20 via-cyan-400/10 to-transparent hidden md:block" />
+			<div className="absolute top-1/4 left-4 sm:left-8 w-0.5 h-20 sm:h-32 lg:h-40 bg-gradient-to-b from-blue-500/15 via-mist-400/5 to-transparent hidden md:block" />
+			<div className="absolute bottom-1/3 right-4 sm:right-8 w-0.5 h-16 sm:h-24 lg:h-32 bg-gradient-to-b from-blue-500/15 via-mist-400/5 to-transparent hidden md:block" />
 
 			{/* Corner accents for depth - Hide on mobile */}
-			<div className="absolute top-0 left-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500/5 to-transparent hidden lg:block" />
-			<div className="absolute bottom-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tl from-cyan-500/5 to-transparent hidden lg:block" />
+			<div className="absolute top-0 left-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500/3 to-transparent hidden lg:block" />
+			<div className="absolute bottom-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tl from-mist-500/3 to-transparent hidden lg:block" />
 		</section>
 	);
 }
