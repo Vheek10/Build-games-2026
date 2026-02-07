@@ -5,17 +5,22 @@ import {
 	FileCheck,
 	Shield,
 	Database,
-	ArrowRight,
 	CheckCircle,
 	Zap,
 	Globe,
-	ChevronLeft,
 	ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getRandomImage } from "@/utils/realEstateImages";
+import {
+	motion,
+	AnimatePresence,
+	useMotionValue,
+	useSpring,
+	useTransform,
+} from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const steps = [
 	{
@@ -26,7 +31,7 @@ const steps = [
 			"Transform real estate into secure digital tokens with automated verification",
 		color: "blue",
 		imageCategory: "modern-buildings",
-		stats: ["<48h Verification", "99.8% Success"],
+		stats: ["< 48h Verification", "99.8% Success"],
 	},
 	{
 		number: "02",
@@ -36,18 +41,64 @@ const steps = [
 			"Fractional ownership through blockchain-powered smart contracts",
 		color: "emerald",
 		imageCategory: "blockchain-tech",
-		stats: ["Global 24/7 Access", "0 Disputes"],
+		stats: ["Global 24/7 Access", "Zero Disputes"],
 	},
 	{
 		number: "03",
 		icon: Database,
-		title: "Track & Manage",
+		title: "Track and Manage",
 		description: "Real-time transparency with immutable blockchain records",
 		color: "cyan",
 		imageCategory: "cityscapes",
-		stats: ["<2min Transactions", "Bank-grade Security"],
+		stats: ["< 2min Transactions", "Bank-Grade Security"],
 	},
 ];
+
+// 3D Tilt Card Component for Elementor-like effect
+function TiltCard({ children, className, isActive }: any) {
+	const ref = useRef<HTMLDivElement>(null);
+	const x = useMotionValue(0);
+	const y = useMotionValue(0);
+
+	const mouseX = useSpring(x, { stiffness: 300, damping: 30 });
+	const mouseY = useSpring(y, { stiffness: 300, damping: 30 });
+
+	const rotateX = useTransform(mouseY, [-0.5, 0.5], [7, -7]);
+	const rotateY = useTransform(mouseX, [-0.5, 0.5], [-7, 7]);
+
+	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+		if (!ref.current) return;
+		const rect = ref.current.getBoundingClientRect();
+		const width = rect.width;
+		const height = rect.height;
+		const mouseX = e.clientX - rect.left;
+		const mouseY = e.clientY - rect.top;
+		const xPct = mouseX / width - 0.5;
+		const yPct = mouseY / height - 0.5;
+		x.set(xPct);
+		y.set(yPct);
+	};
+
+	const handleMouseLeave = () => {
+		x.set(0);
+		y.set(0);
+	};
+
+	return (
+		<motion.div
+			ref={ref}
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
+			style={{
+				rotateX: isActive ? rotateX : 0,
+				rotateY: isActive ? rotateY : 0,
+				transformStyle: "preserve-3d",
+			}}
+			className={cn("relative w-full h-full", className)}>
+			{children}
+		</motion.div>
+	);
+}
 
 export default function HowItWorksSection() {
 	const [activeStep, setActiveStep] = useState(0);
@@ -69,24 +120,43 @@ export default function HowItWorksSection() {
 		return () => clearInterval(interval);
 	}, [isAutoPlay, images]);
 
-	const currentStep = steps[activeStep];
-	const nextStep = steps[(activeStep + 1) % steps.length];
-	const prevStep = steps[(activeStep - 1 + steps.length) % steps.length];
-
-	const handleStepChange = (index: number) => {
-		setActiveStep(index);
-		setIsAutoPlay(false);
+	const colorMap: {
+		[key: string]: {
+			bg: string;
+			text: string;
+			bgLight: string;
+			border: string;
+			from: string;
+			to: string;
+		};
+	} = {
+		blue: {
+			bg: "bg-blue-600",
+			text: "text-blue-400",
+			bgLight: "bg-blue-500/20",
+			border: "border-blue-500/50",
+			from: "from-blue-600",
+			to: "to-blue-400",
+		},
+		emerald: {
+			bg: "bg-emerald-600",
+			text: "text-emerald-400",
+			bgLight: "bg-emerald-500/20",
+			border: "border-emerald-500/50",
+			from: "from-emerald-600",
+			to: "to-emerald-400",
+		},
+		cyan: {
+			bg: "bg-cyan-600",
+			text: "text-cyan-400",
+			bgLight: "bg-cyan-500/20",
+			border: "border-cyan-500/50",
+			from: "from-cyan-600",
+			to: "to-cyan-400",
+		},
 	};
 
-	const handlePrevious = () => {
-		setActiveStep((prev) => (prev - 1 + steps.length) % steps.length);
-		setIsAutoPlay(false);
-	};
-
-	const handleNext = () => {
-		setActiveStep((prev) => (prev + 1) % steps.length);
-		setIsAutoPlay(false);
-	};
+	const getColor = (colorName: string) => colorMap[colorName] || colorMap.blue;
 
 	if (!images.length) {
 		return (
@@ -94,416 +164,303 @@ export default function HowItWorksSection() {
 				<div className="max-w-7xl mx-auto">
 					<div className="animate-pulse space-y-8">
 						<div className="h-12 bg-gray-200 rounded-lg w-1/3 mx-auto"></div>
-						<div className="h-6 bg-gray-200 rounded w-2/3 mx-auto"></div>
+						<div className="h-[500px] bg-gray-200 rounded-2xl w-full"></div>
 					</div>
 				</div>
 			</section>
 		);
 	}
 
-	const colorMap: {
-		[key: string]: { bg: string; text: string; accent: string };
-	} = {
-		blue: {
-			bg: "from-blue-600 to-blue-500",
-			text: "text-blue-600",
-			accent: "bg-blue-500",
-		},
-		emerald: {
-			bg: "from-emerald-600 to-emerald-500",
-			text: "text-emerald-600",
-			accent: "bg-emerald-500",
-		},
-		cyan: {
-			bg: "from-cyan-600 to-cyan-500",
-			text: "text-cyan-600",
-			accent: "bg-cyan-500",
-		},
-	};
-
-	const getColor = (colorName: string) => colorMap[colorName] || colorMap.blue;
-
 	return (
-		<section className="py-16 sm:py-28 px-4 sm:px-6 bg-white">
-			<style>{`
-				/* Elementor-style animations */
-				@keyframes slideInLeft {
-					from {
-						opacity: 0;
-						transform: translateX(-100px) rotateY(45deg) skewY(5deg);
-					}
-					to {
-						opacity: 1;
-						transform: translateX(0) rotateY(0) skewY(0);
-					}
-				}
-				@keyframes textSlideUp {
-					from {
-						opacity: 0;
-						transform: translateY(60px) rotateX(15deg);
-						filter: blur(10px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0) rotateX(0);
-						filter: blur(0);
-					}
-				}
-				@keyframes textSlideDown {
-					from {
-						opacity: 0;
-						transform: translateY(-30px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0);
-					}
-				}
-				@keyframes glowPulse {
-					0%, 100% { 
-						box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 
-						           0 0 40px rgba(59, 130, 246, 0.1);
-					}
-					50% { 
-						box-shadow: 0 0 40px rgba(59, 130, 246, 0.6),
-						           0 0 60px rgba(59, 130, 246, 0.3);
-					}
-				}
-				@keyframes scale3dIn {
-					from {
-						opacity: 0;
-						transform: scale(0.6) rotateX(30deg) rotateZ(-20deg);
-						filter: blur(15px);
-					}
-					to {
-						opacity: 1;
-						transform: scale(1) rotateX(0) rotateZ(0);
-						filter: blur(0);
-					}
-				}
-				@keyframes floatElementor {
-					0%, 100% { transform: translateY(0px) rotateZ(-1deg); }
-					25% { transform: translateY(-12px) rotateZ(0.5deg); }
-					50% { transform: translateY(-20px) rotateZ(1deg); }
-					75% { transform: translateY(-12px) rotateZ(0.5deg); }
-				}
-				@keyframes zoomIn {
-					from {
-						opacity: 0;
-						transform: scale(0.7);
-					}
-					to {
-						opacity: 1;
-						transform: scale(1);
-					}
-				}
-				@keyframes imageZoom {
-					from {
-						transform: scale(1);
-						filter: brightness(0.9) saturate(0.8);
-					}
-					to {
-						transform: scale(1.08);
-						filter: brightness(1.1) saturate(1.1);
-					}
-				}
-				@keyframes borderGlow {
-					0%, 100% {
-						border-color: rgba(59, 130, 246, 0.3);
-						box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-					}
-					50% {
-						border-color: rgba(59, 130, 246, 0.8);
-						box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
-					}
-				}
-				@keyframes slideDown {
-					from {
-						opacity: 0;
-						transform: translateY(-30px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0);
-					}
-				}
-				.cinema-slide-enter {
-					animation: slideInLeft 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-				}
-				.cinema-card-enter {
-					animation: scale3dIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-				}
-				.cinema-float {
-					animation: floatElementor 3.5s ease-in-out infinite;
-				}
-				.cinema-container {
-					perspective: 1200px;
-					transform-style: preserve-3d;
-				}
-				.cinema-card {
-					transform-style: preserve-3d;
-					transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-				}
-				.cinema-card:hover {
-					transform: translateZ(40px) rotateX(-5deg) rotateY(-5deg);
-				}
-				.image-card {
-					transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-					position: relative;
-					overflow: hidden;
-					cursor: pointer;
-				}
-				.image-card:hover {
-					transform: scale(1.03) rotateY(-3deg) rotateX(3deg) translateZ(20px);
-					filter: brightness(1.05);
-				}
-				.text-overlay {
-					background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.85) 100%);
-					position: absolute;
-					inset: 0;
-					z-index: 10;
-					transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-				}
-				.image-card:hover .text-overlay {
-					background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.95) 100%);
-				}
-				.text-title {
-					animation: textSlideUp 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
-					transition: all 0.7s ease;
-					position: relative;
-					z-index: 20;
-				}
-				.image-card:hover .text-title {
-					transform: translateY(-8px);
-					text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-				}
-				.text-description {
-					animation: textSlideUp 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both;
-					opacity: 0;
-					max-height: 0;
-					transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-					position: relative;
-					z-index: 20;
-				}
-				.text-stats {
-					animation: textSlideUp 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s both;
-					opacity: 0;
-					max-height: 0;
-					transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-					position: relative;
-					z-index: 20;
-				}
-				.image-card:hover .text-description,
-				.image-card:hover .text-stats {
-					opacity: 1;
-					max-height: 200px;
-					animation: textSlideUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-				}
-				.step-badge {
-					animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-					position: absolute;
-					top: 1.5rem;
-					left: 1.5rem;
-					z-index: 30;
-					transition: all 0.5s ease;
-				}
-				.image-card:hover .step-badge {
-					transform: scale(1.1) translateY(-5px);
-					filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.4));
-				}
-				.glow-effect {
-					animation: glowPulse 2.5s ease-in-out infinite;
-					transition: all 0.5s ease;
-				}
-				.image-card:hover .glow-effect {
-					animation: glowPulse 1.5s ease-in-out infinite;
-				}
-				.step-icon {
-					animation: zoomIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-					transition: all 0.6s ease;
-				}
-				.image-card:hover .step-icon {
-					transform: scale(1.2) rotateZ(10deg);
-					filter: drop-shadow(0 15px 35px rgba(59, 130, 246, 0.5));
-				}
-				.image-container {
-					animation: imageZoom 0.7s ease-in-out;
-					position: relative;
-					z-index: 5;
-				}
-				.image-card:hover .image-container {
-					filter: brightness(1.15) contrast(1.1);
-				}
-				.indicator-dot {
-					transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-				}
-				.indicator-dot:hover {
-					transform: scale(1.3) !important;
-					filter: drop-shadow(0 0 10px currentColor);
-				}
-				.stat-badge {
-					animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-					transition: all 0.5s ease;
-					backdrop-filter: blur(10px);
-				}
-				.image-card:hover .stat-badge {
-					transform: translateY(-5px) scale(1.05);
-					background: rgba(255, 255, 255, 0.15) !important;
-					box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-				}
-				.text-content {
-					position: absolute;
-					inset: 0;
-					display: flex;
-					flex-direction: column;
-					justify-content: flex-end;
-					padding: 2rem;
-					z-index: 20;
-					pointer-events: none;
-				}
-			`}</style>
+		<section className="py-20 sm:py-32 bg-gray-50 overflow-hidden relative">
+			{/* Decorative Background Elements */}
+			<div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+				<div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-100/30 rounded-full blur-3xl opacity-60" />
+				<div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-emerald-100/30 rounded-full blur-3xl opacity-60" />
+			</div>
 
-			<div className="max-w-7xl mx-auto">
-				{/* Header */}
-				<div className="text-center mb-16 sm:mb-20">
-					<h2 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-600 to-gray-900 bg-clip-text text-transparent mb-6">
-						How It Works
-					</h2>
-					<p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+				{/* Header - Staggered Entrance */}
+				<motion.div
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					variants={{
+						hidden: { opacity: 0, y: 30 },
+						visible: {
+							opacity: 1,
+							y: 0,
+							transition: { staggerChildren: 0.15, duration: 0.6 },
+						},
+					}}
+					className="text-center mb-16 sm:mb-20">
+					<motion.h2
+						variants={{
+							hidden: { opacity: 0, y: 30 },
+							visible: { opacity: 1, y: 0 },
+						}}
+						className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+						How It <span className="text-blue-600">Works</span>
+					</motion.h2>
+					<motion.p
+						variants={{
+							hidden: { opacity: 0, y: 20 },
+							visible: { opacity: 1, y: 0 },
+						}}
+						className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
 						Transform real estate into accessible digital assets in three simple
-						steps with cutting-edge blockchain technology
-					</p>
-				</div>
+						steps with cutting-edge blockchain technology.
+					</motion.p>
+				</motion.div>
 
-				{/* Cinematic 3D Cards Grid */}
-				<div className="cinema-container grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mb-20">
-					{steps.map((step, index) => (
-						<div
-							key={step.number}
-							className={`cinema-card-enter ${index === activeStep ? "md:col-span-3 lg:col-span-1" : ""}`}>
-							<div
-								onClick={() => handleStepChange(index)}
-								className="image-card relative h-96 sm:h-[500px] lg:h-[550px] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 shadow-2xl cursor-pointer group">
-								{/* Image */}
-								<Image
-									src={images[index]}
-									alt={step.title}
-									fill
-									className="object-cover cinema-card transition-transform duration-700 group-hover:scale-110"
-									sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-									priority={index === activeStep}
-								/>
+				{/* Accordion Cards */}
+				<div className="flex flex-col lg:flex-row gap-6 h-[800px] lg:h-[600px] mb-24 perspective-1000">
+					{steps.map((step, index) => {
+						const isActive = activeStep === index;
+						const colors = getColor(step.color);
 
-								{/* Text Overlay Gradient */}
-								<div className="text-overlay" />
-
-								{/* Step Badge - Top Left */}
-								<div className="step-badge">
-									<div
-										className={`bg-gradient-to-r ${getColor(step.color).bg} px-5 py-3 rounded-full text-white font-bold text-lg shadow-2xl glow-effect`}>
-										{step.number}
-									</div>
-								</div>
-
-								{/* Icon - Top Right */}
-								<div className="absolute top-6 right-6 z-30 step-icon">
-									<div
-										className={`bg-gradient-to-r ${getColor(step.color).bg} w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-125`}>
-										<step.icon className="w-7 h-7" />
-									</div>
-								</div>
-
-								{/* Text Content - Inside Image */}
-								<div className="text-content">
-									{/* Title - Always visible */}
-									<h3 className="text-title text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-2">
-										{step.title}
-									</h3>
-
-									{/* Description - Animated on hover */}
-									<p className="text-description text-sm sm:text-base text-gray-100 leading-relaxed mb-4">
-										{step.description}
-									</p>
-
-									{/* Stats - Animated on hover */}
-									<div className="text-stats grid grid-cols-2 gap-2">
-										{step.stats.map((stat, i) => (
-											<div
-												key={i}
-												className="stat-badge bg-white/10 backdrop-blur-md rounded-lg p-2 border border-white/20">
-												<div className="text-sm font-bold text-white">
-													{stat.split(" ")[0]}
-												</div>
-												<div className="text-[10px] text-gray-200">
-													{stat.split(" ").slice(1).join(" ")}
-												</div>
-											</div>
-										))}
-									</div>
-								</div>
-
-								{/* Navigation Buttons - Show on hover */}
-								{index === activeStep && (
-									<>
-										<button
-											onClick={(e) => {
-												e.stopPropagation();
-												handlePrevious();
-											}}
-											className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100">
-											<ChevronLeft className="w-6 h-6" />
-										</button>
-										<button
-											onClick={(e) => {
-												e.stopPropagation();
-												handleNext();
-											}}
-											className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100">
-											<ChevronRight className="w-6 h-6" />
-										</button>
-									</>
+						return (
+							<motion.div
+								key={step.number}
+								layout
+								onMouseEnter={() => {
+									setActiveStep(index);
+									setIsAutoPlay(false);
+								}}
+								onClick={() => {
+									setActiveStep(index);
+									setIsAutoPlay(false);
+								}}
+								className={cn(
+									"relative rounded-3xl overflow-hidden cursor-pointer shadow-xl",
+									"lg:h-full",
+									isActive ? "flex-[3] lg:flex-[3]" : "flex-[1] lg:flex-[1]",
 								)}
-							</div>
-						</div>
-					))}
+								animate={{
+									flex: isActive ? 3 : 1,
+								}}
+								transition={{
+									type: "spring",
+									stiffness: 280,
+									damping: 24,
+								}}>
+								<TiltCard isActive={isActive} className="w-full h-full">
+									{/* Background Image */}
+									<Image
+										src={images[index]}
+										alt={step.title}
+										fill
+										className={cn(
+											"object-cover transition-transform duration-1000 ease-out",
+											isActive
+												? "scale-110"
+												: "scale-100 grayscale hover:grayscale-0",
+										)}
+										priority={index === 0}
+									/>
+
+									{/* Animated Overlay */}
+									<div
+										className={cn(
+											"absolute inset-0 transition-all duration-500",
+											isActive
+												? "bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-90"
+												: "bg-black/60 hover:bg-black/40",
+										)}
+									/>
+
+									{/* Floating Elements for Active State */}
+									{isActive && (
+										<motion.div
+											className="absolute inset-0 pointer-events-none"
+											animate={{
+												background: [
+													"radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)",
+													"radial-gradient(circle at 60% 40%, rgba(255,255,255,0.1) 0%, transparent 50%)",
+													"radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)",
+												],
+											}}
+											transition={{
+												duration: 5,
+												repeat: Infinity,
+												ease: "easeInOut",
+											}}
+										/>
+									)}
+
+									{/* Content Container */}
+									<div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10 translate-z-20">
+										{/* Top Section */}
+										<div className="flex justify-between items-start">
+											<motion.div
+												animate={
+													isActive
+														? {
+																y: [0, -10, 0],
+																transition: {
+																	duration: 4,
+																	repeat: Infinity,
+																	ease: "easeInOut",
+																},
+														  }
+														: {}
+												}
+												className={cn(
+													"w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-white backdrop-blur-md border border-white/20 shadow-lg transition-all duration-500",
+													isActive
+														? `bg-gradient-to-br ${colors.from} ${colors.to}`
+														: "bg-white/10",
+												)}>
+												<step.icon className="w-6 h-6 sm:w-7 sm:h-7" />
+											</motion.div>
+											<span className="text-4xl sm:text-5xl font-bold text-white/10 select-none">
+												{step.number}
+											</span>
+										</div>
+
+										{/* Bottom Section */}
+										<div className="space-y-4">
+											<motion.h3
+												layout="position"
+												className={cn(
+													"text-2xl sm:text-3xl font-bold text-white leading-tight transition-all duration-300 drop-shadow-lg",
+													!isActive &&
+														"lg:rotate-[-90deg] lg:origin-bottom-left lg:absolute lg:bottom-8 lg:left-8 lg:whitespace-nowrap lg:translate-x-12",
+												)}>
+												{step.title}
+											</motion.h3>
+
+											<AnimatePresence mode="wait">
+												{isActive && (
+													<motion.div
+														initial={{ opacity: 0, y: 20, height: 0 }}
+														animate={{ opacity: 1, y: 0, height: "auto" }}
+														exit={{ opacity: 0, y: 10, height: 0 }}
+														transition={{ duration: 0.3, ease: "easeOut" }}
+														className="space-y-6 overflow-hidden">
+														<p className="text-gray-100 text-sm sm:text-base leading-relaxed max-w-lg font-medium drop-shadow-md">
+															{step.description}
+														</p>
+
+														<div className="flex flex-wrap gap-3">
+															{step.stats.map((stat, i) => (
+																<motion.div
+																	key={i}
+																	initial={{ opacity: 0, x: -10 }}
+																	animate={{ opacity: 1, x: 0 }}
+																	transition={{ delay: 0.1 + i * 0.1 }}
+																	className="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 text-xs sm:text-sm text-white font-semibold flex items-center gap-2 shadow-sm hover:bg-white/20 transition-colors">
+																	<div
+																		className={cn(
+																			"w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor]",
+																			colors.bg,
+																		)}
+																	/>
+																	{stat}
+																</motion.div>
+															))}
+														</div>
+													</motion.div>
+												)}
+											</AnimatePresence>
+										</div>
+									</div>
+
+									{/* Border Glow for Active State */}
+									{isActive && (
+										<motion.div
+											layoutId="activeBorder"
+											className={cn(
+												"absolute inset-0 border-[3px] rounded-3xl pointer-events-none z-20",
+												colors.border,
+											)}
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.3 }}
+										/>
+									)}
+								</TiltCard>
+							</motion.div>
+						);
+					})}
 				</div>
 
-				{/* Step Indicators */}
-				<div className="flex justify-center gap-4 mb-16">
-					{steps.map((step, index) => (
+				{/* Steps Navigation (Mobile/Tablet) */}
+				<div className="flex justify-center gap-3 lg:hidden mb-16">
+					{steps.map((_, index) => (
 						<button
 							key={index}
-							onClick={() => handleStepChange(index)}
-							className={`indicator-dot transition-all duration-500 rounded-full ${
+							onClick={() => {
+								setActiveStep(index);
+								setIsAutoPlay(false);
+							}}
+							className={cn(
+								"h-2 rounded-full transition-all duration-300",
 								activeStep === index
-									? `${getColor(step.color).accent} w-4 h-4 shadow-lg`
-									: "bg-gray-300 hover:bg-gray-400 w-3 h-3"
-							}`}
+									? "w-8 bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+									: "w-2 bg-gray-300 hover:bg-gray-400",
+							)}
 							aria-label={`Go to step ${index + 1}`}
 						/>
 					))}
 				</div>
 
-				{/* Bottom Stats - Enhanced */}
-				<div className="mt-20 pt-16 border-t-2 border-gray-200">
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-						{[
-							{ icon: CheckCircle, value: "25K+", label: "Properties" },
-							{ icon: Globe, value: "45+", label: "Countries" },
-							{ icon: Zap, value: "<2s", label: "Transactions" },
-							{ icon: Shield, value: "100%", label: "Secure" },
-						].map((stat, index) => (
+				{/* Bottom Stats Grid - Floating Hover Effect */}
+				<div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
+					{[
+						{
+							icon: CheckCircle,
+							value: "25K+",
+							label: "Properties",
+							color: "text-blue-600",
+							bg: "bg-blue-50",
+						},
+						{
+							icon: Globe,
+							value: "45+",
+							label: "Countries",
+							color: "text-emerald-600",
+							bg: "bg-emerald-50",
+						},
+						{
+							icon: Zap,
+							value: "<2s",
+							label: "Transactions",
+							color: "text-amber-500",
+							bg: "bg-amber-50",
+						},
+						{
+							icon: Shield,
+							value: "100%",
+							label: "Security",
+							color: "text-purple-600",
+							bg: "bg-purple-50",
+						},
+					].map((stat, index) => (
+						<motion.div
+							key={index}
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ delay: index * 0.1, duration: 0.5 }}
+							whileHover={{ y: -8, transition: { duration: 0.2 } }}
+							className="group relative bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 text-center cursor-default">
 							<div
-								key={index}
-								className="text-center p-6 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-								<stat.icon className="w-10 h-10 text-blue-600 mx-auto mb-4 group-hover:scale-110 transition-transform" />
-								<div className="text-3xl font-bold text-gray-900 mb-2">
-									{stat.value}
-								</div>
-								<div className="text-sm text-gray-600">{stat.label}</div>
+								className={cn(
+									"w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner",
+									stat.bg,
+									stat.color,
+								)}>
+								<stat.icon className="w-7 h-7" />
 							</div>
-						))}
-					</div>
+							<div className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">
+								{stat.value}
+							</div>
+							<div className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+								{stat.label}
+							</div>
+						</motion.div>
+					))}
 				</div>
 			</div>
 		</section>
