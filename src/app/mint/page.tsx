@@ -802,11 +802,7 @@ function MintFormContent() {
 										name="title"
 										value={formData.title}
 										onChange={handleInputChange}
-										className={`w-full border ${
-											formErrors.title
-												? "border-red-300"
-												: "border-gray-300"
-										} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400
+										className={`w-full border ${formErrors.title ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. Sunset Villa"
 										required
 										aria-invalid={!!formErrors.title}
@@ -834,11 +830,7 @@ function MintFormContent() {
 										name="location"
 										value={formData.location}
 										onChange={handleInputChange}
-										className={`w-full border ${
-											formErrors.location
-												? "border-red-300"
-												: "border-gray-300"
-										} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400
+										className={`w-full border ${formErrors.location ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 123 Ocean Dr, Miami, FL"
 										required
 										aria-invalid={!!formErrors.location}
@@ -866,11 +858,7 @@ function MintFormContent() {
 										name="valuation"
 										value={formData.valuation}
 										onChange={handleInputChange}
-										className={`w-full border ${
-											formErrors.valuation
-												? "border-red-300"
-												: "border-gray-300"
-										} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400
+										className={`w-full border ${formErrors.valuation ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 500000"
 										type="number"
 										min="0"
