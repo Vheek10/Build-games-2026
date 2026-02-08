@@ -325,7 +325,7 @@ export default function HowItWorksSection() {
 												className={cn(
 													"text-2xl sm:text-3xl font-bold text-white leading-tight transition-all duration-300 drop-shadow-lg",
 													!isActive &&
-														"lg:rotate-[-90deg] lg:origin-bottom-left lg:absolute lg:bottom-8 lg:left-8 lg:whitespace-nowrap lg:translate-x-12",
+														"lg:rotate-[-90deg] lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:whitespace-nowrap",
 												)}>
 												{step.title}
 											</motion.h3>
@@ -406,61 +406,51 @@ export default function HowItWorksSection() {
 				</div>
 
 				{/* Bottom Stats Grid - Floating Hover Effect */}
-				<div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-					{[
-						{
-							icon: CheckCircle,
-							value: "25K+",
-							label: "Properties",
-							color: "text-blue-600",
-							bg: "bg-blue-50",
-						},
-						{
-							icon: Globe,
-							value: "45+",
-							label: "Countries",
-							color: "text-emerald-600",
-							bg: "bg-emerald-50",
-						},
-						{
-							icon: Zap,
-							value: "<2s",
-							label: "Transactions",
-							color: "text-amber-500",
-							bg: "bg-amber-50",
-						},
-						{
-							icon: Shield,
-							value: "100%",
-							label: "Security",
-							color: "text-purple-600",
-							bg: "bg-purple-50",
-						},
-					].map((stat, index) => (
-						<motion.div
-							key={index}
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ delay: index * 0.1, duration: 0.5 }}
-							whileHover={{ y: -8, transition: { duration: 0.2 } }}
-							className="group relative bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 text-center cursor-default">
-							<div
-								className={cn(
-									"w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner",
-									stat.bg,
-									stat.color,
-								)}>
-								<stat.icon className="w-7 h-7" />
-							</div>
-							<div className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">
-								{stat.value}
-							</div>
-							<div className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-								{stat.label}
-							</div>
-						</motion.div>
-					))}
+				{/* Minimalist Stats Bar - Classy & Simple */}
+				<div className="relative max-w-5xl mx-auto mt-16 px-4">
+					<motion.div 
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						className="bg-white rounded-2xl shadow-sm border border-gray-100/50"
+					>
+						<div className="flex flex-col sm:flex-row items-center justify-between divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+							{[
+								{
+									value: "25K+",
+									label: "Properties",
+									color: "text-blue-600",
+								},
+								{
+									value: "45+",
+									label: "Countries",
+									color: "text-emerald-600",
+								},
+								{
+									value: "<2s",
+									label: "Transactions",
+									color: "text-amber-500",
+								},
+								{
+									value: "100%",
+									label: "Security",
+									color: "text-purple-600",
+								},
+							].map((stat, index) => (
+								<div 
+									key={index}
+									className="flex-1 flex flex-col items-center justify-center py-4 px-2 w-full hover:bg-gray-50/50 transition-colors duration-300 first:rounded-t-2xl sm:first:rounded-l-2xl sm:first:rounded-tr-none last:rounded-b-2xl sm:last:rounded-r-2xl sm:last:rounded-bl-none"
+								>
+									<h3 className={cn("text-2xl sm:text-3xl font-bold mb-0.5 tracking-tight", stat.color)}>
+										{stat.value}
+									</h3>
+									<p className="text-xs font-medium text-gray-400 uppercase tracking-widest">
+										{stat.label}
+									</p>
+								</div>
+							))}
+						</div>
+					</motion.div>
 				</div>
 			</div>
 		</section>
