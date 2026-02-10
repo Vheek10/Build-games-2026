@@ -29,7 +29,9 @@ export default function MarketplacePage() {
 		const loadProperties = () => {
 			const properties = getAllProperties(sampleProperties);
 			setAllProperties(properties);
-			console.log(`Loaded ${properties.length} properties (${properties.filter(p => p.isMinted).length} minted)`);
+			console.log(
+				`Loaded ${properties.length} properties (${properties.filter((p) => p.isMinted).length} minted)`,
+			);
 		};
 
 		loadProperties();
@@ -68,7 +70,7 @@ export default function MarketplacePage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
+		<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white font-montserrat">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				{/* Header */}
 				<MarketplaceHeader
@@ -88,7 +90,7 @@ export default function MarketplacePage() {
 								placeholder="Search properties..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								className="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+								className="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-montserrat"
 							/>
 							{searchQuery && (
 								<button

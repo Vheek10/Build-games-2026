@@ -331,7 +331,7 @@ function MintFormContent() {
 							tokenPrice: tokenDetails?.price || "0",
 							equityPercentage: tokenDetails?.equity || "0",
 							owner: address,
-					  }
+						}
 					: { enabled: false },
 			};
 
@@ -450,7 +450,8 @@ function MintFormContent() {
 				isFeatured: false,
 				country: formData.location.split(",").pop()?.trim() || "Unknown",
 				createdAt: new Date().toISOString().split("T")[0],
-				type: formData.propertyType === "residential" ? "Apartments" : "Commercial",
+				type:
+					formData.propertyType === "residential" ? "Apartments" : "Commercial",
 				rating: undefined,
 				investmentReturn: formData.tokenizationEnabled
 					? Number(tokenDetails?.equity) || 8
@@ -489,9 +490,7 @@ function MintFormContent() {
 					</h2>
 					<p className="text-gray-600 mb-8">
 						Your property deed for{" "}
-						<span className="font-bold text-gray-900">
-							"{formData.title}"
-						</span>{" "}
+						<span className="font-bold text-gray-900">"{formData.title}"</span>{" "}
 						has been securely{" "}
 						{formData.tokenizationEnabled ? "tokenized" : "minted"} on the Sui
 						Network.
@@ -572,7 +571,11 @@ function MintFormContent() {
 	}
 
 	const isProcessing =
-		isSubmitting || isMinting || isWaitingReceipt || isDeploying || isWaitingRwaReceipt;
+		isSubmitting ||
+		isMinting ||
+		isWaitingReceipt ||
+		isDeploying ||
+		isWaitingRwaReceipt;
 
 	// Enhanced loading spinner with progress indicator
 	const LoadingSpinnerWithProgress = () => (
@@ -587,8 +590,8 @@ function MintFormContent() {
 							? "Confirming Deed Transaction..."
 							: "Initiating Property Mint..."
 						: isWaitingRwaReceipt
-						? "Confirming RWA Deployment..."
-						: "Deploying Token Contract..."}
+							? "Confirming RWA Deployment..."
+							: "Deploying Token Contract..."}
 				</div>
 				<div className="text-xs text-blue-100 font-medium">
 					{currentStep === "minting" ? "Step 1 of 2" : "Step 2 of 2"}
@@ -1316,5 +1319,3 @@ export default function MintPage() {
 		</Suspense>
 	);
 }
-
-
