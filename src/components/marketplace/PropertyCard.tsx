@@ -60,19 +60,30 @@ export default function PropertyCard({
 
 	return (
 		<>
-			<div className="group h-full">
-				<div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+			<motion.div
+				className="group h-full"
+				initial={{ opacity: 0, y: 20 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+				transition={{ duration: 0.5, ease: "easeOut" }}
+				whileHover={{ y: -8, transition: { duration: 0.3 } }}>
+				<motion.div
+					className="bg-white rounded-xl border border-gray-200 overflow-hidden h-full flex flex-col"
+					whileHover={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+					transition={{ duration: 0.3 }}>
 					<div className="relative h-48 sm:h-52 overflow-hidden">
-						<img
+						<motion.img
 							src={imageUrl}
 							alt={property.title}
-							className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+							className="w-full h-full object-cover"
+							whileHover={{ scale: 1.12 }}
+							transition={{ duration: 0.6 }}
 						/>
 
 						{/* Overlays */}
 						<div className="absolute top-3 left-3 flex flex-wrap gap-2 max-w-[90%]">
 							{property.isFeatured && (
-								<div className="px-2 py-1 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded shadow-sm backdrop-blur-sm">
+								<div className="px-2 py-1 bg-linear-to-r from-blue-600 to-cyan-500 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded shadow-sm backdrop-blur-sm">
 									Premium
 								</div>
 							)}
@@ -91,7 +102,7 @@ export default function PropertyCard({
 
 						<div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
 							<div className="flex items-center gap-1 bg-black/70 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-xs truncate max-w-[65%] border border-white/10">
-								<MapPin className="w-3 h-3 flex-shrink-0 text-gray-300" />
+								<MapPin className="w-3 h-3 shrink-0 text-gray-300" />
 								<span className="truncate font-medium">
 									{property.location.split(",")[0]}
 								</span>
@@ -106,17 +117,27 @@ export default function PropertyCard({
 					</div>
 
 					<div className="p-4 sm:p-5 flex-1 flex flex-col">
-					<div className="mb-4">
-						<h3 className="font-black text-gray-900 text-base sm:text-lg mb-1.5 line-clamp-1 group-hover:text-blue-600 transition-colors tracking-tight font-mclaren">
-							{property.title}
-						</h3>
-						<p className="text-gray-500 text-xs sm:text-sm line-clamp-2 leading-relaxed font-montserrat">
-							{property.description}
-						</p>
-					</div>
+						<motion.div
+							className="mb-4"
+							initial={{ opacity: 0, x: -10 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.1 }}>
+							<h3 className="font-black text-gray-900 text-base sm:text-lg mb-1.5 line-clamp-1 group-hover:text-blue-600 transition-colors tracking-tight font-mclaren">
+								{property.title}
+							</h3>
+							<p className="text-gray-500 text-xs sm:text-sm line-clamp-2 leading-relaxed font-montserrat">
+								{property.description}
+							</p>
+						</motion.div>
 
 						{/* Stats Grid */}
-						<div className="grid grid-cols-3 gap-2 mb-5 p-3 bg-gray-50 rounded-xl border border-gray-100">
+						<motion.div
+							className="grid grid-cols-3 gap-2 mb-5 p-3 bg-gray-50 rounded-xl border border-gray-100"
+							initial={{ opacity: 0, y: 10 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.2 }}>
 							{property.type !== "Commercial" ? (
 								<>
 									<div className="text-center border-r border-gray-200">
@@ -158,59 +179,67 @@ export default function PropertyCard({
 									{property.squareFeet.toLocaleString()}
 								</div>
 							</div>
-						</div>
+						</motion.div>
 
 						{/* Funding Progress Bar */}
 						<div className="mb-5">
-							<div className="flex justify-between items-center text-xs mb-1.5">
-								<span className="text-gray-600 font-medium">
-									Tokenization Progress
-								</span>
-								<span className="text-blue-600 font-bold">
-									{fundingProgress}% Funded
-								</span>
-							</div>
-							<div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-								<div
-									className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full transition-all duration-1000 ease-out"
-									style={{ width: `${fundingProgress}%` }}
-								/>
-							</div>
+							<motion.div
+								initial={{ opacity: 0 }}
+								whileInView={{ opacity: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.5, delay: 0.2 }}>
+								<div className="flex justify-between items-center text-xs mb-1.5">
+									<span className="text-gray-600 font-medium">
+										Tokenization Progress
+									</span>
+									<span className="text-blue-600 font-bold">
+										{fundingProgress}% Funded
+									</span>
+								</div>
+								<div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+									<motion.div
+										className="h-full bg-linear-to-r from-blue-500 to-cyan-400 rounded-full"
+										initial={{ width: 0 }}
+										whileInView={{ width: `${fundingProgress}%` }}
+										viewport={{ once: true }}
+										transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 }}
+									/>
+								</div>
+							</motion.div>
 
 							<div className="mt-auto">
 								<div className="flex justify-between items-end mb-4">
 									<div>
-									<div className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-0.5 font-black font-montserrat">
-										Asset Value
+										<div className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-0.5 font-black font-montserrat">
+											Asset Value
+										</div>
+										<div className="text-lg sm:text-xl font-black text-gray-900 font-mclaren">
+											${property.price.toLocaleString()}
+										</div>
 									</div>
-									<div className="text-lg sm:text-xl font-black text-gray-900 font-mclaren">
-										${property.price.toLocaleString()}
-									</div>
-									</div>
-									
 								</div>
 
-							<motion.button
-								onClick={handleInvestClick}
-								whileHover={{
-									scale: 1.05,
-									y: -5,
-									backgroundColor: "#2563eb",
-									color: "#ffffff",
-									transition: { duration: 0.4 },
-								}}
-								whileTap={{ scale: 0.98 }}
-								className="w-full px-6 py-4 bg-gray-900 text-white rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3">
-								<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
-									Invest Now
-								</span>
-								<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-							</motion.button>
+								<motion.button
+									onClick={handleInvestClick}
+									whileHover={{
+										scale: 1.05,
+										y: -5,
+										backgroundColor: "#2563eb",
+										color: "#ffffff",
+										transition: { duration: 0.4 },
+									}}
+									whileTap={{ scale: 0.98 }}
+									className="w-full px-6 py-4 bg-gray-900 text-white rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3">
+									<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
+										Invest Now
+									</span>
+									<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+								</motion.button>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</motion.div>
+			</motion.div>
 
 			{/* Invest Now Modal */}
 			{showInvestModal && (

@@ -331,9 +331,10 @@ export default function InvestNowModal({
 					{/* Modal Container */}
 					<div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4">
 						<motion.div
-							initial={{ opacity: 0, scale: 0.95, y: 20 }}
+							initial={{ opacity: 0, scale: 0.92, y: 30 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0, scale: 0.95, y: 20 }}
+							exit={{ opacity: 0, scale: 0.92, y: 30 }}
+							transition={{ type: "spring", damping: 25, stiffness: 300 }}
 							className="bg-white rounded-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 mx-2 sm:mx-0">
 							{/* Header */}
 							<div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
@@ -342,10 +343,10 @@ export default function InvestNowModal({
 										<TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
 									</div>
 									<div className="min-w-0">
-										<h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
+										<h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate font-mclaren">
 											Invest in Property
 										</h2>
-										<p className="text-xs sm:text-sm text-gray-500 truncate">
+										<p className="text-xs sm:text-sm text-gray-500 truncate font-montserrat">
 											{property.title} • {property.location.split(",")[0]}
 										</p>
 									</div>
@@ -354,7 +355,12 @@ export default function InvestNowModal({
 									onClick={onClose}
 									className="p-1 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
 									aria-label="Close modal">
-									<X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+									<motion.div
+										whileHover={{ rotate: 90, scale: 1.1 }}
+										whileTap={{ scale: 0.9 }}
+										transition={{ duration: 0.2 }}>
+										<X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+									</motion.div>
 								</button>
 							</div>
 
@@ -370,10 +376,10 @@ export default function InvestNowModal({
 											<div className="flex items-center gap-3">
 												<Info className="w-5 h-5 text-blue-600 flex-shrink-0" />
 												<div>
-													<p className="text-sm font-medium text-blue-800">
+													<p className="text-sm font-medium text-blue-800 font-montserrat">
 														Demo Mode
 													</p>
-													<p className="text-xs text-blue-700/80 mt-1">
+													<p className="text-xs text-blue-700/80 mt-1 font-montserrat">
 														This is a demonstration. Connect your wallet and
 														switch to Sui Testnet for real transactions.
 													</p>
@@ -391,10 +397,10 @@ export default function InvestNowModal({
 											<div className="flex items-center gap-3">
 												<AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
 												<div>
-													<p className="text-sm font-medium text-amber-800">
+													<p className="text-sm font-medium text-amber-800 font-montserrat">
 														Wrong Network
 													</p>
-													<p className="text-xs text-amber-700/80 mt-1">
+													<p className="text-xs text-amber-700/80 mt-1 font-montserrat">
 														Please switch to Sui Testnet to invest.
 													</p>
 												</div>
@@ -403,17 +409,24 @@ export default function InvestNowModal({
 									)}
 
 									{/* Property Overview */}
-									<div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 sm:p-5 border border-blue-100">
+									<motion.div
+										initial={{ opacity: 0, y: -15 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ duration: 0.5, delay: 0.1 }}
+										className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 sm:p-5 border border-blue-100">
 										<div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-											<div className="w-full sm:w-20 h-48 sm:h-20 rounded-xl overflow-hidden flex-shrink-0">
+											<motion.div
+												className="w-full sm:w-20 h-48 sm:h-20 rounded-xl overflow-hidden flex-shrink-0"
+												whileHover={{ scale: 1.05 }}
+												transition={{ duration: 0.3 }}>
 												<img
 													src={imageUrl}
 													alt={property.title}
 													className="w-full h-full object-cover"
 												/>
-											</div>
+											</motion.div>
 											<div className="flex-1 min-w-0">
-												<h3 className="font-bold text-gray-900 text-base sm:text-lg mb-1 truncate">
+												<h3 className="font-bold text-gray-900 text-base sm:text-lg mb-1 truncate font-mclaren">
 													{property.title}
 												</h3>
 												<div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2">
@@ -422,7 +435,7 @@ export default function InvestNowModal({
 												</div>
 												<div className="grid grid-cols-3 gap-2 sm:gap-3">
 													<div className="text-center">
-														<div className="text-lg sm:text-2xl font-bold text-gray-900">
+														<div className="text-lg sm:text-2xl font-bold text-gray-900 font-mclaren">
 															{formatCurrency(property.price)}
 														</div>
 														<div className="text-[10px] sm:text-xs text-gray-500">
@@ -448,23 +461,35 @@ export default function InvestNowModal({
 												</div>
 											</div>
 										</div>
-									</div>
+									</motion.div>
 
 									{step === "select" && (
 										<>
 											{/* Token Quick Select */}
-											<div className="space-y-2 sm:space-y-3">
+											<motion.div
+												className="space-y-2 sm:space-y-3"
+												initial={{ opacity: 0, y: 10 }}
+												animate={{ opacity: 1, y: 0 }}
+												transition={{ duration: 0.4, delay: 0.15 }}>
 												<label className="block text-sm font-medium text-gray-700">
 													Quick Select Tokens
 												</label>
 												<div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-													{tokenPresets.map((tokens) => (
-														<button
+													{tokenPresets.map((tokens, index) => (
+														<motion.button
 															key={tokens}
 															onClick={() => handleTokenSelect(tokens)}
+															initial={{ opacity: 0, scale: 0.9 }}
+															animate={{ opacity: 1, scale: 1 }}
+															transition={{
+																duration: 0.3,
+																delay: 0.1 + index * 0.05,
+															}}
+															whileHover={{ scale: 1.05, y: -3 }}
+															whileTap={{ scale: 0.95 }}
 															className={`p-3 sm:p-4 rounded-xl border-2 transition-all ${
 																selectedTokens === tokens
-																	? "border-blue-500 bg-blue-50"
+																	? "border-blue-500 bg-blue-50 shadow-lg"
 																	: "border-gray-200 hover:border-blue-300"
 															}`}>
 															<div className="text-base sm:text-lg font-bold text-gray-900">
@@ -476,17 +501,22 @@ export default function InvestNowModal({
 															<div className="text-[10px] sm:text-xs text-blue-600 font-semibold mt-1">
 																${(tokens * tokenPriceNum).toFixed(0)}
 															</div>
-														</button>
+														</motion.button>
 													))}
 												</div>
-											</div>
-
-											{/* Custom Investment */}
-											<div className="space-y-2 sm:space-y-3">
+											</motion.div>
+											<motion.div
+												className="space-y-2 sm:space-y-3"
+												initial={{ opacity: 0, y: 10 }}
+												animate={{ opacity: 1, y: 0 }}
+												transition={{ duration: 0.4, delay: 0.25 }}>
 												<label className="block text-sm font-medium text-gray-700">
 													Custom Investment Amount
 												</label>
-												<div className="relative">
+												<motion.div
+													className="relative"
+													whileFocus={{ scale: 1.01 }}
+													transition={{ type: "tween", duration: 0.2 }}>
 													<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 														<DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
 													</div>
@@ -494,23 +524,21 @@ export default function InvestNowModal({
 														type="number"
 														value={investmentAmount}
 														onChange={(e) => handleAmountChange(e.target.value)}
-														className="w-full pl-10 pr-20 sm:pl-10 sm:pr-24 py-3 sm:py-4 text-base sm:text-lg border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+														className="w-full pl-10 pr-20 sm:pl-10 sm:pr-24 py-3 sm:py-4 text-base sm:text-lg border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
 														placeholder="0.00"
 														min={minInvestmentNum}
 														max={maxInvestmentNum}
 														step="0.01"
 													/>
 													<div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-														<span className="text-sm text-gray-500">
-															USD
-														</span>
+														<span className="text-sm text-gray-500">USD</span>
 													</div>
-												</div>
+												</motion.div>
 												<div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm text-gray-500 gap-1">
 													<span>Min: {formatUSD(minInvestmentNum)}</span>
 													<span>Max: {formatUSD(maxInvestmentNum)}</span>
 												</div>
-											</div>
+											</motion.div>
 
 											{/* Investment Summary */}
 											{selectedTokens > 0 && (
@@ -518,7 +546,7 @@ export default function InvestNowModal({
 													initial={{ opacity: 0, height: 0 }}
 													animate={{ opacity: 1, height: "auto" }}
 													className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 sm:p-5 border border-emerald-100">
-													<h4 className="font-bold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+													<h4 className="font-bold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2 font-mclaren">
 														<PieChart className="w-3 h-3 sm:w-4 sm:h-4" />
 														Investment Summary
 													</h4>
@@ -604,12 +632,20 @@ export default function InvestNowModal({
 
 									{step === "confirm" && (
 										<motion.div
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ duration: 0.4 }}
 											className="text-center space-y-4 sm:space-y-6">
-											<div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center">
+											<motion.div
+												className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center"
+												animate={{ y: [0, -8, 0] }}
+												transition={{
+													duration: 1.5,
+													repeat: Infinity,
+													ease: "easeInOut",
+												}}>
 												<CreditCard className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600" />
-											</div>
+											</motion.div>
 											<div>
 												<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
 													Confirm Your Investment
@@ -625,7 +661,7 @@ export default function InvestNowModal({
 													<span className="text-xs sm:text-sm text-gray-600">
 														Property
 													</span>
-													<span className="font-semibold text-sm sm:text-base text-gray-900 truncate ml-2">
+													<span className="font-semibold text-sm sm:text-base text-gray-900 truncate ml-2 font-montserrat">
 														{property.title}
 													</span>
 												</div>
@@ -679,12 +715,26 @@ export default function InvestNowModal({
 
 									{step === "success" && (
 										<motion.div
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ duration: 0.4 }}
 											className="text-center space-y-4 sm:space-y-6">
-											<div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-emerald-100 flex items-center justify-center">
-												<CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600" />
-											</div>
+											<motion.div
+												className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-emerald-100 flex items-center justify-center"
+												initial={{ scale: 0, rotate: -180 }}
+												animate={{ scale: 1, rotate: 0 }}
+												transition={{
+													duration: 0.6,
+													type: "spring",
+													stiffness: 200,
+													damping: 15,
+												}}>
+												<motion.div
+													animate={{ scale: [1, 1.15, 1] }}
+													transition={{ duration: 2, repeat: Infinity }}>
+													<CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600" />
+												</motion.div>
+											</motion.div>
 											<div>
 												<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
 													{isMockMode
@@ -759,35 +809,59 @@ export default function InvestNowModal({
 							{/* Footer */}
 							<div className="border-t border-gray-100 p-4 sm:p-6">
 								{step === "select" && (
-									<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-									<button
-										onClick={onClose}
-										className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-black rounded-full hover:bg-gray-50 transition-colors">
-										<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-											Cancel
-										</span>
-									</button>
-									<button
-										onClick={handleInvest}
-										disabled={!selectedTokens || !!error || isProcessing}
-										className="px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-black rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3">
-										{isProcessing ? (
-											<>
-												<div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-												<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-													Processing...
-												</span>
-											</>
-										) : (
-											<>
-												<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-													{isMockMode ? "Try Demo Investment" : "Invest Now"}
-												</span>
-												<DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
-											</>
-										)}
-									</button>
-									</div>
+									<motion.div
+										className="flex flex-col sm:flex-row gap-2 sm:gap-3"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ duration: 0.3, delay: 0.3 }}>
+										<motion.button
+											onClick={onClose}
+											whileHover={{ scale: 1.02, backgroundColor: "#f3f4f6" }}
+											whileTap={{ scale: 0.98 }}
+											className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-black rounded-full hover:bg-gray-50 transition-colors">
+											<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
+												Cancel
+											</span>
+										</motion.button>
+										<motion.button
+											onClick={handleInvest}
+											disabled={!selectedTokens || !!error || isProcessing}
+											whileHover={{
+												scale:
+													!selectedTokens || !!error || isProcessing ? 1 : 1.05,
+												y: -2,
+											}}
+											whileTap={{ scale: 0.95 }}
+											className="px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-black rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3">
+											{isProcessing ? (
+												<>
+													<motion.div
+														className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full"
+														animate={{ rotate: 360 }}
+														transition={{
+															duration: 0.8,
+															repeat: Infinity,
+															ease: "linear",
+														}}
+													/>
+													<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
+														Processing...
+													</span>
+												</>
+											) : (
+												<>
+													<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
+														{isMockMode ? "Try Demo Investment" : "Invest Now"}
+													</span>
+													<motion.div
+														animate={{ x: [0, 3, 0] }}
+														transition={{ duration: 1.5, repeat: Infinity }}>
+														<DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
+													</motion.div>
+												</>
+											)}
+										</motion.button>
+									</motion.div>
 								)}
 
 								{step === "confirm" && (
@@ -808,27 +882,39 @@ export default function InvestNowModal({
 								)}
 
 								{step === "success" && (
-									<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-									<button
-										onClick={onClose}
-										className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-black rounded-full hover:bg-gray-50 transition-colors">
-										<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-											Close
-										</span>
-									</button>
-									<button
-										onClick={() => {
-											onClose();
-											// Navigate to portfolio page
-											window.location.href = "/dashboard";
-										}}
-										className="px-6 sm:px-8 py-3 sm:py-4 bg-emerald-600 text-white font-black rounded-full hover:bg-emerald-700 transition-all flex items-center justify-center gap-3">
-										<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-											View Portfolio
-										</span>
-										<TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-									</button>
-									</div>
+									<motion.div
+										className="flex flex-col sm:flex-row gap-2 sm:gap-3"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ duration: 0.4 }}>
+										<motion.button
+											onClick={onClose}
+											whileHover={{ scale: 1.02 }}
+											whileTap={{ scale: 0.98 }}
+											className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-black rounded-full hover:bg-gray-50 transition-colors">
+											<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
+												Close
+											</span>
+										</motion.button>
+										<motion.button
+											onClick={() => {
+												onClose();
+												// Navigate to portfolio page
+												window.location.href = "/dashboard";
+											}}
+											whileHover={{ scale: 1.05, y: -2 }}
+											whileTap={{ scale: 0.95 }}
+											className="px-6 sm:px-8 py-3 sm:py-4 bg-emerald-600 text-white font-black rounded-full hover:bg-emerald-700 transition-all flex items-center justify-center gap-3">
+											<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
+												View Portfolio
+											</span>
+											<motion.div
+												animate={{ x: [0, 3, 0] }}
+												transition={{ duration: 1.5, repeat: Infinity }}>
+												<TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
+											</motion.div>
+										</motion.button>
+									</motion.div>
 								)}
 							</div>
 						</motion.div>
