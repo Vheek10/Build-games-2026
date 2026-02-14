@@ -242,3 +242,54 @@ body {
 .border-light {
 	border-color: var(--color-border);
 }
+/* Connect Wallet Button Styling */
+.sd-connect-button {
+	width: 100%;
+}
+
+.sd-connect-button button {
+	width: 100% !important;
+	max-width: 100% !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 9999px !important;
+	background-color: #111827 !important;
+	color: #ffffff !important;
+	font-size: 0.75rem !important;
+	font-weight: 900 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.12em !important;
+	padding: 0.6rem 1rem !important;
+	transition: all 300ms !important;
+	font-family: var(--font-sans) !important;
+	min-height: 40px !important;
+	border: none !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+}
+
+@media (min-width: 640px) {
+	.sd-connect-button button {
+		font-size: 0.6875rem !important;
+		letter-spacing: 0.25em !important;
+		padding: 0.7rem 1.5rem !important;
+		min-height: 44px !important;
+	}
+}
+
+.sd-connect-button button:hover {
+	background-color: #2563eb !important;
+	box-shadow: 0 12px 30px -12px rgba(37, 99, 235, 0.6) !important;
+	transform: translateY(-2px) !important;
+}
+
+.sd-connect-button button:active {
+	transform: translateY(0) !important;
+}
+
+.sd-connect-button button:focus-visible {
+	outline: none !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5) !important;
+}
