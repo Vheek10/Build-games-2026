@@ -28,7 +28,9 @@ async function hashString(str: string): Promise<string> {
 	const data = encoder.encode(str);
 	const hashBuffer = await crypto.subtle.digest("SHA-256", data);
 	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+	const hashHex = hashArray
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
 	return "0x" + hashHex.slice(0, 64);
 }
 
@@ -358,7 +360,7 @@ function MintFormContent() {
 
 			// Create ZK Commitment
 			const fileHashes = await Promise.all(
-				selectedFiles.map((f) => keccak256(f.name + f.size + f.lastModified))
+				selectedFiles.map((f) => keccak256(f.name + f.size + f.lastModified)),
 			);
 			const privateDataString = JSON.stringify({
 				valuation: formData.valuation,
@@ -551,13 +553,15 @@ function MintFormContent() {
 					</div>
 
 					<div className="flex flex-col sm:flex-row gap-4">
-							<button
-								onClick={() => router.push("/dashboard")}
-								className="flex-1 px-8 py-5 bg-gray-900 text-white rounded-full hover:bg-blue-600 transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3 group"
-								aria-label="Go to dashboard">
-								<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">Go to Dashboard</span>
-								<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-							</button>
+						<button
+							onClick={() => router.push("/dashboard")}
+							className="flex-1 px-8 py-5 bg-gray-900 text-white rounded-full hover:bg-blue-600 transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3 group"
+							aria-label="Go to dashboard">
+							<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
+								Go to Dashboard
+							</span>
+							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+						</button>
 						<button
 							onClick={() => {
 								setTxHash(undefined);
@@ -575,10 +579,12 @@ function MintFormContent() {
 									tokenSupply: "1000",
 								});
 							}}
-								className="flex-1 px-8 py-5 bg-white text-gray-900 rounded-full border border-gray-200 hover:border-blue-300 transition-all duration-500 hover:shadow-[0_10px_20px_-5px_rgba(0,0,0,0.05)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3"
-								aria-label="Mint another property deed">
-								<Plus className="w-4 h-4" />
-								<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">Mint Another</span>
+							className="flex-1 px-8 py-5 bg-white text-gray-900 rounded-full border border-gray-200 hover:border-blue-300 transition-all duration-500 hover:shadow-[0_10px_20px_-5px_rgba(0,0,0,0.05)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3"
+							aria-label="Mint another property deed">
+							<Plus className="w-4 h-4" />
+							<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
+								Mint Another
+							</span>
 						</button>
 					</div>
 				</motion.div>
@@ -600,7 +606,7 @@ function MintFormContent() {
 				<Loader2 className="w-6 h-6 animate-spin text-white" />
 			</div>
 			<div className="text-left">
-				<div className="font-semibold text-white text-sm">
+				<div className="font-semibold text-white text-sm font-montserrat">
 					{currentStep === "minting"
 						? isWaitingReceipt
 							? "Confirming Deed Transaction..."
@@ -609,7 +615,7 @@ function MintFormContent() {
 							? "Confirming RWA Deployment..."
 							: "Deploying Token Contract..."}
 				</div>
-				<div className="text-xs text-blue-100 font-medium">
+				<div className="text-xs text-blue-100 font-medium font-montserrat">
 					{currentStep === "minting" ? "Step 1 of 2" : "Step 2 of 2"}
 				</div>
 			</div>
@@ -630,7 +636,7 @@ function MintFormContent() {
 							<Zap className="w-6 h-6 text-amber-300" />
 						</div>
 						<div className="text-left">
-							<div className="font-bold text-white">
+							<div className="font-bold text-white font-montserrat">
 								Mint & Tokenize Property
 							</div>
 						</div>
@@ -641,7 +647,9 @@ function MintFormContent() {
 							<CheckCircle className="w-6 h-6 text-white" />
 						</div>
 						<div className="text-left">
-							<div className="font-bold text-white">Mint Property Deed</div>
+							<div className="font-bold text-white font-montserrat">
+								Mint Property Deed
+							</div>
 						</div>
 					</>
 				)}
@@ -650,53 +658,86 @@ function MintFormContent() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 transition-colors duration-300">
-			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+		<motion.div
+			className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 transition-colors duration-300"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}>
+			<motion.div
+				className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.5 }}>
 				{/* Simple Header */}
-				<div className="text-center mb-10">
-					<div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-4 ring-1 ring-blue-100">
+				<motion.div
+					className="text-center mb-10"
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.1, duration: 0.4 }}>
+					<motion.div
+						className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-4 ring-1 ring-blue-100"
+						initial={{ scale: 0.9, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						transition={{ delay: 0.15, duration: 0.3 }}>
 						<Building2 className="w-4 h-4 text-blue-600" />
 						<span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 font-montserrat">
 							PROPERTY REGISTRATION
 						</span>
-					</div>
+					</motion.div>
 
-					<h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 tracking-tight font-mclaren">
+					<motion.h1
+						className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 tracking-tight leading-[1.1] font-mclaren"
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.2, duration: 0.4 }}>
 						Mint Property Deed
-					</h1>
+					</motion.h1>
 
-					<p className="text-lg text-gray-600 max-w-2xl mx-auto font-medium font-montserrat">
+					<motion.p
+						className="text-lg text-gray-600 max-w-2xl mx-auto font-medium font-montserrat leading-relaxed"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.25, duration: 0.4 }}>
 						Create a unique, on-chain digital deed representing your real estate
 						asset.
-					</p>
-				</div>
-
+					</motion.p>
+				</motion.div>
 				{/* Network / Wallet Status Indicator */}
-				<div className="mb-8">
-					<div
-						className={`flex items-center gap-3 p-4 rounded-2xl ${
+				<motion.div
+					className="mb-8"
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.3, duration: 0.4 }}>
+					<motion.div
+						className={`flex items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
 							connected
-								? "bg-emerald-50 border border-emerald-100"
-								: "bg-red-50 border border-red-100"
-						}`}>
+								? "bg-emerald-50 border border-emerald-100 shadow-sm shadow-emerald-100/50"
+								: "bg-red-50 border border-red-100 shadow-sm shadow-red-100/50"
+						}`}
+						whileHover={{
+							y: -2,
+							boxShadow: connected
+								? "0 12px 24px rgba(16,185,129,0.15)"
+								: "0 12px 24px rgba(220,38,38,0.15)",
+						}}
+						transition={{ type: "spring", stiffness: 400 }}>
 						<div
 							className={`w-3 h-3 rounded-full ${
 								connected ? "bg-emerald-500 animate-pulse" : "bg-red-500"
 							}`}
 						/>
 						<div className="flex-1">
-							<div className="font-semibold text-gray-900">
+							<div className="font-semibold text-gray-900 font-montserrat">
 								{connected ? "Connected to Sui Testnet" : "Wallet Disconnected"}
 							</div>
-							<div className="text-sm text-gray-600">
+							<div className="text-sm text-gray-600 font-montserrat">
 								{connected
 									? "You can mint property deeds on Sui Testnet."
 									: "Please connect your Sui wallet to mint property deeds."}
 							</div>
 						</div>
 						<Globe className="w-5 h-5 text-gray-400" />
-					</div>
-				</div>
+					</motion.div>
+				</motion.div>
 
 				{/* Global Error Alert */}
 				<AnimatePresence mode="wait">
@@ -712,10 +753,10 @@ function MintFormContent() {
 								<AlertCircle className="w-6 h-6 text-red-600" />
 							</div>
 							<div className="flex-1">
-								<h4 className="text-lg font-black text-red-900 tracking-tight">
+								<h4 className="text-lg font-black text-red-900 tracking-tight font-mclaren">
 									Minting Error
 								</h4>
-								<p className="text-sm text-red-700/80 mt-1 font-medium leading-relaxed">
+								<p className="text-sm text-red-700/80 mt-1 font-medium leading-relaxed font-montserrat">
 									{submitError ||
 										(typeof mintError === "string"
 											? mintError
@@ -724,13 +765,13 @@ function MintFormContent() {
 								<div className="mt-4 flex gap-3">
 									<button
 										onClick={() => setSubmitError(null)}
-										className="px-4 py-2 bg-white text-red-600 text-xs font-bold rounded-lg border border-red-200 hover:bg-red-50 transition-all"
+										className="px-4 py-2 bg-white text-red-600 text-xs font-bold rounded-lg border border-red-200 hover:bg-red-50 transition-all font-montserrat"
 										aria-label="Dismiss error">
 										Dismiss
 									</button>
 									<button
 										onClick={() => window.location.reload()}
-										className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/20"
+										className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 font-montserrat"
 										aria-label="Retry page">
 										Retry Page
 									</button>
@@ -758,10 +799,10 @@ function MintFormContent() {
 									<Clock className="w-6 h-6 text-blue-600" />
 								</div>
 								<div className="flex-1">
-									<h4 className="font-bold text-gray-900">
+									<h4 className="font-bold text-gray-900 font-mclaren">
 										Transaction in Progress
 									</h4>
-									<p className="text-sm text-gray-600 mt-1">
+									<p className="text-sm text-gray-600 mt-1 font-montserrat">
 										{currentStep === "minting"
 											? "Minting your property deed object on Sui..."
 											: "Deploying RWA token object for fractional ownership on Sui..."}
@@ -777,7 +818,7 @@ function MintFormContent() {
 												}}
 											/>
 										</div>
-										<span className="text-xs font-bold text-blue-600">
+										<span className="text-xs font-bold text-blue-600 font-montserrat">
 											{currentStep === "minting" ? "Step 1/2" : "Step 2/2"}
 										</span>
 									</div>
@@ -788,31 +829,49 @@ function MintFormContent() {
 				)}
 
 				{/* Main Form */}
-				<div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300">
+				<motion.div
+					className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300"
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.35, duration: 0.4 }}>
 					{/* Form Content */}
 					<form
 						onSubmit={handleSubmit}
 						className="p-6 sm:p-8">
 						<div className="space-y-8">
 							{/* Context Block */}
-							<div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
-								<h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+							<motion.div
+								className="bg-blue-50 rounded-xl p-6 border border-blue-100"
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.4, duration: 0.3 }}>
+								<h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2 font-mclaren">
 									<Home className="w-5 h-5 text-blue-500" />
 									Property Information
 								</h3>
-								<p className="text-sm text-gray-600">
+								<p className="text-sm text-gray-600 font-montserrat">
 									This information will be embedded in the NFT metadata. Ensure
 									all details are accurate as the blockchain record is
 									immutable.
 								</p>
-							</div>
-
+							</motion.div>
 							{/* Property Details Inputs */}
-							<div className="grid sm:grid-cols-2 gap-6">
-								<div className="space-y-2">
+							<motion.div
+								className="grid sm:grid-cols-2 gap-6"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{
+									delay: 0.45,
+									duration: 0.4,
+									staggerChildren: 0.05,
+								}}>
+								<motion.div
+									className="space-y-2"
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}>
 									<label
 										htmlFor="title"
-										className="block text-sm font-medium text-gray-700">
+										className="block text-sm font-medium text-gray-700 font-montserrat">
 										Property Title <span className="text-red-500">*</span>
 									</label>
 									<input
@@ -820,7 +879,7 @@ function MintFormContent() {
 										name="title"
 										value={formData.title}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.title ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.title ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. Sunset Villa"
 										required
 										aria-invalid={!!formErrors.title}
@@ -831,16 +890,19 @@ function MintFormContent() {
 									{formErrors.title && (
 										<p
 											id="title-error"
-											className="text-sm text-red-600">
+											className="text-sm text-red-600 font-montserrat">
 											{formErrors.title}
 										</p>
 									)}
-								</div>
+								</motion.div>
 
-								<div className="space-y-2">
+								<motion.div
+									className="space-y-2"
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}>
 									<label
 										htmlFor="location"
-										className="block text-sm font-medium text-gray-700">
+										className="block text-sm font-medium text-gray-700 font-montserrat">
 										Location <span className="text-red-500">*</span>
 									</label>
 									<input
@@ -848,7 +910,7 @@ function MintFormContent() {
 										name="location"
 										value={formData.location}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.location ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.location ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 123 Ocean Dr, Miami, FL"
 										required
 										aria-invalid={!!formErrors.location}
@@ -859,16 +921,19 @@ function MintFormContent() {
 									{formErrors.location && (
 										<p
 											id="location-error"
-											className="text-sm text-red-600">
+											className="text-sm text-red-600 font-montserrat">
 											{formErrors.location}
 										</p>
 									)}
-								</div>
+								</motion.div>
 
-								<div className="space-y-2">
+								<motion.div
+									className="space-y-2"
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}>
 									<label
 										htmlFor="valuation"
-										className="block text-sm font-medium text-gray-700">
+										className="block text-sm font-medium text-gray-700 font-montserrat">
 										Valuation (USD) <span className="text-red-500">*</span>
 									</label>
 									<input
@@ -876,7 +941,7 @@ function MintFormContent() {
 										name="valuation"
 										value={formData.valuation}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.valuation ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.valuation ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 500000"
 										type="number"
 										min="0"
@@ -890,20 +955,23 @@ function MintFormContent() {
 									{formErrors.valuation ? (
 										<p
 											id="valuation-error"
-											className="text-sm text-red-600">
+											className="text-sm text-red-600 font-montserrat">
 											{formErrors.valuation}
 										</p>
 									) : (
-										<p className="text-xs text-gray-500">
+										<p className="text-xs text-gray-500 font-montserrat">
 											Initial estimated value of the property in USD.
 										</p>
 									)}
-								</div>
+								</motion.div>
 
-								<div className="space-y-2">
+								<motion.div
+									className="space-y-2"
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}>
 									<label
 										htmlFor="propertyType"
-										className="block text-sm font-medium text-gray-700">
+										className="block text-sm font-medium text-gray-700 font-montserrat">
 										Property Type
 									</label>
 									<select
@@ -911,19 +979,22 @@ function MintFormContent() {
 										name="propertyType"
 										value={formData.propertyType}
 										onChange={handleInputChange}
-										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer">
+										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer">
 										<option value="residential">Residential</option>
 										<option value="commercial">Commercial</option>
 										<option value="industrial">Industrial</option>
 										<option value="land">Land</option>
 										<option value="mixed-use">Mixed-Use</option>
 									</select>
-								</div>
+								</motion.div>
 
-								<div className="space-y-2 sm:col-span-2">
+								<motion.div
+									className="space-y-2 sm:col-span-2"
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}>
 									<label
 										htmlFor="description"
-										className="block text-sm font-medium text-gray-700">
+										className="block text-sm font-medium text-gray-700 font-montserrat">
 										Description
 									</label>
 									<textarea
@@ -931,16 +1002,15 @@ function MintFormContent() {
 										name="description"
 										value={formData.description}
 										onChange={handleInputChange}
-										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[120px] resize-y placeholder-gray-400"
+										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[120px] resize-y placeholder-gray-400"
 										placeholder="Describe main features, amenities, and unique selling points..."
 										rows={4}
 									/>
-								</div>
-							</div>
-
+								</motion.div>
+							</motion.div>
 							{/* File Upload Section */}
 							<div className="space-y-4">
-								<label className="block text-sm font-medium text-gray-700">
+								<label className="block text-sm font-medium text-gray-700 font-montserrat">
 									Supporting Documents
 								</label>
 
@@ -948,17 +1018,17 @@ function MintFormContent() {
 									<div className="mx-auto w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
 										<Upload className="w-6 h-6 text-blue-600" />
 									</div>
-									<h4 className="text-gray-900 font-medium mb-1">
+									<h4 className="text-gray-900 font-medium mb-1 font-mclaren">
 										Upload Property Deed & Photos
 									</h4>
-									<p className="text-gray-500 text-sm mb-4">
+									<p className="text-gray-500 text-sm mb-4 font-montserrat">
 										Recommended: Property Deed, Owner ID, and Valuation Reports.
 										<br />
 										<span className="text-xs">
 											Max 5MB per file. Supported: JPEG, PNG, GIF, WebP, PDF
 										</span>
 									</p>
-									<p className="text-xs text-blue-500 mb-4 font-medium flex items-center justify-center gap-1">
+									<p className="text-xs text-blue-500 mb-4 font-medium flex items-center justify-center gap-1 font-montserrat">
 										<Shield className="w-3 h-3" />
 										Files are encrypted & stored privately via ZK-Commitments.
 									</p>
@@ -982,11 +1052,11 @@ function MintFormContent() {
 											e.key === "Enter" &&
 											document.getElementById("file-upload")?.click()
 										}
-										className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+										className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-montserrat"
 										aria-label="Browse files to upload">
 										Browse Files
 									</label>
-									<p className="text-xs text-gray-500 mt-4">
+									<p className="text-xs text-gray-500 mt-4 font-montserrat">
 										{selectedFiles.length} of 5 files selected
 									</p>
 								</div>
@@ -994,7 +1064,7 @@ function MintFormContent() {
 								{/* Selected Files List */}
 								{selectedFiles.length > 0 && (
 									<div className="grid gap-3">
-										<h5 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+										<h5 className="text-xs font-semibold text-gray-500 uppercase tracking-wider font-montserrat">
 											Selected Documents
 										</h5>
 
@@ -1289,13 +1359,13 @@ function MintFormContent() {
 
 								{!connected && (
 									<p
-										className="text-center text-sm text-red-500 mt-3 font-medium"
+										className="text-center text-sm text-red-500 mt-3 font-medium font-montserrat"
 										role="alert">
 										Wallet not connected. Please connect via the navigation bar.
 									</p>
 								)}
 
-								<p className="text-xs text-gray-500 mt-4 text-center px-4">
+								<p className="text-xs text-gray-500 mt-4 text-center px-4 font-montserrat">
 									By minting, you agree to the StrataDeed Terms of Service. A
 									gas fee (SUI) will be required to execute this transaction on
 									the Sui Network.
@@ -1303,9 +1373,9 @@ function MintFormContent() {
 							</div>
 						</div>
 					</form>
-				</div>
-			</div>
-		</div>
+				</motion.div>
+			</motion.div>
+		</motion.div>
 	);
 }
 

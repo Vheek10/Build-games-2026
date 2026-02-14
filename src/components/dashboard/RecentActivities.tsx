@@ -1,5 +1,6 @@
 /** @format */
 
+import { motion } from "framer-motion";
 import {
 	Clock,
 	Wallet,
@@ -73,77 +74,138 @@ export default function RecentActivities({
 		}
 	};
 
+	const containerVariants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			transition: {
+				staggerChildren: 0.08,
+				delayChildren: 0.1,
+			},
+		},
+	};
+
+	const itemVariants = {
+		hidden: { opacity: 0, x: -10 },
+		visible: {
+			opacity: 1,
+			x: 0,
+			transition: { duration: 0.3 },
+		},
+	};
+
 	return (
-		<div className="bg-white rounded-xl border border-gray-200 p-5">
-			<div className="flex items-center justify-between mb-6">
+		<motion.div
+			className="bg-white rounded-xl border border-gray-200 p-5"
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.4 }}>
+			<motion.div
+				className="flex items-center justify-between mb-6"
+				initial={{ opacity: 0, x: -10 }}
+				animate={{ opacity: 1, x: 0 }}
+				transition={{ duration: 0.3 }}>
 				<div>
-					<h3 className="font-bold text-gray-900">
+					<h3 className="font-bold text-gray-900 font-mclaren text-lg">
 						On-Chain Activity
 					</h3>
-					<p className="text-sm text-gray-600">
+					<p className="text-sm text-gray-600 font-montserrat">
 						Recent contract interactions
 					</p>
 				</div>
-				<div className="p-2 bg-gray-100 rounded-lg">
+				<motion.div
+					className="p-2 bg-gray-100 rounded-lg"
+					animate={{ rotate: 360 }}
+					transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
 					<Clock className="w-4 h-4 text-gray-500" />
-				</div>
-			</div>
+				</motion.div>
+			</motion.div>
 
-			<div className="space-y-4">
+			<motion.div
+				className="space-y-4"
+				variants={containerVariants}
+				initial="hidden"
+				animate="visible">
 				{activities.map((activity) => {
 					const { icon: Icon, color, bg } = getIcon(activity.type);
 					return (
-						<div
+						<motion.div
 							key={activity.id}
-							className="flex items-start gap-3 group">
-							<div className={`p-2 rounded-lg ${bg} shrink-0`}>
+							variants={itemVariants}
+							whileHover={{ x: 4, backgroundColor: "rgba(249, 250, 251, 0.5)" }}
+							className="flex items-start gap-3 group p-2 rounded-lg transition-all">
+							<motion.div
+								className={`p-2 rounded-lg ${bg} shrink-0`}
+								whileHover={{ scale: 1.1 }}
+								transition={{ type: "spring", stiffness: 400 }}>
 								<Icon className={`w-4 h-4 ${color}`} />
-							</div>
+							</motion.div>
 
 							<div className="flex-1 min-w-0">
 								<div className="flex items-center justify-between mb-1">
-									<span className="font-medium text-gray-900 capitalize truncate pr-2">
+									<span className="font-medium text-gray-900 capitalize truncate pr-2 font-montserrat">
 										{activity.type}
 									</span>
 									{activity.amount && (
-										<span className="font-bold text-gray-900 text-xs sm:text-sm whitespace-nowrap">
+										<motion.span
+											className="font-bold text-gray-900 text-xs sm:text-sm whitespace-nowrap font-montserrat"
+											initial={{ opacity: 0, scale: 0.8 }}
+											animate={{ opacity: 1, scale: 1 }}
+											transition={{ delay: 0.2 }}>
 											{activity.amount}
-										</span>
+										</motion.span>
 									)}
 								</div>
-								<p className="text-xs sm:text-sm text-gray-500 mb-1 truncate">
+								<p className="text-xs sm:text-sm text-gray-500 mb-1 truncate font-montserrat">
 									{activity.property}
 								</p>
-								<div className="flex items-center justify-between mt-2">
+								<motion.div
+									className="flex items-center justify-between mt-2"
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ delay: 0.1 }}>
 									<div className="flex items-center gap-2">
 										<a
 											href="#"
-											className="flex items-center gap-1 text-[10px] text-blue-500 hover:text-blue-600 hover:underline">
+											className="flex items-center gap-1 text-[10px] text-blue-500 hover:text-blue-600 hover:underline font-montserrat">
 											{activity.txHash} <ExternalLink className="w-2.5 h-2.5" />
 										</a>
-										<span className="text-[10px] text-gray-400">
+										<span className="text-[10px] text-gray-400 font-montserrat">
 											• {activity.date}
 										</span>
 									</div>
-									<span
+									<motion.span
+										initial={{ scale: 0.8 }}
+										animate={{ scale: 1 }}
+										transition={{ delay: 0.15 }}
 										className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${getStatusColor(
 											activity.status,
-										)}`}>
+										)} font-montserrat`}>
 										{activity.status}
-									</span>
-								</div>
+									</motion.span>
+								</motion.div>
 							</div>
-						</div>
+						</motion.div>
 					);
 				})}
-			</div>
+			</motion.div>
 
-			<button className="w-full mt-6 py-3 text-blue-600 font-black hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center gap-3">
+			<motion.button
+				className="w-full mt-6 py-3 text-blue-600 font-black hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center gap-3 font-montserrat"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ delay: 0.4 }}
+				whileHover={{ backgroundColor: "rgba(219, 234, 254, 1)" }}
+				whileTap={{ scale: 0.98 }}>
 				<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 					View on SuiScan
 				</span>
-				<ExternalLink className="w-3.5 h-3.5" />
-			</button>
-		</div>
+				<motion.div
+					animate={{ x: [0, 3, 0] }}
+					transition={{ duration: 2, repeat: Infinity }}>
+					<ExternalLink className="w-3.5 h-3.5" />
+				</motion.div>
+			</motion.button>
+		</motion.div>
 	);
 }

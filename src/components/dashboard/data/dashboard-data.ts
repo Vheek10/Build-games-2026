@@ -60,8 +60,7 @@ export const metrics: DashboardMetric[] = [
 		icon: DollarSign,
 		color: "emerald", // Sui Green
 		borderColor: "border-emerald-200",
-		gradientFrom:
-			"from-emerald-50 to-emerald-100",
+		gradientFrom: "from-emerald-50 to-emerald-100",
 		gradientTo: "to-emerald-100",
 		iconColor: "text-emerald-600",
 	},
@@ -74,8 +73,7 @@ export const metrics: DashboardMetric[] = [
 		icon: Layers,
 		color: "blue",
 		borderColor: "border-blue-200",
-		gradientFrom:
-			"from-blue-50 to-blue-100",
+		gradientFrom: "from-blue-50 to-blue-100",
 		gradientTo: "to-blue-100",
 		iconColor: "text-blue-600",
 	},
@@ -88,8 +86,7 @@ export const metrics: DashboardMetric[] = [
 		icon: TrendingUp,
 		color: "purple",
 		borderColor: "border-purple-200",
-		gradientFrom:
-			"from-purple-50 to-purple-100",
+		gradientFrom: "from-purple-50 to-purple-100",
 		gradientTo: "to-purple-100",
 		iconColor: "text-purple-600",
 	},
@@ -102,8 +99,7 @@ export const metrics: DashboardMetric[] = [
 		icon: Zap,
 		color: "amber",
 		borderColor: "border-amber-200",
-		gradientFrom:
-			"from-amber-50 to-amber-100",
+		gradientFrom: "from-amber-50 to-amber-100",
 		gradientTo: "to-amber-100",
 		iconColor: "text-amber-600",
 	},

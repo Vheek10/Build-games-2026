@@ -23,8 +23,9 @@ import { cn } from "@/lib/utils";
 
 export default function Footer() {
 	return (
-		<footer className="bg-white border-t border-gray-200">
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+		<footer className="bg-gradient-to-b from-white via-slate-50 to-white border-t border-gray-200 relative overflow-hidden">
+			<div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0" />
+			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
 				<div className="flex flex-col lg:flex-row justify-between items-center gap-8">
 					{/* Brand Section */}
 					<div className="flex items-center gap-4">
@@ -48,7 +49,7 @@ export default function Footer() {
 					</div>
 
 					{/* Links */}
-					<div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+					<div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 font-montserrat">
 						{[
 							{ label: "About", href: "/about" },
 							{ label: "Marketplace", href: "/marketplace" },
@@ -84,7 +85,7 @@ export default function Footer() {
 
 				{/* Copyright */}
 				<div className="text-center mt-8 pt-6 border-t border-gray-200">
-					<p className="text-gray-500 text-sm">
+					<p className="text-gray-500 text-sm font-montserrat">
 						© {new Date().getFullYear()} StrataDeed. Revolutionizing real estate
 						investment.
 					</p>
