@@ -146,7 +146,7 @@ export default function About() {
 							<motion.h1
 								custom={1}
 								variants={staggerVariants}
-								className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black text-gray-900 leading-[0.9] md:leading-[0.85] tracking-tight font-mclaren">
+								className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-[0.9] tracking-tighter font-mclaren">
 								Beyond <br />
 								<motion.span
 									animate={{
@@ -161,7 +161,7 @@ export default function About() {
 							<motion.p
 								custom={2}
 								variants={staggerVariants}
-								className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-600 max-w-xl leading-relaxed font-medium font-montserrat">
+								className="text-sm lg:text-base text-gray-600 max-w-xl leading-relaxed font-medium font-montserrat">
 								We are rebuilding the trust architecture of global real estate.
 								Merging sovereign law with digital permanence.
 							</motion.p>
@@ -321,7 +321,7 @@ export default function About() {
 								initial={{ opacity: 0, y: 30 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-gray-900 mb-6 lg:mb-10 leading-[0.9] tracking-tight font-mclaren">
+								className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 lg:mb-10 leading-[0.9] tracking-tighter font-mclaren">
 								Redefining <br />
 								<span className="text-blue-600">Execution.</span>
 							</motion.h2>
@@ -330,7 +330,7 @@ export default function About() {
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								className="text-base lg:text-xl xl:text-2xl text-gray-600 mb-8 lg:mb-16 leading-relaxed font-medium font-montserrat">
+								className="text-sm lg:text-base text-gray-600 mb-8 lg:mb-16 leading-relaxed font-medium font-montserrat">
 								Traditional settlement is bound by regional bureaucracy.
 								StrataDeed protocols automate title verification and asset
 								fractionalization.
@@ -392,7 +392,7 @@ export default function About() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						className="text-center mb-12 lg:mb-32">
-						<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 tracking-tight font-mclaren">
+						<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter font-mclaren">
 							Our <span className="text-blue-600">Purpose.</span>
 						</h2>
 					</motion.div>
@@ -440,7 +440,7 @@ export default function About() {
 									<Target className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
 								</motion.div>
 								{/* Updated: Changed to font-mclaren */}
-								<h3 className="text-3xl lg:text-6xl font-black tracking-tight leading-[0.9] font-mclaren">
+								<h3 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9] font-mclaren">
 									mission <br />
 									<span className="text-blue-500">Statement</span>
 								</h3>
@@ -514,7 +514,7 @@ export default function About() {
 									<Eye className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
 								</motion.div>
 								{/* Updated: Changed to font-mclaren */}
-								<h3 className="text-3xl lg:text-6xl font-black tracking-tight leading-[0.9] font-mclaren">
+								<h3 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9] font-mclaren">
 									future <br />
 									<span className="text-cyan-400">Vision</span>
 								</h3>
@@ -575,7 +575,7 @@ export default function About() {
 						</div>
 
 						{/* Updated: Changed from font-secondary to font-mclaren */}
-						<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-[10rem] font-black text-gray-900 leading-[0.9] tracking-tight font-mclaren">
+						<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-[0.9] tracking-tighter font-mclaren">
 							join the <br />
 							<motion.span
 								animate={{ opacity: [1, 0.5, 1] }}
