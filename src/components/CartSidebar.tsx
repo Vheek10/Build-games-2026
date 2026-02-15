@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { X, ShoppingCart, CreditCard, Shield } from "lucide-react";
 
 interface CartItem {
@@ -78,12 +79,14 @@ export default function CartSidebar({
 									key={item.property.id}
 									className="p-4 bg-gray-50 rounded-lg border border-gray-200">
 									<div className="flex items-start gap-4">
-										<img
+										<Image
 											src={
 												item.property.image ||
 												"/images/unsplash-7fde63acd811.jpg"
 											}
 											alt={item.property.title}
+											width={80}
+											height={64}
 											className="w-20 h-16 rounded-lg object-cover"
 										/>
 										<div className="flex-1">

@@ -1,7 +1,7 @@
 /** @format */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { Search, Filter, RefreshCw } from "lucide-react";
 import PropertyCard from "./PropertyCard";
@@ -12,7 +12,7 @@ interface PropertyGridProps {
 	clearFilters: () => void;
 }
 
-export default function PropertyGrid({
+function PropertyGrid({
 	filteredProperties,
 	demoImages,
 	clearFilters,
@@ -115,3 +115,5 @@ export default function PropertyGrid({
 		</div>
 	);
 }
+// Export memoized version to prevent unnecessary re-renders
+export default memo(PropertyGrid);

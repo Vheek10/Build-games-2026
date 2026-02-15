@@ -1,11 +1,12 @@
 /** @format */
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { sampleProperties } from "../../lib/dummy-data";
 import { getAllProperties } from "../../lib/propertyStorage";
 import type { Property } from "../../lib/dummy-data";
 import { Search, X } from "lucide-react";
+import { debounce } from "../../lib/performance";
 
 // Components
 import MarketplaceHeader from "../../components/marketplace/MarketplaceHeader";
@@ -29,9 +30,6 @@ export default function MarketplacePage() {
 		const loadProperties = () => {
 			const properties = getAllProperties(sampleProperties);
 			setAllProperties(properties);
-			console.log(
-				`Loaded ${properties.length} properties (${properties.filter((p) => p.isMinted).length} minted)`,
-			);
 		};
 
 		loadProperties();
@@ -70,7 +68,7 @@ export default function MarketplacePage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white font-montserrat">
+		<div className="min-h-screen bg-linear-to-b from-gray-50 to-white font-montserrat">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				{/* Header */}
 				<MarketplaceHeader

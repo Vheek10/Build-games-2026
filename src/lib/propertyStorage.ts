@@ -41,9 +41,8 @@ export function saveProperty(property: Property): void {
 		const existing = getMintedProperties();
 		const updated = [property, ...existing];
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-		console.log("Property saved to localStorage:", property.id);
 	} catch (error) {
-		console.error("Error saving property to localStorage:", error);
+		// Error saving property
 	}
 }
 
@@ -56,7 +55,6 @@ export function getMintedProperties(): Property[] {
 		if (!stored) return [];
 		return JSON.parse(stored) as Property[];
 	} catch (error) {
-		console.error("Error reading properties from localStorage:", error);
 		return [];
 	}
 }
@@ -88,9 +86,8 @@ export function getPropertyById(
 export function clearMintedProperties(): void {
 	try {
 		localStorage.removeItem(STORAGE_KEY);
-		console.log("Minted properties cleared from localStorage");
 	} catch (error) {
-		console.error("Error clearing properties from localStorage:", error);
+		// Error clearing properties
 	}
 }
 

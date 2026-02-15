@@ -2,8 +2,8 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import InvestNowModal from "./InvestNowModal";
 import {
 	MapPin,
 	Eye,
@@ -16,6 +16,11 @@ import {
 	Star,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+// Lazy load the investment modal to reduce initial bundle size
+const InvestNowModal = dynamic(() => import("./InvestNowModal"), {
+	ssr: false,
+});
 
 interface Property {
 	id: number;
@@ -54,7 +59,6 @@ export default function PropertyCard({
 	const fundingProgress = Math.min(100, Math.max(15, (property.id * 13) % 100));
 
 	const handleInvestClick = () => {
-		console.log("Opening investment modal for property:", property.id);
 		setShowInvestModal(true);
 	};
 

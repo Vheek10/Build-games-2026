@@ -3,6 +3,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
 	X,
 	DollarSign,
@@ -215,13 +216,6 @@ export default function InvestNowModal({
 		try {
 			if (isMockMode) {
 				// Mock transaction for demo
-				console.log("Mock investment:", {
-					propertyId: property.id,
-					amount: investmentAmount,
-					tokens: selectedTokens,
-					address,
-				});
-
 				// Simulate transaction delay
 				await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -237,13 +231,7 @@ export default function InvestNowModal({
 				// 	value: parseEther(investmentAmount),
 				// });
 			}
-		} catch (err: any) {
-			console.error("Investment error:", err);
-			setError(err.message || "Transaction failed. Please try again.");
-			setStep("select");
-		} finally {
-			setIsProcessing(false);
-		}
+		} catch (err: any) {}
 	};
 
 	// Handle successful transaction

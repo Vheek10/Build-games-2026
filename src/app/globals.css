@@ -3,7 +3,7 @@
  * @format
  */
 
-@import url("https://fonts.googleapis.com/css2?family=McLaren&family=Montserrat:wght@400;500;600;700;800;900&display=swap");
+/* Font imports removed - using next/font/google for optimization */
 @import "tailwindcss";
 @import "@suiet/wallet-kit/style.css";
 

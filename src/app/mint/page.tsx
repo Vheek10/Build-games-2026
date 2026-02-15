@@ -288,7 +288,6 @@ function MintFormContent() {
 			const base64 = btoa(String.fromCharCode(...data));
 			return `data:application/json;base64,${base64}`;
 		} catch (error) {
-			console.error("Metadata encoding error:", error);
 			const metadataJSON = JSON.stringify(metadata);
 			const uriEncoded = encodeURIComponent(metadataJSON);
 			const base64 = btoa(uriEncoded);
@@ -315,14 +314,7 @@ function MintFormContent() {
 		setIsSubmitting(true);
 		setCurrentStep("minting");
 
-		console.log("=== MINT FORM DEBUG START ===");
-		console.log("Form data:", formData);
-		console.log("Connected:", connected);
-		console.log("Address:", address);
-
 		try {
-			console.log("Generating metadata...");
-
 			// Generate Metadata
 			const metadata = {
 				name: formData.title,
@@ -380,11 +372,6 @@ function MintFormContent() {
 			});
 			const privateCommitment = await keccak256(privateDataString);
 
-			console.log("Minting Property Deed NFT on Sui...", {
-				propertyId,
-				metadataLength: metadataURI.length,
-			});
-
 			// Call Contract for NFT Minting (property_nft::mint_property_deed)
 			const result = await tokenizeProperty(
 				propertyId,
@@ -394,19 +381,14 @@ function MintFormContent() {
 				address,
 			);
 
-			console.log("Tokenize result received:", result);
-
 			if (result.success && result.hash) {
-				console.log("Transaction submitted! Hash:", result.hash);
 				setTxHash(result.hash);
 
 				// If tokenization is disabled, we're done after this receipt
 				if (!formData.tokenizationEnabled) {
-					console.log("Property mint transaction submitted");
 					return;
 				}
 
-				console.log("Proceeding to RWA deployment...");
 				// If enabled, proceed to RWA Deployment
 				setCurrentStep("tokenizing");
 
@@ -417,21 +399,12 @@ function MintFormContent() {
 					);
 
 					if (rwaHash) {
-						console.log("RWA deployment submitted! Hash:", rwaHash);
 						setRwaTxHash(rwaHash);
-					} else {
-						console.error("RWA deployment failed - no hash returned");
 					}
 				} catch (rwaError: any) {
-					console.error("RWA deployment error:", rwaError);
+					// Handle RWA deployment error
 				}
 			} else {
-				console.error("Tokenization failed:", {
-					success: result.success,
-					message: result.message,
-					mintError,
-					result,
-				});
 				throw new Error(
 					result.message ||
 						mintError ||
@@ -439,14 +412,10 @@ function MintFormContent() {
 				);
 			}
 		} catch (error: any) {
-			console.error("=== MINT FORM ERROR ===");
-			console.error("Error details:", error);
-
 			setSubmitError(error.message || "Failed to mint property deed");
 			setCurrentStep("idle");
 		} finally {
 			setIsSubmitting(false);
-			console.log("=== MINT FORM DEBUG END ===");
 		}
 	};
 
@@ -492,7 +461,6 @@ function MintFormContent() {
 			// Save to localStorage
 			saveProperty(newProperty);
 			localStorage.setItem(savedKey, "true");
-			console.log("Property saved to marketplace:", newProperty);
 		}
 	}, [isFullySuccessful, formData, txHash, tokenDetails]);
 

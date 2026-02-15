@@ -22,17 +22,9 @@ export function useStrataDeed() {
 	const deployStrataDeed = async (fundingCap: string, ownerAddress: string) => {
 		setIsDeploying(true);
 		try {
-			console.log("Creating RWA Treasury on Sui...", {
-				fundingCap,
-				ownerAddress,
-			});
-
 			// Note: This requires the property_rwa package to be deployed
 			// and PROPERTY_RWA_PACKAGE_ID to be set in environment
 			// For now, return a simulated digest until contracts are deployed
-			console.warn(
-				"Treasury creation simulated - deploy Move contracts and set PROPERTY_RWA_PACKAGE_ID",
-			);
 
 			await new Promise((r) => setTimeout(r, 800));
 			const mockDigest = `treasury_${Date.now().toString(16)}`;
@@ -46,7 +38,6 @@ export function useStrataDeed() {
 			// const result = await signAndExecuteTransaction({ transaction: tx });
 			// return result.digest;
 		} catch (error) {
-			console.error("Treasury creation failed:", error);
 			throw error;
 		} finally {
 			setIsDeploying(false);
@@ -63,7 +54,6 @@ export function useStrataDeed() {
 		 * @param {string} amount - Amount in SUI to deposit
 		 */
 		const depositEscrow = async (amount: string) => {
-			console.log("depositEscrow on Sui", { packageId, amount });
 			// Implement actual Sui transaction here
 			return { status: "success", amount };
 		};

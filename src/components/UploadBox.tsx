@@ -1,6 +1,7 @@
 /** @format */
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function UploadBox() {
 	const [preview, setPreview] = useState<string | null>(null);
@@ -21,9 +22,11 @@ export default function UploadBox() {
 				className="mb-3"
 			/>
 			{preview ? (
-				<img
+				<Image
 					src={preview}
 					alt="preview"
+					width={176}
+					height={128}
 					className="w-44 h-32 object-cover rounded-md"
 				/>
 			) : (
