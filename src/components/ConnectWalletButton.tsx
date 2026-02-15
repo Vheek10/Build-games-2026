@@ -11,7 +11,7 @@ const ConnectWalletButtonContent = () => {
 	if (account) {
 		const address = account.address;
 		const truncated = `${address.slice(0, 6)}...${address.slice(-4)}`;
-		return <span>{truncated}</span>;
+		return <span className="text-white">{truncated}</span>;
 	}
 
 	return <span>Connect</span>;
