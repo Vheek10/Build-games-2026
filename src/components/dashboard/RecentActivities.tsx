@@ -148,7 +148,7 @@ export default function RecentActivities({
 									</span>
 									{activity.amount && (
 										<motion.span
-											className="font-bold text-gray-900 text-xs sm:text-sm whitespace-nowrap font-montserrat"
+											className="font-bold text-gray-900 text-xs sm:text-sm sm:whitespace-nowrap font-montserrat"
 											initial={{ opacity: 0, scale: 0.8 }}
 											animate={{ opacity: 1, scale: 1 }}
 											transition={{ delay: 0.2 }}>

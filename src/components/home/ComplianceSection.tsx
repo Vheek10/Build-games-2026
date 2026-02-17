@@ -190,7 +190,7 @@ export default function ComplianceSection() {
 													{complianceFeatures[active].description}
 												</p>
 
-												<div className="grid grid-cols-2 gap-4">
+												<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 													{metrics.slice(0, 2).map((m, i) => (
 														<div
 															key={i}
@@ -289,7 +289,7 @@ export default function ComplianceSection() {
 							className="bg-gray-900 rounded-full">
 							<Link
 								href="/dashboard"
-								className="group relative flex items-center justify-center gap-4 px-10 py-5 text-white rounded-full font-black transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] whitespace-nowrap">
+											className="group relative flex items-center justify-center gap-4 px-10 py-5 text-white rounded-full font-black transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] text-center leading-tight sm:whitespace-nowrap">
 								<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 									Institutional Access
 								</span>

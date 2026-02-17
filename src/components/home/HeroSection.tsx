@@ -66,7 +66,7 @@ export default function HeroSection() {
 						<div className="text-center lg:text-left flex flex-col items-center lg:items-start">
 							{/* Semi-transparent badge - Institutional Standard */}
 							<div className="inline-flex items-center gap-3 px-6 py-2.5 bg-white/40 backdrop-blur-xl rounded-full mb-10 border border-gray-200/50 shadow-sm">
-								<span className="text-[10px] sm:text-[11px] font-black text-gray-900 uppercase tracking-[0.25em] sm:tracking-[0.4em] whitespace-nowrap font-montserrat">
+								<span className="text-[10px] sm:text-[11px] font-black text-gray-900 uppercase tracking-[0.2em] sm:tracking-[0.4em] sm:whitespace-nowrap font-montserrat">
 									Innovating Real Estate
 								</span>
 								<Shield className="w-3.5 h-3.5 text-blue-600/60" />
@@ -138,7 +138,7 @@ export default function HeroSection() {
 									<Link
 										href="/dashboard"
 										className="group relative px-6 sm:px-10 py-4 sm:py-5 text-white rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] w-full text-center flex items-center justify-center">
-										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] font-montserrat">
+										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 											Start Investing
 											<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
 										</span>
@@ -158,7 +158,7 @@ export default function HeroSection() {
 									<Link
 										href="/mint"
 										className="group relative px-6 sm:px-10 py-4 sm:py-5 text-gray-900 rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] w-full text-center flex items-center justify-center">
-										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] font-montserrat">
+										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 											List Property
 											<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
 										</span>

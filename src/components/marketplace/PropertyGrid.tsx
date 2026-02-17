@@ -47,7 +47,7 @@ function PropertyGrid({
 				<button
 					onClick={clearFilters}
 					className="px-8 py-4 bg-gray-900 text-white font-black rounded-full hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3">
-					<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
+					<span className="text-[10px] uppercase tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 						Clear All Filters
 					</span>
 					<RefreshCw className="w-4 h-4" />

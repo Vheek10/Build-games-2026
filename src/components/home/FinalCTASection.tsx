@@ -166,7 +166,7 @@ export default function FinalCTASection() {
 
 					{/* Benefits Grid */}
 					<div
-						className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20 px-4"
+						className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 px-4"
 						style={{ transform: "translateZ(40px)" }}>
 						{benefits.map((benefit, idx) => (
 							<motion.div
@@ -203,7 +203,7 @@ export default function FinalCTASection() {
 							<Link
 								href="/dashboard"
 								className="group relative px-8 sm:px-14 py-4 sm:py-6 text-gray-900 rounded-full font-black overflow-hidden transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(255,255,255,0.4)] text-center flex items-center justify-center gap-4">
-								<span className="text-[9px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.4em] font-montserrat">
+								<span className="text-[9px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 									Initialize Access
 								</span>
 								<ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -223,7 +223,7 @@ export default function FinalCTASection() {
 							<Link
 								href="/mint"
 								className="group relative px-8 sm:px-14 py-4 sm:py-6 text-white rounded-full font-black transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(255,255,255,0.1)] text-center flex items-center justify-center gap-4">
-								<span className="text-[9px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.4em] font-montserrat">
+								<span className="text-[9px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 									Deploy Asset
 								</span>
 								<ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

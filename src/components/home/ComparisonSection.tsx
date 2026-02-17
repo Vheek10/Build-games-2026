@@ -253,7 +253,7 @@ export default function ComparisonSection() {
 											<Link
 												href="/dashboard"
 												className="flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 lg:px-10 py-4 sm:py-5 rounded-full transition-all duration-500 group/btn shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_30px_60px_-15px_rgba(37,99,235,0.6)]">
-												<span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-white whitespace-nowrap font-montserrat">
+												<span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-white text-center leading-tight sm:whitespace-nowrap font-montserrat">
 													Institutional Access
 												</span>
 												<ArrowUpRight className="w-4 h-4 text-white transition-transform duration-500 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />

@@ -229,7 +229,7 @@ export default function HowItWorksSection() {
 				</motion.div>
 
 				{/* Accordion Cards */}
-				<div className="flex flex-col lg:flex-row gap-6 h-[800px] lg:h-[600px] mb-12 perspective-1000">
+				<div className="flex flex-col lg:flex-row gap-6 min-h-[720px] lg:h-[600px] mb-12 perspective-1000">
 					{steps.map((step, index) => {
 						const isActive = activeStep === index;
 						const colors = getColor(step.color);

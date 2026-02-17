@@ -185,7 +185,7 @@ export default function Navbar() {
 						{/* User & Wallet Actions */}
 						<div className="flex items-center gap-2 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 flex-shrink-0 z-10">
 							{/* Connect Wallet Button */}
-							<div className="w-full max-w-[200px]">
+							<div className="w-full max-w-[140px] sm:max-w-[200px]">
 								<ConnectWalletButton />
 							</div>
 						</div>
