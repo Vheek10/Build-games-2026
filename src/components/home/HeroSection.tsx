@@ -28,10 +28,10 @@ export default function HeroSection() {
 						muted
 						loop
 						playsInline
-						className="absolute inset-0 w-full h-full object-cover will-change-transform saturate-105 contrast-110 brightness-110"
+						className="absolute inset-0 w-full h-full object-cover will-change-transform saturate-110 contrast-125 brightness-105"
 						style={{
 							filter:
-								"brightness(1.15) contrast(1.15) saturate(1.1) drop-shadow(0 0 2px rgba(90, 127, 176, 0.1))",
+								"brightness(1.08) contrast(1.25) saturate(1.2) drop-shadow(0 0 2px rgba(90, 127, 176, 0.1))",
 							objectFit: "cover",
 							objectPosition: "center",
 						}}
@@ -49,6 +49,7 @@ export default function HeroSection() {
 				<div className="absolute inset-0 bg-radial-gradient(circle at center, rgba(90,127,176,0.05) 0%, rgba(90,127,176,0.02) 50%, transparent 75%)" />
 				<div className="absolute inset-0 bg-linear-to-br from-white/5 via-white/2 to-transparent" />
 				<div className="absolute inset-0 bg-linear-to-t from-white/10 via-transparent to-transparent" />
+				<div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/10 to-transparent" />
 
 				{/* Refined vignette effect - more subtle for larger screens */}
 				<div className="absolute inset-0 bg-radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.2) 100%)" />
@@ -76,7 +77,9 @@ export default function HeroSection() {
 
 							{/* Main Heading - Compliance Scaled */}
 							<div className="relative mb-8 w-full">
-								<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tightest leading-[0.9] sm:leading-[0.85] mb-8 font-mclaren">
+								<h1
+									className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tightest leading-[0.9] sm:leading-[0.85] mb-8 font-mclaren"
+									style={{ textShadow: "0 2px 18px rgba(0, 0, 0, 0.25)" }}>
 									<span className="block">Tokenizing Global</span>
 									<span className="block bg-linear-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
 										Real Estate Assets
@@ -84,7 +87,9 @@ export default function HeroSection() {
 								</h1>
 
 								{/* Subtitle - Compliance Refined */}
-								<p className="text-sm lg:text-base text-gray-500 leading-relaxed font-medium max-w-2xl px-2 lg:px-0 font-montserrat">
+								<p
+									className="text-sm lg:text-base text-gray-500 leading-relaxed font-medium max-w-2xl px-2 lg:px-0 font-montserrat"
+									style={{ textShadow: "0 1px 12px rgba(0, 0, 0, 0.2)" }}>
 									Verified digital deeds. Borderless ownership.{" "}
 									<span className="text-blue-600 font-black">
 										Unprecedented liquidity.
