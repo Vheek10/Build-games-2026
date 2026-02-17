@@ -123,7 +123,7 @@ export default function HeroSection() {
 											<div className="w-10 h-10 rounded-xl bg-white/50 flex items-center justify-center border border-gray-100 group-hover:border-blue-200 transition-all duration-300 backdrop-blur-sm shadow-sm group-hover:shadow-blue-900/5">
 												<item.icon className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
 											</div>
-											<span className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] group-hover:text-gray-900 transition-colors font-montserrat">
+											<span className="text-[11px] font-black text-gray-900 uppercase tracking-[0.2em] font-montserrat">
 												{item.label}
 											</span>
 										</div>
@@ -141,11 +141,11 @@ export default function HeroSection() {
 										transition: { duration: 0.4 },
 									}}
 									whileTap={{ scale: 0.98 }}
-									className="w-full sm:w-auto bg-gray-900 rounded-full">
+									className="w-fit bg-gray-900 rounded-full">
 									<Link
 										href="/dashboard"
-										className="group relative px-6 sm:px-10 py-4 sm:py-5 text-white rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] w-full text-center flex items-center justify-center">
-										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
+										className="group relative px-4 sm:px-6 py-3 sm:py-3.5 text-white rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] text-center flex items-center justify-center">
+										<span className="relative flex items-center gap-2 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.22em] sm:tracking-[0.3em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 											Start Investing
 											<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
 										</span>
@@ -161,11 +161,11 @@ export default function HeroSection() {
 										transition: { duration: 0.4 },
 									}}
 									whileTap={{ scale: 0.98 }}
-									className="w-full sm:w-auto bg-white border border-gray-200 rounded-full">
+									className="w-fit bg-white border border-gray-200 rounded-full">
 									<Link
 										href="/mint"
-										className="group relative px-6 sm:px-10 py-4 sm:py-5 text-gray-900 rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] w-full text-center flex items-center justify-center">
-										<span className="relative flex items-center gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
+										className="group relative px-4 sm:px-6 py-3 sm:py-3.5 text-gray-900 rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] text-center flex items-center justify-center">
+										<span className="relative flex items-center gap-2 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.22em] sm:tracking-[0.3em] text-center leading-tight sm:whitespace-nowrap font-montserrat">
 											List Property
 											<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
 										</span>
