@@ -256,26 +256,209 @@ body {
 	border-radius: 9999px !important;
 	background-color: #111827 !important;
 	color: #ffffff !important;
-	font-size: 0.75rem !important;
+	font-size: 0.6875rem !important;
 	font-weight: 900 !important;
 	text-transform: uppercase !important;
-	letter-spacing: 0.12em !important;
-	padding: 0.6rem 1rem !important;
+	letter-spacing: 0.1em !important;
+	padding: 0.5rem 0.875rem !important;
 	transition: all 300ms !important;
 	font-family: var(--font-sans) !important;
-	min-height: 40px !important;
+	min-height: 36px !important;
 	border: none !important;
 	white-space: nowrap !important;
 	overflow: hidden !important;
 	text-overflow: ellipsis !important;
 }
 
+/* Button styling when wallet is connected */
+.sd-connect-button button:has(.sd-connected) {
+	background-color: #ffffff !important;
+	border: 2px solid #000000 !important;
+	box-shadow: none !important;
+}
+
+/* Override white text for connected button */
+.sd-connect-button button:has(.sd-connected) * {
+	color: #000000 !important;
+}
+
+.sd-connect-button button * {
+	color: #ffffff !important;
+}
+
+/* Connected wallet address styling */
+.sd-connect-button .sd-connect-text {
+	text-transform: none !important;
+	letter-spacing: 0.02em !important;
+	font-size: 0.75rem !important;
+	font-weight: 600 !important;
+	display: inline-block !important;
+	line-height: 1.2 !important;
+}
+
+/* Disconnected state - normal font */
+.sd-connect-button .sd-connect-text.sd-disconnected {
+	font-family: var(--font-sans) !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.1em !important;
+	font-weight: 900 !important;
+	font-size: 0.6875rem !important;
+}
+
+/* Connected state - monospace font for address */
+.sd-connect-button .sd-connect-text.sd-connected {
+	font-family:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.02em !important;
+	color: #000000 !important;
+	text-shadow: none !important;
+}
+
+/* Add visual indicator when connected */
+.sd-connect-button .sd-connect-text.sd-connected::before {
+	content: "●" !important;
+	color: #000000 !important;
+	margin-right: 0.5rem !important;
+	font-size: 0.5em !important;
+	vertical-align: middle !important;
+	animation: pulse 2s ease-in-out infinite !important;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* Aggressively hide ALL wallet balance displays */
+.wkit-balance,
+.wkit-account-balance,
+.wkit-connected-button > div > div:last-child,
+[class*="balance"],
+[class*="Balance"],
+[data-testid*="balance"],
+.wallet-balance,
+.account-balance {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	height: 0 !important;
+	overflow: hidden !important;
+}
+
+/* Hide balance in wallet dropdown/modal */
+.wkit-connected-container [class*="balance"],
+.wkit-account-info [class*="balance"],
+.wkit-dialog [class*="balance"],
+.wkit-select [class*="balance"] {
+	display: none !important;
+}
+
+/* Remove white background from wallet dropdown/modal/overlay */
+.wkit-select,
+.wkit-dialog,
+.wkit-modal,
+.wkit-popover,
+.wkit-dropdown,
+.wkit-connected-container,
+.wkit-account-select,
+[class*="wkit"][class*="select"],
+[class*="wkit"][class*="modal"],
+[class*="wkit"][class*="dropdown"] {
+	background: transparent !important;
+	backdrop-filter: none !important;
+}
+
+/* Hide wallet-kit overlays and backdrops */
+.wkit-select::before,
+.wkit-select::after,
+.wkit-dialog::before,
+.wkit-dialog::after,
+.wkit-overlay,
+.wkit-backdrop,
+[class*="wkit"][class*="overlay"],
+[class*="wkit"][class*="backdrop"] {
+	display: none !important;
+	background: transparent !important;
+}
+
+/* Force connected button to show only address on small screens */
+@media (max-width: 640px) {
+	.sd-connect-button button {
+		max-width: 160px !important;
+		padding: 0.5rem 1rem !important;
+	}
+	.sd-connect-button button:has(.sd-connected) {
+		max-width: 180px !important;
+		padding: 0.5rem 1.125rem !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-connected {
+		font-size: 0.6875rem !important;
+		letter-spacing: 0.01em !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-disconnected {
+		font-size: 0.625rem !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-connected::before {
+		margin-right: 0.375rem !important;
+	}
+}
+
 @media (min-width: 640px) {
 	.sd-connect-button button {
-		font-size: 0.6875rem !important;
-		letter-spacing: 0.25em !important;
-		padding: 0.7rem 1.5rem !important;
+		font-size: 0.625rem !important;
+		letter-spacing: 0.2em !important;
+		padding: 0.65rem 1.5rem !important;
+		min-height: 40px !important;
+	}
+	.sd-connect-button button:has(.sd-connected) {
+		padding: 0.7rem 1.75rem !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-connected {
+		font-size: 0.8125rem !important;
+		letter-spacing: 0.02em !important;
+	}
+}
+
+@media (min-width: 1024px) {
+	.sd-connect-button button {
+		padding: 0.75rem 1.75rem !important;
 		min-height: 44px !important;
+	}
+	.sd-connect-button button:has(.sd-connected) {
+		padding: 0.8rem 2rem !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-connected {
+		font-size: 0.875rem !important;
+		letter-spacing: 0.025em !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-disconnected {
+		font-size: 0.75rem !important;
+		letter-spacing: 0.12em !important;
+	}
+}
+
+@media (min-width: 1280px) {
+	.sd-connect-button button {
+		padding: 0.8rem 2rem !important;
+		min-height: 46px !important;
+	}
+	.sd-connect-button button:has(.sd-connected) {
+		padding: 0.85rem 2.25rem !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-connected {
+		font-size: 0.9375rem !important;
+		letter-spacing: 0.03em !important;
+	}
+	.sd-connect-button .sd-connect-text.sd-disconnected {
+		font-size: 0.8125rem !important;
+		letter-spacing: 0.12em !important;
 	}
 }
 
@@ -285,6 +468,13 @@ body {
 	transform: translateY(-2px) !important;
 }
 
+/* Connected button hover state */
+.sd-connect-button button:has(.sd-connected):hover {
+	background-color: #f3f4f6 !important;
+	box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.15) !important;
+	border-color: #000000 !important;
+}
+
 .sd-connect-button button:active {
 	transform: translateY(0) !important;
 }
@@ -292,4 +482,9 @@ body {
 .sd-connect-button button:focus-visible {
 	outline: none !important;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5) !important;
+}
+
+/* Connected button focus state */
+.sd-connect-button button:has(.sd-connected):focus-visible {
+	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2) !important;
 }

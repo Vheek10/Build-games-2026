@@ -11,10 +11,12 @@ const ConnectWalletButtonContent = () => {
 	if (account) {
 		const address = account.address;
 		const truncated = `${address.slice(0, 4)}...${address.slice(-4)}`;
-		return <span className="text-white">{truncated}</span>;
+		return <span className="sd-connect-text sd-connected">{truncated}</span>;
 	}
 
-	return <span className="text-white">Connect</span>;
+	return (
+		<span className="sd-connect-text sd-disconnected">Connect Wallet</span>
+	);
 };
 
 const ConnectWalletButton = forwardRef<HTMLDivElement>((props, ref) => {
