@@ -37,11 +37,18 @@ const navItems = [
  * Main Navigation Bar Component.
  * Handles desktop and mobile responsive layouts and wallet connection state.
  */
-export default function Navbar() {
+interface NavbarProps {
+	placement?: "global" | "hero";
+	hideOnHome?: boolean;
+}
+
+export default function Navbar({
+	placement = "global",
+	hideOnHome = false,
+}: NavbarProps) {
 	// =========================================
 	// State & Hooks
 	// =========================================
-	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const pathname = usePathname();
@@ -49,17 +56,6 @@ export default function Navbar() {
 	// =========================================
 	// Effects
 	// =========================================
-
-	// Handle scroll effect for sticky navbar transparency
-	useEffect(() => {
-		const handleScroll = () => {
-			setIsScrolled(window.scrollY > 10);
-		};
-
-		handleScroll();
-		window.addEventListener("scroll", handleScroll, { passive: true });
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
 
 	// Reset mobile menu on route change
 	useEffect(() => {
@@ -83,14 +79,20 @@ export default function Navbar() {
 		return pathname === href || pathname?.startsWith(`${href}/`);
 	};
 
+	const isHome = pathname === "/";
+
+	if (hideOnHome && isHome) {
+		return null;
+	}
+
 	return (
 		<>
 			{/* Main Header  */}
 			<header
 				className={cn(
-					"sticky top-0 z-50 w-full transition-all duration-300",
-					"bg-transparent",
-					"border-b border-transparent",
+					"z-50 w-full transition-all duration-300",
+					placement === "hero" ? "absolute top-0 left-0" : "sticky top-0",
+					"bg-transparent border-b border-transparent backdrop-blur-0",
 					"px-3 sm:px-4 md:px-6 lg:px-8",
 				)}>
 				<div className="relative mx-auto w-full max-w-screen-2xl">

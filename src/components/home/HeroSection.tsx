@@ -13,10 +13,12 @@ import {
 	Lock,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
 
 export default function HeroSection() {
 	return (
-		<section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent">
+		<section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent pt-20 sm:pt-24 lg:pt-28">
+			<Navbar placement="hero" />
 			{/* Fullscreen video background - Optimized for all screen sizes */}
 			<div className="absolute inset-0 pointer-events-none overflow-hidden w-full h-full">
 				{/* Video container with aspect ratio - Enhanced for large screens */}
