@@ -77,7 +77,7 @@ export default function ComparisonSection() {
 
 	return (
 		<section
-			className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-12 bg-gray-50 overflow-hidden"
+			className="relative py-10 sm:py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gray-50 overflow-hidden"
 			style={{ perspective: "2000px" }}>
 			{/* Background Effects */}
 			<div className="absolute inset-0 pointer-events-none">

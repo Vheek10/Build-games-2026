@@ -172,7 +172,7 @@ export default function HowItWorksSection() {
 	}
 
 	return (
-		<section className="py-12 sm:py-20 bg-gray-50 overflow-hidden relative">
+		<section className="py-10 sm:py-14 bg-gray-50 overflow-hidden relative">
 			{/* Decorative Background Elements */}
 			<div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
 				<div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-100/30 rounded-full blur-3xl opacity-60" />

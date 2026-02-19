@@ -58,7 +58,7 @@ export default function FinalCTASection() {
 			ref={containerRef}
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
-			className="relative py-16 sm:py-24 lg:py-40 px-4 sm:px-6 lg:px-12 overflow-hidden bg-gray-50">
+			className="relative py-10 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-12 overflow-hidden bg-gray-50">
 			{/* Cinematic Background Layer */}
 			<motion.div
 				style={{ x: bgX, y: bgY }}

@@ -70,7 +70,7 @@ export default function ComplianceSection() {
 	const [active, setActive] = useState(0);
 
 	return (
-		<section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-12 bg-gray-50/50 overflow-hidden">
+		<section className="relative py-10 sm:py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gray-50/50 overflow-hidden">
 			{/* Soft Ambient Effects */}
 			<div className="absolute inset-0 pointer-events-none">
 				<div className="absolute top-1/4 -left-[10%] w-[50%] h-[50%] bg-blue-600/3 rounded-full blur-[150px]" />
@@ -289,7 +289,7 @@ export default function ComplianceSection() {
 							className="bg-gray-900 rounded-full">
 							<Link
 								href="/dashboard"
-											className="group relative flex items-center justify-center gap-4 px-10 py-5 text-white rounded-full font-black transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] text-center leading-tight sm:whitespace-nowrap">
+								className="group relative flex items-center justify-center gap-4 px-10 py-5 text-white rounded-full font-black transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] text-center leading-tight sm:whitespace-nowrap">
 								<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 									Institutional Access
 								</span>

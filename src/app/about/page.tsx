@@ -318,7 +318,7 @@ export default function About() {
 			</section>
 
 			{/* Core Protocol Section - Enhanced Reveal */}
-			<section className="py-16 md:py-24 lg:py-40 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white relative overflow-hidden">
+			<section className="py-10 md:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white relative overflow-hidden">
 				<div className="max-w-7xl mx-auto relative z-10">
 					<div className="grid lg:grid-cols-2 gap-12 lg:gap-32 items-center">
 						<motion.div
@@ -427,7 +427,7 @@ export default function About() {
 			</section>
 
 			{/* Mission/Vision - Institutional Cards with Parallax */}
-			<section className="py-16 md:py-24 lg:py-40 px-4 sm:px-6 lg:px-8 xl:px-12 bg-gray-50 overflow-hidden relative">
+			<section className="py-10 md:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-12 bg-gray-50 overflow-hidden relative">
 				<div className="max-w-7xl mx-auto relative z-10">
 					{/* Updated: Changed from font-secondary to font-mclaren */}
 					<motion.div
@@ -603,7 +603,7 @@ export default function About() {
 			</section>
 
 			{/* Animated FAQ Section — Split Layout */}
-			<section className="py-16 md:py-24 lg:py-40 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white relative overflow-hidden">
+			<section className="pt-10 pb-5 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white relative overflow-hidden">
 				<div className="max-w-7xl mx-auto relative z-10">
 					{/* Section Header */}
 					<motion.div
@@ -628,8 +628,113 @@ export default function About() {
 					</motion.div>
 
 					{/* Two-Column: Graphics Left / FAQs Right */}
-					<div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-20 items-start">
-						{/* Left — Illustrative Graphics */}
+					<div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 sm:gap-8 md:gap-12 lg:gap-20 items-start">
+						{/* Mobile/Tablet — Compact Illustration Strip */}
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+							className="lg:hidden">
+							<div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 rounded-2xl sm:rounded-3xl border border-gray-200/60 p-5 sm:p-7 shadow-sm overflow-hidden">
+								{/* Subtle background glow */}
+								<div className="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
+								<div className="absolute -bottom-10 -left-10 w-32 h-32 sm:w-40 sm:h-40 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
+
+								{/* Top row: platform badge */}
+								<div className="flex items-center gap-3 mb-4 sm:mb-5 relative z-10">
+									<div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-md shadow-blue-600/20 shrink-0">
+										<Building2 className="w-5 h-5 text-white" />
+									</div>
+									<div>
+										<p className="text-[9px] sm:text-[10px] font-black uppercase text-gray-400 tracking-widest font-montserrat">
+											StrataDeed
+										</p>
+										<p className="text-xs sm:text-sm font-bold text-gray-900 font-montserrat">
+											Real Estate Protocol
+										</p>
+									</div>
+									<div className="ml-auto flex items-center gap-1.5">
+										<motion.div
+											animate={{ scale: [1, 1.3, 1] }}
+											transition={{ duration: 2, repeat: Infinity }}
+											className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full"
+										/>
+										<span className="text-[8px] sm:text-[9px] font-bold text-gray-400 font-montserrat">
+											Live
+										</span>
+									</div>
+								</div>
+
+								{/* Feature pills */}
+								<div className="flex flex-wrap gap-2 sm:gap-2.5 relative z-10">
+									{[
+										{
+											icon: Shield,
+											label: "ZK-Proof",
+											color: "bg-blue-100 text-blue-600",
+										},
+										{
+											icon: Zap,
+											label: "<1.5s",
+											color: "bg-cyan-100 text-cyan-600",
+										},
+										{
+											icon: Users,
+											label: "Fractional",
+											color: "bg-indigo-100 text-indigo-600",
+										},
+										{
+											icon: Globe,
+											label: "Global",
+											color: "bg-teal-100 text-teal-600",
+										},
+										{
+											icon: Lock,
+											label: "Secure",
+											color: "bg-violet-100 text-violet-600",
+										},
+									].map((feat, idx) => (
+										<motion.div
+											key={idx}
+											initial={{ opacity: 0, scale: 0.8 }}
+											whileInView={{ opacity: 1, scale: 1 }}
+											viewport={{ once: true }}
+											transition={{ delay: 0.1 + idx * 0.07, duration: 0.4 }}
+											className={cn(
+												"inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-[10px] sm:text-[11px] font-bold font-montserrat",
+												feat.color,
+											)}>
+											<feat.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+											{feat.label}
+										</motion.div>
+									))}
+								</div>
+
+								{/* Progress bar */}
+								<div className="mt-4 sm:mt-5 space-y-1.5 relative z-10">
+									<div className="flex justify-between text-[8px] sm:text-[9px] font-black uppercase tracking-widest font-montserrat">
+										<span className="text-gray-400">Assets Tokenized</span>
+										<span className="text-blue-600">Growing</span>
+									</div>
+									<div className="h-1.5 sm:h-2 bg-gray-100 rounded-full overflow-hidden">
+										<motion.div
+											initial={{ width: "0%" }}
+											whileInView={{ width: "85%" }}
+											viewport={{ once: true }}
+											transition={{
+												duration: 2,
+												delay: 0.3,
+												ease: [0.16, 1, 0.3, 1],
+											}}
+											className="h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 rounded-full"
+										/>
+									</div>
+								</div>
+							</div>
+						</motion.div>
+
+						{/* Left — Illustrative Graphics (Desktop only) */}
 						<motion.div
 							initial={{ opacity: 0, x: -60 }}
 							whileInView={{ opacity: 1, x: 0 }}
@@ -1009,7 +1114,7 @@ export default function About() {
 			</section>
 
 			{/* Final CTA Redesigned - Deep Parallax */}
-			<section className="relative py-20 md:py-32 lg:py-40 xl:py-64 bg-white overflow-hidden">
+			<section className="relative pt-4 pb-8 md:pt-6 md:pb-12 lg:pt-8 lg:pb-16 xl:pt-10 xl:pb-20 bg-white overflow-hidden">
 				<div className="max-w-5xl mx-auto relative z-10 text-center px-4">
 					<motion.div
 						initial={{ opacity: 0, y: 50 }}

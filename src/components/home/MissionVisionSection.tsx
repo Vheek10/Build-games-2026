@@ -44,7 +44,7 @@ export default function MissionVisionSection() {
 	return (
 		<section
 			ref={containerRef}
-			className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden"
+			className="py-10 sm:py-14 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden"
 			style={{ perspective: "3000px" }}>
 			<div className="max-w-7xl mx-auto">
 				{/* Header */}
