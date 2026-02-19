@@ -16,15 +16,57 @@ import {
 	ArrowUpRight,
 	TrendingUp,
 	CheckCircle2,
+	ChevronDown,
+	HelpCircle,
 } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+	motion,
+	useMotionValue,
+	useSpring,
+	useTransform,
+	AnimatePresence,
+} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 
+const faqItems = [
+	{
+		question: "What is StrataDeed?",
+		answer:
+			"StrataDeed is a blockchain-powered real estate protocol that converts physical property titles into verifiable on-chain assets. It merges sovereign law with digital permanence, enabling fractional ownership, instant settlement, and transparent global property transactions.",
+	},
+	{
+		question: "How does property tokenization work?",
+		answer:
+			"Properties are verified through our institutional-grade compliance layer, then minted as on-chain tokens on the Sui blockchain. Each token cryptographically represents legal ownership rights, enabling fractional purchases as small as 0.01% of a property while maintaining full legal enforceability.",
+	},
+	{
+		question: "Is my investment legally protected?",
+		answer:
+			"Absolutely. Every tokenized property on StrataDeed is backed by real-world legal documentation and verified through zero-knowledge proofs via our Tier-1 Institutional Node framework — no KYC required. Smart contracts enforce ownership rights, and all transactions are immutably and privately recorded on-chain.",
+	},
+	{
+		question: "What blockchain does StrataDeed use?",
+		answer:
+			"StrataDeed is built on the Sui blockchain, chosen for its sub-second finality, high throughput, and Move-based smart contract security. This enables near-instant settlement of property transactions with minimal gas fees.",
+	},
+	{
+		question: "How do I get started with investing?",
+		answer:
+			"Simply connect your Sui-compatible wallet, browse verified properties on our marketplace, and purchase fractional or full ownership tokens. Thanks to our fully ZK-proof architecture, there's no KYC step — just connect your wallet and start investing in under five minutes.",
+	},
+	{
+		question: "Can I sell my property tokens anytime?",
+		answer:
+			"Yes. Property tokens are fully liquid and can be listed on the StrataDeed marketplace at any time. Our protocol supports instant peer-to-peer transfers with on-chain settlement, eliminating traditional real estate sale timelines of weeks or months.",
+	},
+];
+
 export default function About() {
+	const [openFaq, setOpenFaq] = useState<number | null>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const mouseX = useMotionValue(0);
 	const mouseY = useMotionValue(0);
@@ -556,6 +598,412 @@ export default function About() {
 					style={{
 						backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`,
 						backgroundSize: "40px 40px",
+					}}
+				/>
+			</section>
+
+			{/* Animated FAQ Section — Split Layout */}
+			<section className="py-16 md:py-24 lg:py-40 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white relative overflow-hidden">
+				<div className="max-w-7xl mx-auto relative z-10">
+					{/* Section Header */}
+					<motion.div
+						initial={{ opacity: 0, y: 40 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+						className="text-center mb-12 lg:mb-20">
+						<div className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-1.5 lg:py-2 bg-blue-50 rounded-full mb-6 lg:mb-10">
+							<HelpCircle className="w-3 h-3 lg:w-4 lg:h-4 text-blue-600" />
+							<span className="text-[9px] lg:text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] lg:tracking-[0.5em] font-montserrat">
+								Frequently Asked
+							</span>
+						</div>
+						<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter font-mclaren">
+							Got <span className="text-blue-600">Questions?</span>
+						</h2>
+						<p className="mt-4 lg:mt-6 text-sm lg:text-base text-gray-500 font-medium font-montserrat max-w-xl mx-auto">
+							Everything you need to know about StrataDeed, property
+							tokenization, and getting started.
+						</p>
+					</motion.div>
+
+					{/* Two-Column: Graphics Left / FAQs Right */}
+					<div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-20 items-start">
+						{/* Left — Illustrative Graphics */}
+						<motion.div
+							initial={{ opacity: 0, x: -60 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+							className="relative hidden lg:flex items-center justify-center min-h-[560px] sticky top-32">
+							{/* Large glowing backdrop circle */}
+							<motion.div
+								animate={{
+									scale: [1, 1.08, 1],
+									opacity: [0.15, 0.25, 0.15],
+								}}
+								transition={{
+									duration: 6,
+									repeat: Infinity,
+									ease: "easeInOut",
+								}}
+								className="absolute w-[380px] h-[380px] bg-blue-500 rounded-full blur-[100px]"
+							/>
+
+							{/* Central card */}
+							<motion.div
+								animate={{ y: [0, -12, 0] }}
+								transition={{
+									duration: 5,
+									repeat: Infinity,
+									ease: "easeInOut",
+								}}
+								className="relative z-10 w-[300px] bg-white/80 backdrop-blur-2xl rounded-[2.5rem] border border-gray-200/60 shadow-2xl p-8 space-y-5">
+								{/* Platform badge */}
+								<div className="flex items-center gap-3">
+									<div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-600/30">
+										<Building2 className="w-6 h-6 text-white" />
+									</div>
+									<div>
+										<p className="text-[10px] font-black uppercase text-gray-400 tracking-widest font-montserrat">
+											StrataDeed
+										</p>
+										<p className="text-sm font-bold text-gray-900 font-montserrat">
+											Real Estate Protocol
+										</p>
+									</div>
+								</div>
+								<div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+								{/* Animated feature carousel */}
+								<div className="space-y-4">
+									{[
+										{
+											icon: Shield,
+											label: "ZK-Proof",
+											value: "Private",
+											color: "text-blue-600",
+										},
+										{
+											icon: Zap,
+											label: "Settlement",
+											value: "<1.5s",
+											color: "text-cyan-600",
+										},
+										{
+											icon: Users,
+											label: "Fractional",
+											value: "0.01%",
+											color: "text-indigo-600",
+										},
+									].map((feat, idx) => (
+										<motion.div
+											key={idx}
+											initial={{ opacity: 0, x: -20 }}
+											whileInView={{ opacity: 1, x: 0 }}
+											viewport={{ once: true }}
+											transition={{ delay: 0.6 + idx * 0.2, duration: 0.5 }}
+											className="flex items-center justify-between">
+											<div className="flex items-center gap-2.5">
+												<div
+													className={cn(
+														"w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center",
+														feat.color,
+													)}>
+													<feat.icon className="w-4 h-4" />
+												</div>
+												<span className="text-[10px] font-black uppercase tracking-widest text-gray-400 font-montserrat">
+													{feat.label}
+												</span>
+											</div>
+											<span className="text-sm font-black text-gray-900 font-mclaren">
+												{feat.value}
+											</span>
+										</motion.div>
+									))}
+								</div>
+
+								<div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+								{/* Tokenization progress */}
+								<div className="space-y-2">
+									<div className="flex justify-between text-[9px] font-black uppercase tracking-widest font-montserrat">
+										<span className="text-gray-400">Assets Tokenized</span>
+										<span className="text-blue-600">Growing</span>
+									</div>
+									<div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+										<motion.div
+											initial={{ width: "0%" }}
+											whileInView={{ width: "85%" }}
+											viewport={{ once: true }}
+											transition={{
+												duration: 2,
+												delay: 0.5,
+												ease: [0.16, 1, 0.3, 1],
+											}}
+											className="h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 rounded-full"
+										/>
+									</div>
+								</div>
+
+								{/* Global status */}
+								<div className="flex items-center gap-2 pt-1">
+									<motion.div
+										animate={{ scale: [1, 1.3, 1] }}
+										transition={{ duration: 2, repeat: Infinity }}
+										className="w-2 h-2 bg-emerald-500 rounded-full"
+									/>
+									<span className="text-[10px] font-bold text-gray-500 font-montserrat">
+										Live on Sui Network — Global Access
+									</span>
+								</div>
+							</motion.div>
+
+							{/* Orbiting floating icons */}
+							{[
+								{
+									icon: Globe,
+									label: "Global",
+									size: 48,
+									delay: 0,
+									x: -130,
+									y: -170,
+									color: "bg-cyan-500",
+								},
+								{
+									icon: Lock,
+									label: "Secure",
+									size: 44,
+									delay: 1.5,
+									x: 140,
+									y: -130,
+									color: "bg-blue-600",
+								},
+								{
+									icon: TrendingUp,
+									label: "Yield",
+									size: 40,
+									delay: 0.8,
+									x: -150,
+									y: 90,
+									color: "bg-indigo-500",
+								},
+								{
+									icon: Sparkles,
+									label: "Mint",
+									size: 44,
+									delay: 2,
+									x: 150,
+									y: 120,
+									color: "bg-violet-500",
+								},
+								{
+									icon: CheckCircle2,
+									label: "Verified",
+									size: 38,
+									delay: 0.5,
+									x: 10,
+									y: 210,
+									color: "bg-emerald-500",
+								},
+							].map((item, i) => (
+								<motion.div
+									key={i}
+									initial={{ opacity: 0, scale: 0 }}
+									whileInView={{ opacity: 1, scale: 1 }}
+									viewport={{ once: true }}
+									transition={{
+										delay: 0.3 + item.delay * 0.3,
+										duration: 0.6,
+										ease: "backOut",
+									}}
+									animate={{
+										y: [item.y, item.y - 15, item.y],
+										x: [item.x, item.x + (i % 2 === 0 ? 8 : -8), item.x],
+									}}
+									className="absolute z-20 flex flex-col items-center"
+									style={{
+										transition: `transform ${3 + i}s ease-in-out`,
+									}}>
+									<motion.div
+										animate={{
+											y: [0, -14, 0],
+											rotate: [0, i % 2 === 0 ? 8 : -8, 0],
+										}}
+										transition={{
+											duration: 3 + i * 0.7,
+											repeat: Infinity,
+											ease: "easeInOut",
+											delay: item.delay,
+										}}
+										className={cn(
+											"rounded-2xl shadow-lg flex items-center justify-center text-white",
+											item.color,
+										)}
+										style={{ width: item.size, height: item.size }}>
+										<item.icon className="w-5 h-5" />
+									</motion.div>
+									<span className="text-[8px] font-black uppercase tracking-widest text-gray-400 font-montserrat mt-1.5 text-center whitespace-nowrap">
+										{item.label}
+									</span>
+								</motion.div>
+							))}
+
+							{/* Rotating orbit ring */}
+							<motion.div
+								animate={{ rotate: 360 }}
+								transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+								className="absolute w-[420px] h-[420px] rounded-full border border-dashed border-blue-200/40 pointer-events-none"
+							/>
+							<motion.div
+								animate={{ rotate: -360 }}
+								transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+								className="absolute w-[320px] h-[320px] rounded-full border border-blue-100/30 pointer-events-none"
+							/>
+
+							{/* Decorative dots */}
+							{[...Array(8)].map((_, i) => {
+								const angle = (i / 8) * Math.PI * 2;
+								const radius = 200;
+								return (
+									<motion.div
+										key={`dot-${i}`}
+										animate={{
+											opacity: [0.2, 0.6, 0.2],
+											scale: [1, 1.5, 1],
+										}}
+										transition={{
+											duration: 3,
+											repeat: Infinity,
+											delay: i * 0.4,
+											ease: "easeInOut",
+										}}
+										className="absolute w-2 h-2 bg-blue-500 rounded-full"
+										style={{
+											left: `calc(50% + ${Math.cos(angle) * radius}px)`,
+											top: `calc(50% + ${Math.sin(angle) * radius}px)`,
+										}}
+									/>
+								);
+							})}
+						</motion.div>
+
+						{/* Right — FAQ Accordion */}
+						<div className="space-y-3 lg:space-y-4">
+							{faqItems.map((faq, i) => {
+								const isOpen = openFaq === i;
+								return (
+									<motion.div
+										key={i}
+										initial={{ opacity: 0, y: 20 }}
+										whileInView={{ opacity: 1, y: 0 }}
+										viewport={{ once: true }}
+										transition={{
+											delay: i * 0.08,
+											duration: 0.6,
+											ease: [0.16, 1, 0.3, 1],
+										}}
+										className={cn(
+											"rounded-2xl lg:rounded-3xl border transition-all duration-500",
+											isOpen
+												? "bg-blue-50/50 border-blue-200/60 shadow-lg shadow-blue-600/5"
+												: "bg-gray-50/50 border-gray-200/60 hover:border-gray-300 hover:shadow-md",
+										)}>
+										<button
+											onClick={() => setOpenFaq(isOpen ? null : i)}
+											className="w-full flex items-center justify-between gap-4 px-5 lg:px-8 py-4 lg:py-6 text-left cursor-pointer group">
+											<div className="flex items-center gap-3 lg:gap-4">
+												<motion.div
+													animate={{
+														backgroundColor: isOpen ? "#2563eb" : "#f3f4f6",
+														color: isOpen ? "#ffffff" : "#6b7280",
+													}}
+													transition={{ duration: 0.3 }}
+													className="w-8 h-8 lg:w-9 lg:h-9 rounded-xl lg:rounded-xl flex items-center justify-center shrink-0 text-xs font-black font-montserrat">
+													{String(i + 1).padStart(2, "0")}
+												</motion.div>
+												<span
+													className={cn(
+														"text-sm lg:text-[15px] font-bold transition-colors duration-300 font-montserrat",
+														isOpen
+															? "text-blue-900"
+															: "text-gray-700 group-hover:text-gray-900",
+													)}>
+													{faq.question}
+												</span>
+											</div>
+											<motion.div
+												animate={{ rotate: isOpen ? 180 : 0 }}
+												transition={{
+													duration: 0.4,
+													ease: [0.16, 1, 0.3, 1],
+												}}
+												className={cn(
+													"shrink-0 w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-colors duration-300",
+													isOpen
+														? "bg-blue-600 text-white"
+														: "bg-white text-gray-400 border border-gray-200 group-hover:border-gray-300",
+												)}>
+												<ChevronDown className="w-4 h-4" />
+											</motion.div>
+										</button>
+										<AnimatePresence initial={false}>
+											{isOpen && (
+												<motion.div
+													initial={{ height: 0, opacity: 0 }}
+													animate={{ height: "auto", opacity: 1 }}
+													exit={{ height: 0, opacity: 0 }}
+													transition={{
+														height: {
+															duration: 0.4,
+															ease: [0.16, 1, 0.3, 1],
+														},
+														opacity: { duration: 0.25, delay: 0.1 },
+													}}
+													className="overflow-hidden">
+													<div className="px-5 lg:px-8 pb-5 lg:pb-7 pl-16 lg:pl-[4.75rem]">
+														<motion.p
+															initial={{ y: -10 }}
+															animate={{ y: 0 }}
+															transition={{ duration: 0.3, delay: 0.15 }}
+															className="text-sm lg:text-[15px] text-gray-600 leading-relaxed font-medium font-montserrat">
+															{faq.answer}
+														</motion.p>
+													</div>
+												</motion.div>
+											)}
+										</AnimatePresence>
+									</motion.div>
+								);
+							})}
+
+							{/* Bottom prompt */}
+							<motion.div
+								initial={{ opacity: 0 }}
+								whileInView={{ opacity: 1 }}
+								viewport={{ once: true }}
+								transition={{ delay: 0.5 }}
+								className="text-center pt-8 lg:pt-12">
+								<p className="text-xs lg:text-sm text-gray-400 font-medium font-montserrat">
+									Still have questions?{" "}
+									<Link
+										href="/contact"
+										className="text-blue-600 hover:text-blue-700 font-bold underline underline-offset-4 decoration-blue-600/30 hover:decoration-blue-600/60 transition-colors">
+										Reach out to our team
+									</Link>
+								</p>
+							</motion.div>
+						</div>
+					</div>
+				</div>
+
+				{/* Background decoration */}
+				<div className="absolute top-1/2 -left-32 lg:-left-64 w-[250px] h-[250px] lg:w-[500px] lg:h-[500px] bg-blue-500/5 rounded-full blur-[60px] lg:blur-[120px] pointer-events-none" />
+				<div
+					className="absolute inset-0 opacity-[0.02] pointer-events-none"
+					style={{
+						backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`,
+						backgroundSize: "32px 32px",
 					}}
 				/>
 			</section>
