@@ -111,11 +111,18 @@ contract StrataDeedCore is AccessControl, Pausable, ReentrancyGuard {
      * @param deedNFT_            Address of the deployed StrataDeedNFT contract.
      * @param complianceVerifier_ Address of the deployed ZKComplianceVerifier contract.
      */
+    /// @notice Zero address not allowed for immutable references.
+    error ZeroAddress();
+
     constructor(
         address admin,
         address deedNFT_,
         address complianceVerifier_
     ) {
+        if (admin == address(0)) revert ZeroAddress();
+        if (deedNFT_ == address(0)) revert ZeroAddress();
+        if (complianceVerifier_ == address(0)) revert ZeroAddress();
+
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(OPERATOR_ROLE, admin);
 

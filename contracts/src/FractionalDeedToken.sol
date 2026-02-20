@@ -73,6 +73,14 @@ contract FractionalDeedToken is
     /// @notice Per-withdrawal limit = fundingCap / 10.
     uint256 public maxWithdrawalPerTx;
 
+    // --- Per-depositor tracking (H-1 fix) ---
+
+    /// @notice Individual deposit balances for refund tracking.
+    mapping(address => uint256) public deposits;
+
+    /// @notice Total AVAX withdrawn from treasury post-finalization.
+    uint256 public totalWithdrawn;
+
     // --- Compliance whitelist ---
 
     /// @notice Whether an address is whitelisted for holding tokens.
@@ -80,6 +88,9 @@ contract FractionalDeedToken is
 
     /// @notice If true, transfers are restricted to whitelisted addresses only.
     bool public whitelistEnforced;
+
+    /// @notice Maximum batch size for whitelist operations.
+    uint256 public constant MAX_BATCH_SIZE = 200;
 
     // =========================================================================
     // Events
@@ -105,6 +116,9 @@ contract FractionalDeedToken is
     error InvalidEscrowStateForAction(EscrowState current);
     error NotWhitelisted(address account);
     error ZeroAmount();
+    error ZeroAddress();
+    error BatchTooLarge(uint256 size, uint256 max);
+    error NoDepositToRefund(address account);
 
     // =========================================================================
     // Constructor
@@ -159,6 +173,7 @@ contract FractionalDeedToken is
         if (msg.value > remaining) revert ExceedsFundingCap(msg.value, remaining);
 
         totalEscrowRaised += msg.value;
+        deposits[msg.sender] += msg.value;
         emit EscrowDeposit(msg.sender, msg.value);
     }
 
@@ -211,6 +226,7 @@ contract FractionalDeedToken is
         nonReentrant
     {
         if (amount == 0) revert ZeroAmount();
+        if (to == address(0)) revert ZeroAddress();
         if (escrowState == EscrowState.Funding)
             revert InvalidEscrowStateForAction(escrowState);
         if (escrowState == EscrowState.Emergency)
@@ -220,10 +236,36 @@ contract FractionalDeedToken is
         if (amount > maxWithdrawalPerTx)
             revert ExceedsWithdrawalLimit(amount, maxWithdrawalPerTx);
 
+        // Effects before interaction (CEI)
+        totalWithdrawn += amount;
+
         (bool success, ) = to.call{value: amount}("");
         require(success, "Transfer failed");
 
         emit FundsWithdrawn(to, amount);
+    }
+
+    /**
+     * @notice Refund a depositor's full deposit (only in Cancelled state).
+     * @param depositor The address to refund.
+     */
+    function refundDepositor(address payable depositor)
+        external
+        onlyRole(TREASURY_ADMIN_ROLE)
+        nonReentrant
+    {
+        if (escrowState != EscrowState.Cancelled)
+            revert InvalidEscrowStateForAction(escrowState);
+        uint256 refundAmount = deposits[depositor];
+        if (refundAmount == 0) revert NoDepositToRefund(depositor);
+
+        // Effects before interaction (CEI)
+        deposits[depositor] = 0;
+
+        (bool success, ) = depositor.call{value: refundAmount}("");
+        require(success, "Refund failed");
+
+        emit FundsWithdrawn(depositor, refundAmount);
     }
 
     /**
@@ -276,6 +318,8 @@ contract FractionalDeedToken is
         external
         onlyRole(COMPLIANCE_ROLE)
     {
+        if (accounts.length > MAX_BATCH_SIZE)
+            revert BatchTooLarge(accounts.length, MAX_BATCH_SIZE);
         for (uint256 i = 0; i < accounts.length; i++) {
             whitelisted[accounts[i]] = status;
             emit WhitelistUpdated(accounts[i], status);
@@ -332,6 +376,11 @@ contract FractionalDeedToken is
         super._update(from, to, value);
     }
 
-    /// @notice Allow the contract to receive AVAX directly (for yield deposits).
-    receive() external payable {}
+    /// @notice Allow the contract to receive AVAX for yield deposits (only in Finalized state).
+    receive() external payable {
+        require(
+            escrowState == EscrowState.Finalized,
+            "Direct deposits only allowed in Finalized state"
+        );
+    }
 }

@@ -83,6 +83,7 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
     event MerkleRootUpdated(bytes32 indexed oldRoot, bytes32 indexed newRoot);
     event AddressVerifiedByMerkle(address indexed account);
     event AddressVerifiedByZKProof(address indexed account);
+    event ComplianceGrantedByAdmin(address indexed account);
     event ComplianceRevoked(address indexed account);
     event CommitmentStored(address indexed account, bytes32 commitment);
     event ExternalVerifierUpdated(address indexed verifier);
@@ -95,8 +96,13 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
     error AlreadyCompliant(address account);
     error ZKVerifierNotSet();
     error ZKProofInvalid();
+    error ZKProofSenderMismatch();
     error ZeroAddress();
     error EmptyProof();
+    error BatchTooLarge(uint256 size, uint256 max);
+
+    /// @notice Maximum batch size for compliance grant operations.
+    uint256 public constant MAX_BATCH_SIZE = 200;
 
     // =========================================================================
     // Constructor
@@ -164,6 +170,7 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
         view
         returns (bool valid)
     {
+        if (proof.length == 0) return false;
         bytes32 leaf = keccak256(abi.encodePacked(account));
         return _verifyMerkle(proof, complianceMerkleRoot, leaf);
     }
@@ -189,7 +196,8 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
      * @notice Verify compliance via an external ZK proof.
      * @param proof        Serialized proof bytes.
      * @param publicInputs Public inputs to the ZK circuit.
-     * @dev The first public input is expected to encode the caller's address.
+     * @dev The first public input MUST encode the caller's address (uint256(uint160(msg.sender))).
+     *      This binding is enforced on-chain to prevent proof replay.
      */
     function verifyByZKProof(
         bytes calldata proof,
@@ -197,6 +205,11 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
     ) external whenNotPaused {
         if (address(externalVerifier) == address(0)) revert ZKVerifierNotSet();
         if (isCompliant[msg.sender]) revert AlreadyCompliant(msg.sender);
+
+        // Enforce that the proof is bound to msg.sender (M-4 fix)
+        if (publicInputs.length == 0 || publicInputs[0] != uint256(uint160(msg.sender))) {
+            revert ZKProofSenderMismatch();
+        }
 
         bool valid = externalVerifier.verifyProof(proof, publicInputs);
         if (!valid) revert ZKProofInvalid();
@@ -236,7 +249,7 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
             isCompliant[account] = true;
             totalVerified++;
         }
-        emit AddressVerifiedByMerkle(account); // reuse event for admin grant
+        emit ComplianceGrantedByAdmin(account);
     }
 
     /**
@@ -250,8 +263,8 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
         if (isCompliant[account]) {
             isCompliant[account] = false;
             if (totalVerified > 0) totalVerified--;
+            emit ComplianceRevoked(account);
         }
-        emit ComplianceRevoked(account);
     }
 
     /**
@@ -262,11 +275,13 @@ contract ZKComplianceVerifier is AccessControl, Pausable {
         external
         onlyRole(COMPLIANCE_ROLE)
     {
+        if (accounts.length > MAX_BATCH_SIZE)
+            revert BatchTooLarge(accounts.length, MAX_BATCH_SIZE);
         for (uint256 i = 0; i < accounts.length; i++) {
             if (!isCompliant[accounts[i]] && accounts[i] != address(0)) {
                 isCompliant[accounts[i]] = true;
                 totalVerified++;
-                emit AddressVerifiedByMerkle(accounts[i]);
+                emit ComplianceGrantedByAdmin(accounts[i]);
             }
         }
     }

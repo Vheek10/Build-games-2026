@@ -45,7 +45,7 @@ module.exports = {
 	},
 
 	paths: {
-		sources: "./", // contracts are in this folder root
+		sources: "./src", // contracts are in the src subfolder
 		scripts: "./scripts",
 		tests: "./test",
 		cache: "./cache",

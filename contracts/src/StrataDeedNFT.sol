@@ -165,8 +165,8 @@ contract StrataDeedNFT is
         uint256 tokenId,
         bytes calldata newCommitment
     ) external whenNotPaused {
-        _requireOwned(tokenId);
-        require(ownerOf(tokenId) == msg.sender, "Caller is not the deed owner");
+        address owner = _requireOwned(tokenId);
+        require(owner == msg.sender, "Caller is not the deed owner");
         _validateCommitment(newCommitment);
 
         _privateCommitments[tokenId] = newCommitment;
