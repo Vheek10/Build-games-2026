@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -41,16 +41,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Move/Sui development
-/build/
-/dependencies/
-.move/
+# Hardhat / Solidity development
+/cache/
+/artifacts/
+/typechain-types/
 
-# Sui transaction output
-*.txn
-
-# broadcast run output
+# Foundry
 broadcast/
-
-# optional local libraries vendored for tests
 lib/forge-std/

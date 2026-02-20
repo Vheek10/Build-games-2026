@@ -59,7 +59,7 @@ export const metrics: DashboardMetric[] = [
 		description: "Real estate assets on-chain",
 		change: 8.4,
 		icon: DollarSign,
-		color: "emerald", // Sui Green
+		color: "emerald", // Avalanche Red-Green
 		borderColor: "border-emerald-200",
 		gradientFrom: "from-emerald-50 to-emerald-100",
 		gradientTo: "to-emerald-100",
@@ -139,7 +139,7 @@ export const recentActivities: RecentActivity[] = [
 		id: 4,
 		type: "escrow",
 		property: "Escrow Settlement",
-		amount: "5000 SUI",
+		amount: "5000 AVAX",
 		date: "1 day ago",
 		status: "completed",
 		txHash: "0x9f...2a11",
@@ -148,7 +148,7 @@ export const recentActivities: RecentActivity[] = [
 
 // Rebranded "Portfolio Distribution" to "Asset Allocation"
 export const portfolioDistribution: PortfolioDistribution[] = [
-	{ type: "SUI", value: 45, color: "bg-blue-600" }, // Sui Coin
+	{ type: "AVAX", value: 45, color: "bg-blue-600" }, // AVAX Coin
 	{ type: "RWA", value: 35, color: "bg-emerald-500" }, // RWA Token
 	{ type: "NFTs", value: 15, color: "bg-purple-500" }, // Property Deeds
 	{ type: "Other", value: 5, color: "bg-gray-400" }, // Governance/Misc

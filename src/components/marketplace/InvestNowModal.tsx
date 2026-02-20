@@ -22,7 +22,7 @@ import {
 	Home,
 	Coins,
 } from "lucide-react";
-import { useSuiWallet } from "@/providers/suiet-provider";
+import { useAccount } from "wagmi";
 import { motion, AnimatePresence } from "framer-motion";
 import MarketplacePage from "@/app/marketplace/page";
 import Dashboard from "@/app/dashboard/page";
@@ -109,7 +109,7 @@ export default function InvestNowModal({
 	property,
 	imageUrl,
 }: InvestNowModalProps) {
-	const { address, connected: isConnected } = useSuiWallet();
+	const { address, isConnected } = useAccount();
 	const [investmentAmount, setInvestmentAmount] = useState<string>("");
 	const [selectedTokens, setSelectedTokens] = useState<number>(0);
 	const [step, setStep] = useState<"select" | "confirm" | "success">("select");
@@ -125,7 +125,7 @@ export default function InvestNowModal({
 	const availableTokensNum = 750; // Mock available tokens (75%)
 
 	// Contract interaction for investing (mock for now)
-	// Contract interaction stubs for Sui-only mode (mocked)
+	// Contract interaction stubs for Avalanche mode (mocked)
 	const {
 		data: hash,
 		writeContract,
@@ -304,7 +304,7 @@ export default function InvestNowModal({
 		}).format(amount);
 	};
 
-	// Network validation - for Sui mode assume OK when connected
+	// Network validation - for Avalanche mode assume OK when connected
 	const isCorrectNetwork = !!isConnected;
 
 	return (
@@ -373,7 +373,8 @@ export default function InvestNowModal({
 													</p>
 													<p className="text-xs text-blue-700/80 mt-1 font-montserrat">
 														This is a demonstration. Connect your wallet and
-														switch to Sui Testnet for real transactions.
+														switch to Avalanche Fuji Testnet for real
+														transactions.
 													</p>
 												</div>
 											</div>
@@ -393,7 +394,7 @@ export default function InvestNowModal({
 														Wrong Network
 													</p>
 													<p className="text-xs text-amber-700/80 mt-1 font-montserrat">
-														Please switch to Sui Testnet to invest.
+														Please switch to Avalanche Fuji Testnet to invest.
 													</p>
 												</div>
 											</div>

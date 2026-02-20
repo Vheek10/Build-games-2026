@@ -3,23 +3,37 @@
 "use client";
 
 import * as React from "react";
-import { WalletProvider, useWallet } from "@suiet/wallet-kit";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { config } from "@/config/web3/providers";
+import "@rainbow-me/rainbowkit/styles.css";
 
-export function SuietProvider({ children }: { children: React.ReactNode }) {
-	return <WalletProvider>{children}</WalletProvider>;
-	// Optional: Add props later if needed, e.g.
-	// return <WalletProvider defaultWallets={["Suiet", "Slush"]} theme="dark">{children}</WalletProvider>;
+const queryClient = new QueryClient();
+
+/**
+ * Web3Provider — Wraps the app with wagmi, RainbowKit, and React Query
+ * for Avalanche C-Chain wallet connectivity.
+ *
+ * Supported wallets: MetaMask, Core Wallet, Rabby, WalletConnect, etc.
+ */
+export function Web3Provider({ children }: { children: React.ReactNode }) {
+	return (
+		<WagmiProvider config={config}>
+			<QueryClientProvider client={queryClient}>
+				<RainbowKitProvider
+					theme={darkTheme({
+						accentColor: "#E84142", // Avalanche red
+						accentColorForeground: "white",
+						borderRadius: "medium",
+					})}
+					modalSize="compact">
+					{children}
+				</RainbowKitProvider>
+			</QueryClientProvider>
+		</WagmiProvider>
+	);
 }
 
-export function useSuiWallet() {
-	const wallet = useWallet();
-
-	return {
-		...wallet, // Full access if you need advanced features
-		address: wallet.account?.address ?? null, // null instead of undefined for clarity
-		connected: wallet.connected,
-		connecting: wallet.connecting,
-		disconnect: wallet.disconnect,
-		select: wallet.select, // Lets you programmatically select a wallet by name
-	};
-}
+// Re-export for backward compatibility with existing imports
+export { Web3Provider as SuietProvider };

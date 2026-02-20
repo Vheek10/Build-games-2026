@@ -204,7 +204,7 @@ export default function HeroSection() {
 								<div className="flex items-center justify-between gap-3">
 									<div>
 										<p className="text-xs font-semibold text-blue-700 uppercase tracking-[0.2em] font-montserrat">
-											LIVE ON SUI
+											LIVE ON AVAX
 										</p>
 										<p className="mt-1 text-sm text-gray-700 font-montserrat">
 											ZK-powered property tokenization with real-time

@@ -41,7 +41,7 @@ const faqItems = [
 	{
 		question: "How does property tokenization work?",
 		answer:
-			"Properties are verified through our institutional-grade compliance layer, then minted as on-chain tokens on the Sui blockchain. Each token cryptographically represents legal ownership rights, enabling fractional purchases as small as 0.01% of a property while maintaining full legal enforceability.",
+			"Properties are verified through our institutional-grade compliance layer, then minted as on-chain tokens on the Avalanche C-Chain. Each token cryptographically represents legal ownership rights, enabling fractional purchases as small as 0.01% of a property while maintaining full legal enforceability.",
 	},
 	{
 		question: "Is my investment legally protected?",
@@ -51,12 +51,12 @@ const faqItems = [
 	{
 		question: "What blockchain does StrataDeed use?",
 		answer:
-			"StrataDeed is built on the Sui blockchain, chosen for its sub-second finality, high throughput, and Move-based smart contract security. This enables near-instant settlement of property transactions with minimal gas fees.",
+			"StrataDeed is built on the Avalanche C-Chain, chosen for its sub-second finality, high throughput, and Solidity-based smart contract security. This enables near-instant settlement of property transactions with minimal gas fees.",
 	},
 	{
 		question: "How do I get started with investing?",
 		answer:
-			"Simply connect your Sui-compatible wallet, browse verified properties on our marketplace, and purchase fractional or full ownership tokens. Thanks to our fully ZK-proof architecture, there's no KYC step — just connect your wallet and start investing in under five minutes.",
+			"Simply connect your EVM-compatible wallet, browse verified properties on our marketplace, and purchase fractional or full ownership tokens. Thanks to our fully ZK-proof architecture, there's no KYC step — just connect your wallet and start investing in under five minutes.",
 	},
 	{
 		question: "Can I sell my property tokens anytime?",
@@ -859,7 +859,7 @@ export default function About() {
 										className="w-2 h-2 bg-emerald-500 rounded-full"
 									/>
 									<span className="text-[10px] font-bold text-gray-500 font-montserrat">
-										Live on Sui Network — Global Access
+										Live on Avalanche — Global Access
 									</span>
 								</div>
 							</motion.div>

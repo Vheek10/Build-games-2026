@@ -45,7 +45,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { saveProperty, getNextPropertyId } from "@/lib/propertyStorage";
 import { sampleProperties } from "@/lib/dummy-data";
 import type { Property } from "@/lib/dummy-data";
-import { useSuiWallet } from "@/providers/suiet-provider";
+import { useAccount } from "wagmi";
 
 // Error Boundary Component
 function withErrorBoundary(WrappedComponent: React.ComponentType) {
@@ -107,7 +107,7 @@ function withErrorBoundary(WrappedComponent: React.ComponentType) {
 
 // Main Form Component - Completely standalone
 function MintFormContent() {
-	const { address, connected } = useSuiWallet();
+	const { address, isConnected: connected } = useAccount();
 	const {
 		tokenizeProperty,
 		loading: isMinting,
@@ -141,10 +141,10 @@ function MintFormContent() {
 		tokenSupply: "1000",
 	});
 
-	// Real-time network validation - for Sui we simply check wallet connection
+	// Real-time network validation - check wallet connection
 	useEffect(() => {
 		if (!connected) {
-			setSubmitError("Please connect your Sui wallet to mint property deeds.");
+			setSubmitError("Please connect your wallet to mint property deeds.");
 		} else {
 			setSubmitError(null);
 		}
@@ -487,15 +487,15 @@ function MintFormContent() {
 						Your property deed for{" "}
 						<span className="font-bold text-gray-900">"{formData.title}"</span>{" "}
 						has been securely{" "}
-						{formData.tokenizationEnabled ? "tokenized" : "minted"} on the Sui
-						Network.
+						{formData.tokenizationEnabled ? "tokenized" : "minted"} on the
+						Avalanche Network.
 					</p>
 
 					<div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100 text-left space-y-4">
 						<div className="flex justify-between items-center text-sm">
 							<span className="text-gray-500">Deed Object Transaction</span>
 							<a
-								href={`https://suivision.xyz/txblock/${txHash}`}
+								href={`https://testnet.snowtrace.io/tx/${txHash}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="text-blue-600 font-medium flex items-center gap-1 hover:underline"
@@ -509,7 +509,7 @@ function MintFormContent() {
 							<div className="flex justify-between items-center text-sm">
 								<span className="text-gray-500">RWA Token Deployment</span>
 								<a
-									href={`https://suivision.xyz/txblock/${rwaTxHash}`}
+									href={`https://testnet.snowtrace.io/tx/${rwaTxHash}`}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-600 font-medium flex items-center gap-1 hover:underline"
@@ -524,7 +524,7 @@ function MintFormContent() {
 							<span className="text-gray-500">Network</span>
 							<span className="text-emerald-600 font-bold flex items-center gap-1">
 								<div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-								Sui Testnet
+								Avalanche Fuji Testnet
 							</span>
 						</div>
 					</div>
@@ -704,12 +704,14 @@ function MintFormContent() {
 						/>
 						<div className="flex-1">
 							<div className="font-semibold text-gray-900 font-montserrat">
-								{connected ? "Connected to Sui Testnet" : "Wallet Disconnected"}
+								{connected
+									? "Connected to Avalanche Fuji"
+									: "Wallet Disconnected"}
 							</div>
 							<div className="text-sm text-gray-600 font-montserrat">
 								{connected
-									? "You can mint property deeds on Sui Testnet."
-									: "Please connect your Sui wallet to mint property deeds."}
+									? "You can mint property deeds on Avalanche Fuji Testnet."
+									: "Please connect your wallet to mint property deeds."}
 							</div>
 						</div>
 						<Globe className="w-5 h-5 text-gray-400" />
@@ -781,8 +783,8 @@ function MintFormContent() {
 									</h4>
 									<p className="text-sm text-gray-600 mt-1 font-montserrat">
 										{currentStep === "minting"
-											? "Minting your property deed object on Sui..."
-											: "Deploying RWA token object for fractional ownership on Sui..."}
+											? "Minting your property deed on Avalanche..."
+											: "Deploying RWA token for fractional ownership on Avalanche..."}
 									</p>
 									<div className="mt-3 flex items-center gap-3">
 										<div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -1308,7 +1310,7 @@ function MintFormContent() {
 												</span>
 												<div className="text-sm font-bold text-gray-600 mt-1 flex items-center gap-1">
 													<div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-													Sui Network
+													Avalanche C-Chain
 												</div>
 											</div>
 										</div>
@@ -1344,8 +1346,8 @@ function MintFormContent() {
 
 								<p className="text-xs text-gray-500 mt-4 text-center px-4 font-montserrat">
 									By minting, you agree to the StrataDeed Terms of Service. A
-									gas fee (SUI) will be required to execute this transaction on
-									the Sui Network.
+									gas fee (AVAX) will be required to execute this transaction on
+									Avalanche C-Chain.
 								</p>
 							</div>
 						</div>

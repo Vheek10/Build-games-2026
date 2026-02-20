@@ -73,8 +73,8 @@ const SettingsPage = () => {
 							</h2>
 						</div>
 						<p className="text-xs text-gray-600">
-							StrataDeed operates on Sui Testnet. Ensure your wallet is
-							connected to the correct network.
+							StrataDeed operates on Avalanche Fuji Testnet. Ensure your wallet
+							is connected to the correct network.
 						</p>
 					</section>
 

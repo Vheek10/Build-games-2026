@@ -2,12 +2,5 @@
 
 "use client";
 
-import * as React from "react";
-
-/**
- * Legacy Web3Provider component.
- * For Sui blockchain interactions, use SuietProvider from @/providers/suiet-provider
- */
-export function Web3Provider({ children }: { children: React.ReactNode }) {
-	return <>{children}</>;
-}
+// Re-export from the main provider for backward compatibility
+export { Web3Provider } from "@/providers/suiet-provider";

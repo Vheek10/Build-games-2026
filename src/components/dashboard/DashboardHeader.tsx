@@ -32,7 +32,7 @@ export default function DashboardHeader({
 						initial={{ scale: 0.8, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ delay: 0.2 }}>
-						Sui Network
+						Avalanche
 					</motion.span>
 				</div>
 				<p className="text-gray-600 text-sm font-montserrat">{subtitle}</p>

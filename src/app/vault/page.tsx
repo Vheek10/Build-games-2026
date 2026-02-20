@@ -17,10 +17,10 @@ import {
 	Info,
 	Sparkles,
 } from "lucide-react";
-import { useSuiWallet } from "@/providers/suiet-provider";
+import { useAccount } from "wagmi";
 
 export default function VaultPage() {
-	const { address, connected: isConnected } = useSuiWallet();
+	const { address, isConnected } = useAccount();
 	const [showPrivateKey, setShowPrivateKey] = useState(false);
 	const [copied, setCopied] = useState(false);
 

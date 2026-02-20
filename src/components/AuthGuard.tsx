@@ -4,7 +4,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSuiWallet } from "@/providers/suiet-provider";
+import { useAccount } from "wagmi";
 
 import { Loader2 } from "lucide-react";
 import ConnectWalletButton from "@/components/ConnectWalletButton";
@@ -14,7 +14,7 @@ interface AuthGuardProps {
 }
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-	const { connected: isConnected } = useSuiWallet();
+	const { isConnected } = useAccount();
 	const router = useRouter();
 
 	// If simple checks fail (not connected and not reconnecting), redirect
@@ -61,5 +61,3 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 	// If authenticated, render the protected content
 	return <>{children}</>;
 }
-
-// Using the Sui wallet kit connect button wrapper

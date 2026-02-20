@@ -4,7 +4,7 @@ import "./globals.css";
 import { Montserrat, McLaren } from "next/font/google";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
-import { SuietProvider } from "@/providers/suiet-provider";
+import { Web3Provider } from "@/providers/suiet-provider";
 
 // Dynamically import Footer to reduce initial bundle size
 const Footer = dynamic(() => import("@/components/Footer"), {
@@ -30,21 +30,22 @@ const mclaren = McLaren({
 });
 
 export const metadata = {
-	title: "StrataDeed — Tokenized Property Deeds on Sui",
+	title: "StrataDeed — Tokenized Property Deeds on Avalanche",
 	description:
-		"Mint, list, and discover tokenized property deeds on the Sui Network.",
+		"Mint, list, and discover tokenized property deeds on Avalanche C-Chain.",
 	keywords: [
 		"real estate",
 		"blockchain",
 		"tokenization",
 		"property",
-		"Sui Network",
+		"Avalanche",
+		"AVAX",
 		"RWA",
 		"NFT",
 	],
 	authors: [{ name: "StrataDeed" }],
 	viewport: "width=device-width, initial-scale=1",
-	themeColor: "#000000",
+	themeColor: "#E84142",
 };
 
 export default function RootLayout({
@@ -64,7 +65,7 @@ export default function RootLayout({
 				/>
 			</head>
 			<body className="font-montserrat antialiased bg-bg text-text">
-				<SuietProvider>
+				<Web3Provider>
 					<div className="min-h-screen flex flex-col">
 						<Navbar
 							placement="hero"
@@ -73,7 +74,7 @@ export default function RootLayout({
 						<main className="flex-1 w-full">{children}</main>
 						<Footer />
 					</div>
-				</SuietProvider>
+				</Web3Provider>
 			</body>
 		</html>
 	);

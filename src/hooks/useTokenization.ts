@@ -3,26 +3,41 @@
 "use client";
 
 import { useState } from "react";
-import { useSuiWallet } from "@/providers/suiet-provider";
-import { createSuiClient } from "@/lib/sui/client";
-import { mintPropertyDeedOnSui } from "@/lib/sui/tokenization";
+import {
+	useAccount,
+	useWriteContract,
+	useWaitForTransactionReceipt,
+} from "wagmi";
+import {
+	STRATA_DEED_NFT_ABI,
+	STRATA_DEED_NFT_ADDRESS,
+} from "@/config/contracts";
 
 /**
- * Hook for minting Property Deed NFTs on Sui blockchain
- * Aligns with property_nft::mint_property_deed smart contract function
+ * Hook for minting Property Deed NFTs on Avalanche C-Chain
+ * Interacts with StrataDeedNFT.sol :: mintPropertyDeed
  */
 export function useTokenization() {
-	const { address, signAndExecuteTransaction } = useSuiWallet();
-	const [loading, setLoading] = useState(false);
+	const { address } = useAccount();
 	const [error, setError] = useState<string | null>(null);
-	const [txDigest, setTxDigest] = useState<string | undefined>();
+
+	const {
+		data: txHash,
+		writeContract,
+		isPending: loading,
+		error: writeError,
+	} = useWriteContract();
+
+	const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+		hash: txHash,
+	});
 
 	/**
 	 * Mints a Property Deed NFT
 	 * @param propertyId - Unique property identifier
-	 * @param metadataURI - IPFS or base64 encoded metadata
-	 * @param mintFee - Fee for minting (currently unused)
-	 * @param privateCommitment - ZK commitment hash
+	 * @param metadataURI - IPFS or HTTP metadata URI
+	 * @param mintFee - Fee for minting (unused in current contract)
+	 * @param privateCommitment - ZK commitment hash (hex string)
 	 * @param owner - Owner address (recipient)
 	 */
 	const tokenizeProperty = async (
@@ -32,7 +47,6 @@ export function useTokenization() {
 		privateCommitment: string,
 		owner: string,
 	) => {
-		setLoading(true);
 		setError(null);
 
 		try {
@@ -40,8 +54,10 @@ export function useTokenization() {
 				throw new Error("Wallet not connected");
 			}
 
-			if (!signAndExecuteTransaction) {
-				throw new Error("Wallet does not support transaction signing");
+			if (!STRATA_DEED_NFT_ADDRESS) {
+				throw new Error(
+					"StrataDeedNFT contract address not configured. Deploy contracts first.",
+				);
 			}
 
 			// Input validation
@@ -55,33 +71,37 @@ export function useTokenization() {
 				throw new Error("Private commitment is required for ZK proofs");
 			}
 
-			const client = createSuiClient();
+			// Convert commitment string to bytes
+			const commitmentBytes = `0x${Array.from(
+				new TextEncoder().encode(privateCommitment),
+			)
+				.map((b) => b.toString(16).padStart(2, "0"))
+				.join("")}` as `0x${string}`;
 
-			// Build transaction for minting Property Deed NFT
-			const transaction = await mintPropertyDeedOnSui(client, address, {
-				propertyId,
-				metadataUri: metadataURI,
-				privateCommitment,
-				ownerAddress: owner,
+			writeContract({
+				address: STRATA_DEED_NFT_ADDRESS,
+				abi: STRATA_DEED_NFT_ABI,
+				functionName: "mintPropertyDeed",
+				args: [
+					propertyId,
+					metadataURI,
+					commitmentBytes,
+					owner as `0x${string}`,
+				],
 			});
-
-			// Sign and execute transaction using Suiet wallet
-			const result = await signAndExecuteTransaction({
-				transaction,
-			});
-
-			const digest = result.digest;
-			setTxDigest(digest);
 
 			return {
 				success: true,
-				hash: digest,
-				message: "Sui transaction submitted successfully",
+				hash: txHash,
+				message: "Transaction submitted to Avalanche C-Chain",
 			};
 		} catch (err: any) {
-			let errorMessage = "Failed to tokenize property on Sui";
+			let errorMessage = "Failed to tokenize property";
 
-			if (err?.message?.includes("User rejected")) {
+			if (
+				err?.message?.includes("User rejected") ||
+				err?.message?.includes("denied")
+			) {
 				errorMessage = "Transaction rejected by user";
 			} else if (err?.message) {
 				errorMessage = err.message;
@@ -94,18 +114,16 @@ export function useTokenization() {
 				hash: undefined,
 				message: errorMessage,
 			};
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	return {
 		tokenizeProperty,
-		loading,
-		error,
-		txHash: txDigest,
+		loading: loading || isConfirming,
+		error: error || writeError?.message || null,
+		txHash,
 		receipt: undefined,
-		isSuccess: !!txDigest,
+		isSuccess,
 		eventData: null,
 	};
 }

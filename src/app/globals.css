@@ -5,7 +5,6 @@
 
 /* Font imports removed - using next/font/google for optimization */
 @import "tailwindcss";
-@import "@suiet/wallet-kit/style.css";
 
 :root {
 	/* Color System - Light mode */
