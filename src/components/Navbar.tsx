@@ -38,6 +38,8 @@ interface NavbarProps {
 export default function Navbar({ hideOnHome = false }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [isOnHero, setIsOnHero] = useState(isHome);
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
@@ -46,6 +48,29 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
     };
   }, [isMobileMenuOpen]);
 
+  // Track when the hero section is in view on the homepage
+  useEffect(() => {
+    if (!isHome) {
+      return;
+    }
+
+    const hero = document.getElementById("hero-section");
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOnHero(entry.isIntersecting && entry.intersectionRatio > 0.3);
+      },
+      { threshold: [0.3, 0.5] },
+    );
+
+    observer.observe(hero);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isHome]);
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === href;
     return pathname === href || pathname?.startsWith(`${href}/`);
@@ -53,16 +78,28 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
 
   if (hideOnHome && pathname === "/") return null;
 
+  const showDarkNavbar = isHome && isOnHero;
+
   return (
     <>
-      <header className="fixed top-0 left-0 z-50 w-full px-4 sm:px-5 md:px-6 lg:px-8 xl:px-10 backdrop-blur-md">
-        <div className="relative mx-auto w-full max-w-screen-2xl">
+      <header
+        className={cn(
+          "fixed top-0 left-0 z-50 w-full px-4 sm:px-6 lg:px-8 backdrop-blur-md transition-colors duration-300",
+          showDarkNavbar ? "bg-transparent" : "bg-white/80 shadow-sm",
+        )}
+      >
+        <div className="relative w-full max-w-screen-2xl">
           <div className="flex items-center justify-between h-16 sm:h-[68px] md:h-[72px] lg:h-20 relative">
             {/* Mobile Menu Toggle */}
             <div className="flex lg:hidden items-center shrink-0 z-10">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2.5 rounded-xl transition-all duration-300 text-gray-700 hover:text-teal-600 hover:bg-teal-50/80"
+                className={cn(
+                  "p-2.5 rounded-xl transition-all duration-300",
+                  showDarkNavbar
+                    ? "text-white hover:text-teal-300 hover:bg-white/10"
+                    : "text-black hover:text-teal-600 hover:bg-teal-50/80",
+                )}
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
               >
@@ -86,16 +123,29 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
                     src="/logo.png"
                     alt="StrataDeed Logo"
                     fill
-                    className="object-contain"
+                    className={cn(
+                      "object-contain transition-all duration-300",
+                      showDarkNavbar ? "" : "brightness-0",
+                    )}
                     priority
                     sizes="(max-width: 640px) 36px, (max-width: 1024px) 44px, 52px"
                   />
                 </div>
                 <div className="hidden lg:flex flex-col">
-                  <span className="text-lg xl:text-xl 2xl:text-2xl font-black leading-tight tracking-tight font-mclaren text-white">
+                  <span
+                    className={cn(
+                      "text-lg xl:text-xl 2xl:text-2xl font-black leading-tight tracking-tight font-mclaren",
+                      showDarkNavbar ? "text-white" : "text-black",
+                    )}
+                  >
                     StrataDeed
                   </span>
-                  <span className="text-[8px] xl:text-[9px] font-black text-primary-light uppercase tracking-[0.35em] leading-none mt-0.5 font-montserrat">
+                  <span
+                    className={cn(
+                      "text-[8px] xl:text-[9px] font-black uppercase tracking-[0.35em] leading-none mt-0.5 font-montserrat",
+                      showDarkNavbar ? "text-primary-light" : "text-primary",
+                    )}
+                  >
                     Property Tokenization
                   </span>
                 </div>
@@ -104,7 +154,12 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center justify-center flex-1 mx-6 xl:mx-10 2xl:mx-14">
-              <div className="flex items-center gap-1 xl:gap-1.5 bg-white/20 backdrop-blur-md rounded-xl px-1 py-1">
+              <div
+                className={cn(
+                  "flex items-center gap-1 xl:gap-1.5 rounded-xl px-1 py-1 backdrop-blur-md transition-colors duration-300",
+                  showDarkNavbar ? "bg-white/10" : "bg-black/5",
+                )}
+              >
                 {navItems.map((item) => {
                   const active = isActive(item.href);
                   return (
@@ -114,8 +169,12 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
                       className={cn(
                         "relative flex items-center gap-2 px-3.5 xl:px-4 py-2 rounded-lg text-xs font-black uppercase tracking-[0.15em] transition-all duration-300 font-montserrat group/nav",
                         active
-                          ? "text-primary-light"
-                          : "text-white hover:text-primary-light",
+                          ? showDarkNavbar
+                            ? "text-primary-light"
+                            : "text-primary"
+                          : showDarkNavbar
+                          ? "text-white hover:text-primary-light"
+                          : "text-black/70 hover:text-primary",
                       )}
                       aria-current={active ? "page" : undefined}
                     >

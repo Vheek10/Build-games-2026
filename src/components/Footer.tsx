@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-linear-to-b from-white via-slate-50 to-white border-t border-gray-200 relative overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-red-500/0 via-red-500/40 to-red-500/0" />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
+      <div className="sm:px-6 lg:px-8 py-12 relative">
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
           {/* Brand Section */}
           <div className="flex items-center gap-4">
