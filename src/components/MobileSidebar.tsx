@@ -127,7 +127,7 @@ export default function MobileSidebar({
 											<span className="text-base font-black text-gray-900 leading-tight tracking-tight font-mclaren">
 												StrataDeed
 											</span>
-											<span className="text-[8px] font-black text-blue-600 uppercase tracking-[0.35em] leading-none mt-0.5 font-montserrat">
+											<span className="text-[8px] font-black text-red-600 uppercase tracking-[0.35em] leading-none mt-0.5 font-montserrat">
 												Tokenization
 											</span>
 										</div>
@@ -170,7 +170,7 @@ export default function MobileSidebar({
 													className={cn(
 														"group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 relative",
 														active
-															? "bg-blue-600 shadow-lg shadow-blue-600/20"
+															? "bg-red-600 shadow-lg shadow-red-600/20"
 															: "hover:bg-gray-50",
 													)}
 													onClick={onClose}>
@@ -179,7 +179,7 @@ export default function MobileSidebar({
 															"w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 flex-shrink-0",
 															active
 																? "bg-white/20 text-white"
-																: "bg-gray-100 text-gray-500 group-hover:text-blue-600 group-hover:bg-blue-50",
+																: "bg-gray-100 text-gray-500 group-hover:text-red-600 group-hover:bg-red-50",
 														)}>
 														<Icon className="w-4 h-4" />
 													</div>

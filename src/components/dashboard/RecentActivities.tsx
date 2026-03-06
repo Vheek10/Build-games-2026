@@ -39,8 +39,8 @@ export default function RecentActivities({
 			case "bridge":
 				return {
 					icon: Repeat,
-					color: "text-blue-600",
-					bg: "bg-blue-100",
+					color: "text-red-600",
+					bg: "bg-red-100",
 				};
 			case "transfer":
 				return {
@@ -51,8 +51,8 @@ export default function RecentActivities({
 			case "escrow":
 				return {
 					icon: Shield,
-					color: "text-cyan-600",
-					bg: "bg-cyan-100",
+					color: "text-red-600",
+					bg: "bg-red-100",
 				};
 			default:
 				return {
@@ -68,7 +68,7 @@ export default function RecentActivities({
 			case "completed":
 				return "bg-emerald-100 text-emerald-700";
 			case "processing":
-				return "bg-blue-100 text-blue-700 animate-pulse";
+				return "bg-red-100 text-red-700 animate-pulse";
 			case "pending":
 				return "bg-amber-100 text-amber-700";
 		}
@@ -167,7 +167,7 @@ export default function RecentActivities({
 									<div className="flex items-center gap-2">
 										<a
 											href="#"
-											className="flex items-center gap-1 text-[10px] text-blue-500 hover:text-blue-600 hover:underline font-montserrat">
+											className="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-600 hover:underline font-montserrat">
 											{activity.txHash} <ExternalLink className="w-2.5 h-2.5" />
 										</a>
 										<span className="text-[10px] text-gray-400 font-montserrat">
@@ -191,7 +191,7 @@ export default function RecentActivities({
 			</motion.div>
 
 			<motion.button
-				className="w-full mt-6 py-3 text-blue-600 font-black hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center gap-3 font-montserrat"
+				className="w-full mt-6 py-3 text-red-600 font-black hover:bg-red-50 rounded-full transition-colors flex items-center justify-center gap-3 font-montserrat"
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.4 }}

@@ -23,7 +23,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
 				<div className="max-w-md w-full text-center space-y-6">
-					<div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+					<div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="32"
@@ -34,7 +34,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
-							className="text-blue-600">
+							className="text-red-600">
 							<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
 							<path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
 							<path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />

@@ -25,7 +25,7 @@ export default function DashboardTabs({
 			id: "properties",
 			label: "Properties",
 			icon: Layers,
-			color: "text-blue-600",
+			color: "text-red-600",
 		},
 		{
 			id: "activity",

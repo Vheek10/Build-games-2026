@@ -18,14 +18,14 @@ export default function MarketInsights({
 	],
 }: MarketInsightsProps) {
 	return (
-		<div className="bg-linear-to-r from-blue-500 to-cyan-400 rounded-xl p-6 text-white">
+		<div className="bg-linear-to-r from-red-500 to-red-400 rounded-xl p-6 text-white">
 			<div className="flex flex-col lg:flex-row items-center justify-between gap-6">
 				<div>
 					<h3 className="text-xl font-bold mb-2">{title}</h3>
-					<p className="text-blue-100 mb-4 max-w-lg">{description}</p>
+					<p className="text-red-100 mb-4 max-w-lg">{description}</p>
 					<Link
 						href="/marketplace"
-						className="px-6 py-3 bg-white text-blue-600 font-black rounded-full hover:bg-blue-50 transition-colors inline-flex items-center">
+						className="px-6 py-3 bg-white text-red-600 font-black rounded-full hover:bg-red-50 transition-colors inline-flex items-center">
 						<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 							View Market Report
 						</span>
@@ -37,7 +37,7 @@ export default function MarketInsights({
 							key={index}
 							className="text-center">
 							<div className="text-2xl font-bold">{metric.value}</div>
-							<div className="text-xs text-blue-200">{metric.label}</div>
+							<div className="text-xs text-red-200">{metric.label}</div>
 						</div>
 					))}
 				</div>

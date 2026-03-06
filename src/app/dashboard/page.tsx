@@ -50,12 +50,12 @@ export default function Dashboard() {
 				transition={pageTransition}>
 				{/* Page Badge */}
 				<motion.div
-					className="inline-flex items-center gap-3 px-5 py-2 bg-blue-600/5 rounded-full mb-4 border border-blue-600/10"
+					className="inline-flex items-center gap-3 px-5 py-2 bg-red-600/5 rounded-full mb-4 border border-red-600/10"
 					initial={{ opacity: 0, scale: 0.9 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ delay: 0.1, duration: 0.3 }}>
 					<motion.span
-						className="text-[10px] font-black text-blue-700 uppercase tracking-[0.4em] font-montserrat"
+						className="text-[10px] font-black text-red-700 uppercase tracking-[0.4em] font-montserrat"
 						animate={{ opacity: [0.7, 1, 0.7] }}
 						transition={{ duration: 2, repeat: Infinity }}>
 						Portfolio Dashboard

@@ -18,21 +18,22 @@ const queryClient = new QueryClient();
  * Supported wallets: MetaMask, Core Wallet, Rabby, WalletConnect, etc.
  */
 export function Web3Provider({ children }: { children: React.ReactNode }) {
-	return (
-		<WagmiProvider config={config}>
-			<QueryClientProvider client={queryClient}>
-				<RainbowKitProvider
-					theme={darkTheme({
-						accentColor: "#E84142", // Avalanche red
-						accentColorForeground: "white",
-						borderRadius: "medium",
-					})}
-					modalSize="compact">
-					{children}
-				</RainbowKitProvider>
-			</QueryClientProvider>
-		</WagmiProvider>
-	);
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          theme={darkTheme({
+            accentColor: "white",
+            accentColorForeground: "#9f2149",
+            borderRadius: "medium",
+          })}
+          modalSize="compact"
+        >
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
 }
 
 // Re-export for backward compatibility with existing imports

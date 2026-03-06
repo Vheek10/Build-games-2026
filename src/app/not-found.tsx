@@ -20,7 +20,7 @@ export default function NotFound() {
 					/>
 				</div>
 				<div className="absolute inset-0 bg-linear-to-br from-gray-900/80 via-gray-900/85 to-gray-900/90" />
-				<div className="absolute inset-0 bg-linear-to-r from-blue-900/30 via-transparent to-cyan-900/30" />
+				<div className="absolute inset-0 bg-linear-to-r from-red-900/30 via-transparent to-red-900/30" />
 				<div className="absolute inset-0 opacity-[0.03]">
 					<div className="h-full w-full bg-[linear-gradient(45deg,transparent_48%,rgba(59,130,246,0.15)_48%,rgba(59,130,246,0.15)_52%,transparent_52%)] bg-size-[120px_120px]" />
 				</div>
@@ -29,7 +29,7 @@ export default function NotFound() {
 			<div className="relative w-full px-4 sm:px-6 lg:px-8">
 				<div className="max-w-4xl mx-auto text-center">
 					{/* Badge */}
-					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-gray-900/60 backdrop-blur-md mb-8">
+					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 bg-gray-900/60 backdrop-blur-md mb-8">
 						<span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
 						<span className="text-[10px] font-black tracking-[0.4em] text-gray-300 uppercase font-montserrat">
 							404 — Page Not Found
@@ -86,8 +86,8 @@ export default function NotFound() {
 						</Link>
 						<Link
 							href="/marketplace"
-							className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-transparent border border-gray-600 text-gray-100 rounded-full overflow-hidden transition-all duration-500 hover:border-blue-400/80 hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.2)] hover:scale-105 hover:-translate-y-1">
-							<Compass className="w-4 h-4 text-blue-300 group-hover:rotate-3 transition-transform" />
+							className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-transparent border border-gray-600 text-gray-100 rounded-full overflow-hidden transition-all duration-500 hover:border-red-400/80 hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.2)] hover:scale-105 hover:-translate-y-1">
+							<Compass className="w-4 h-4 text-red-300 group-hover:rotate-3 transition-transform" />
 							<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">Explore Marketplace</span>
 						</Link>
 					</div>

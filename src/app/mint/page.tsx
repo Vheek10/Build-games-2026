@@ -87,7 +87,7 @@ function withErrorBoundary(WrappedComponent: React.ComponentType) {
 									setHasError(false);
 									setError(null);
 								}}
-								className="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+								className="flex-1 px-4 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors">
 								Try Again
 							</button>
 							<button
@@ -498,7 +498,7 @@ function MintFormContent() {
 								href={`https://testnet.snowtrace.io/tx/${txHash}`}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-blue-600 font-medium flex items-center gap-1 hover:underline"
+								className="text-red-600 font-medium flex items-center gap-1 hover:underline"
 								aria-label="View deed transaction on explorer">
 								{String(txHash).slice(0, 8)}...
 								{String(txHash).slice(-6)}
@@ -512,7 +512,7 @@ function MintFormContent() {
 									href={`https://testnet.snowtrace.io/tx/${rwaTxHash}`}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-blue-600 font-medium flex items-center gap-1 hover:underline"
+									className="text-red-600 font-medium flex items-center gap-1 hover:underline"
 									aria-label="View RWA deployment on explorer">
 									{String(rwaTxHash).slice(0, 8)}...
 									{String(rwaTxHash).slice(-6)}
@@ -532,7 +532,7 @@ function MintFormContent() {
 					<div className="flex flex-col sm:flex-row gap-4">
 						<Link
 							href="/dashboard"
-							className="flex-1 px-8 py-5 bg-gray-900 text-white rounded-full hover:bg-blue-600 transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3 group"
+							className="flex-1 px-8 py-5 bg-gray-900 text-white rounded-full hover:bg-red-600 transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3 group"
 							aria-label="Go to dashboard">
 							<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
 								Go to Dashboard
@@ -556,7 +556,7 @@ function MintFormContent() {
 									tokenSupply: "1000",
 								});
 							}}
-							className="flex-1 px-8 py-5 bg-white text-gray-900 rounded-full border border-gray-200 hover:border-blue-300 transition-all duration-500 hover:shadow-[0_10px_20px_-5px_rgba(0,0,0,0.05)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3"
+							className="flex-1 px-8 py-5 bg-white text-gray-900 rounded-full border border-gray-200 hover:border-red-300 transition-all duration-500 hover:shadow-[0_10px_20px_-5px_rgba(0,0,0,0.05)] hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-3"
 							aria-label="Mint another property deed">
 							<Plus className="w-4 h-4" />
 							<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
@@ -592,7 +592,7 @@ function MintFormContent() {
 							? "Confirming RWA Deployment..."
 							: "Deploying Token Contract..."}
 				</div>
-				<div className="text-xs text-blue-100 font-medium font-montserrat">
+				<div className="text-xs text-red-100 font-medium font-montserrat">
 					{currentStep === "minting" ? "Step 1 of 2" : "Step 2 of 2"}
 				</div>
 			</div>
@@ -651,12 +651,12 @@ function MintFormContent() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.1, duration: 0.4 }}>
 					<motion.div
-						className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-4 ring-1 ring-blue-100"
+						className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full mb-4 ring-1 ring-red-100"
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ delay: 0.15, duration: 0.3 }}>
-						<Building2 className="w-4 h-4 text-blue-600" />
-						<span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 font-montserrat">
+						<Building2 className="w-4 h-4 text-red-600" />
+						<span className="text-[10px] font-black uppercase tracking-[0.4em] text-red-600 font-montserrat">
 							PROPERTY REGISTRATION
 						</span>
 					</motion.div>
@@ -772,10 +772,10 @@ function MintFormContent() {
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						className="mb-8">
-						<div className="bg-linear-to-r from-blue-50 to-cyan-50 border border-blue-100 rounded-2xl p-6">
+						<div className="bg-linear-to-r from-red-50 to-red-50 border border-red-100 rounded-2xl p-6">
 							<div className="flex items-center gap-4">
-								<div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-									<Clock className="w-6 h-6 text-blue-600" />
+								<div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+									<Clock className="w-6 h-6 text-red-600" />
 								</div>
 								<div className="flex-1">
 									<h4 className="font-bold text-gray-900 font-mclaren">
@@ -789,7 +789,7 @@ function MintFormContent() {
 									<div className="mt-3 flex items-center gap-3">
 										<div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
 											<motion.div
-												className="h-full bg-linear-to-r from-blue-500 to-cyan-400"
+												className="h-full bg-linear-to-r from-red-500 to-red-400"
 												initial={{ width: "0%" }}
 												animate={{
 													width: currentStep === "minting" ? "50%" : "100%",
@@ -797,7 +797,7 @@ function MintFormContent() {
 												}}
 											/>
 										</div>
-										<span className="text-xs font-bold text-blue-600 font-montserrat">
+										<span className="text-xs font-bold text-red-600 font-montserrat">
 											{currentStep === "minting" ? "Step 1/2" : "Step 2/2"}
 										</span>
 									</div>
@@ -820,12 +820,12 @@ function MintFormContent() {
 						<div className="space-y-8">
 							{/* Context Block */}
 							<motion.div
-								className="bg-blue-50 rounded-xl p-6 border border-blue-100"
+								className="bg-red-50 rounded-xl p-6 border border-red-100"
 								initial={{ opacity: 0, y: 10 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.4, duration: 0.3 }}>
 								<h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2 font-mclaren">
-									<Home className="w-5 h-5 text-blue-500" />
+									<Home className="w-5 h-5 text-red-500" />
 									Property Information
 								</h3>
 								<p className="text-sm text-gray-600 font-montserrat">
@@ -858,7 +858,7 @@ function MintFormContent() {
 										name="title"
 										value={formData.title}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.title ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.title ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. Sunset Villa"
 										required
 										aria-invalid={!!formErrors.title}
@@ -889,7 +889,7 @@ function MintFormContent() {
 										name="location"
 										value={formData.location}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.location ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.location ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 123 Ocean Dr, Miami, FL"
 										required
 										aria-invalid={!!formErrors.location}
@@ -920,7 +920,7 @@ function MintFormContent() {
 										name="valuation"
 										value={formData.valuation}
 										onChange={handleInputChange}
-										className={`w-full border ${formErrors.valuation ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-gray-400`}
+										className={`w-full border ${formErrors.valuation ? "border-red-300" : "border-gray-300"} rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all placeholder-gray-400`}
 										placeholder="e.g. 500000"
 										type="number"
 										min="0"
@@ -958,7 +958,7 @@ function MintFormContent() {
 										name="propertyType"
 										value={formData.propertyType}
 										onChange={handleInputChange}
-										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer">
+										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all cursor-pointer">
 										<option value="residential">Residential</option>
 										<option value="commercial">Commercial</option>
 										<option value="industrial">Industrial</option>
@@ -981,7 +981,7 @@ function MintFormContent() {
 										name="description"
 										value={formData.description}
 										onChange={handleInputChange}
-										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[120px] resize-y placeholder-gray-400"
+										className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-900 font-montserrat focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all min-h-[120px] resize-y placeholder-gray-400"
 										placeholder="Describe main features, amenities, and unique selling points..."
 										rows={4}
 									/>
@@ -993,9 +993,9 @@ function MintFormContent() {
 									Supporting Documents
 								</label>
 
-								<div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-gray-50 transition-all duration-300 group">
-									<div className="mx-auto w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-										<Upload className="w-6 h-6 text-blue-600" />
+								<div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-red-400 hover:bg-gray-50 transition-all duration-300 group">
+									<div className="mx-auto w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
+										<Upload className="w-6 h-6 text-red-600" />
 									</div>
 									<h4 className="text-gray-900 font-medium mb-1 font-mclaren">
 										Upload Property Deed & Photos
@@ -1007,7 +1007,7 @@ function MintFormContent() {
 											Max 5MB per file. Supported: JPEG, PNG, GIF, WebP, PDF
 										</span>
 									</p>
-									<p className="text-xs text-blue-500 mb-4 font-medium flex items-center justify-center gap-1 font-montserrat">
+									<p className="text-xs text-red-500 mb-4 font-medium flex items-center justify-center gap-1 font-montserrat">
 										<Shield className="w-3 h-3" />
 										Files are encrypted & stored privately via ZK-Commitments.
 									</p>
@@ -1031,7 +1031,7 @@ function MintFormContent() {
 											e.key === "Enter" &&
 											document.getElementById("file-upload")?.click()
 										}
-										className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-montserrat"
+										className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-montserrat"
 										aria-label="Browse files to upload">
 										Browse Files
 									</label>
@@ -1058,8 +1058,8 @@ function MintFormContent() {
 													key={index}
 													className="flex items-center justify-between bg-white rounded-xl p-4 border border-gray-200 shadow-sm transition-all">
 													<div className="flex items-center gap-4 overflow-hidden">
-														<div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-															<FileText className="w-5 h-5 text-blue-600" />
+														<div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+															<FileText className="w-5 h-5 text-red-600" />
 														</div>
 														<div className="flex flex-col min-w-0">
 															<span className="text-sm font-bold text-gray-900 truncate">
@@ -1309,7 +1309,7 @@ function MintFormContent() {
 													Network
 												</span>
 												<div className="text-sm font-bold text-gray-600 mt-1 flex items-center gap-1">
-													<div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
+													<div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
 													Avalanche C-Chain
 												</div>
 											</div>
@@ -1326,7 +1326,7 @@ function MintFormContent() {
 									className={`w-full px-6 py-5 rounded-full shadow-lg transition-all duration-500 flex items-center justify-center ${
 										isProcessing || !connected
 											? "bg-linear-to-r from-gray-400 to-gray-500 cursor-not-allowed opacity-80"
-											: "bg-linear-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-600 hover:shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
+											: "bg-linear-to-r from-red-600 via-red-500 to-red-500 hover:from-red-700 hover:via-red-600 hover:to-red-600 hover:shadow-red-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
 									}`}
 									aria-label={
 										formData.tokenizationEnabled
@@ -1369,7 +1369,7 @@ export default function MintPage() {
 				<div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-white">
 					<div className="text-center">
 						<div className="w-16 h-16 mx-auto mb-4 relative">
-							<Loader2 className="w-16 h-16 text-blue-600 animate-spin" />
+							<Loader2 className="w-16 h-16 text-red-600 animate-spin" />
 						</div>
 						<h3 className="text-lg font-semibold text-gray-900">
 							Loading Mint Page

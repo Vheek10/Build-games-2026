@@ -7,332 +7,334 @@
 @import "tailwindcss";
 
 :root {
-	/* Color System - Light mode */
-	--color-bg: #ffffff;
-	--color-text: #0f172a;
-	--color-muted: #64748b;
-	--color-card: #f8fafc;
-	--color-border: #e2e8f0;
+  /* Color System - Light mode */
+  --color-primary: #821a3d;
+  --color-bg: #ffffff;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-card: #f8fafc;
+  --color-border: #e2e8f0;
 
-	/* Primary accent - Deep Blue (Professional, trust) */
-	--color-accent: #2563eb;
-	--color-accent-light: #60a5fa;
-	--color-accent-dark: #1e40af;
+  /* Primary accent - Deep Red (Professional, trust) */
+  --color-accent: #9f2149;
+  --color-accent-light: #d13a50;
+  --color-accent-dark: #821a3d;
 
-	/* Secondary accent - Emerald (Growth, success) */
-	--color-accent-2: #10b981;
-	--color-accent-2-light: #34d399;
-	--color-accent-2-dark: #059669;
+  /* Secondary accent - Emerald (Growth, success) */
+  --color-accent-2: #10b981;
+  --color-accent-2-light: #34d399;
+  --color-accent-2-dark: #059669;
 
-	/* Tertiary accent - Amber (Energy, premium) */
-	--color-accent-3: #f59e0b;
-	--color-accent-3-light: #fbbf24;
-	--color-accent-3-dark: #d97706;
+  /* Tertiary accent - Amber (Energy, premium) */
+  --color-accent-3: #f59e0b;
+  --color-accent-3-light: #fbbf24;
+  --color-accent-3-dark: #d97706;
 
-	/* Neutral shades for light theme */
-	--color-gray-50: #f9fafb;
-	--color-gray-100: #f3f4f6;
-	--color-gray-200: #e5e7eb;
-	--color-gray-300: #d1d5db;
-	--color-gray-400: #9ca3af;
-	--color-gray-500: #6b7280;
-	--color-gray-600: #4b5563;
-	--color-gray-700: #374151;
-	--color-gray-800: #1f2937;
-	--color-gray-900: #111827;
+  /* Neutral shades for light theme */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
 
-	/* Blue shades for light theme */
-	--color-blue-50: #eff6ff;
-	--color-blue-100: #dbeafe;
-	--color-blue-200: #bfdbfe;
-	--color-blue-300: #93c5fd;
-	--color-blue-400: #60a5fa;
-	--color-blue-500: #3b82f6;
-	--color-blue-600: #2563eb;
-	--color-blue-700: #1d4ed8;
-	--color-blue-800: #1e40af;
-	--color-blue-900: #1e3a8a;
+  /* Red shades for light theme */
+  --color-red-50: #fdf2f4;
+  --color-red-100: #fce7e9;
+  --color-red-200: #f9d5d9;
+  --color-red-300: #f3b7be;
+  --color-red-400: #eb9099;
+  --color-red-500: #e06a76;
+  --color-red-600: #d13a50;
+  --color-red-700: #b52e43;
+  --color-red-800: #9f2149;
+  --color-red-900: #821a3d;
 
-	/* Status colors */
-	--color-success: #10b981;
-	--color-warning: #f59e0b;
-	--color-error: #ef4444;
-	--color-info: #3b82f6;
+  /* Status colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #9f2149;
 
-	/* Gradients */
-	--gradient-blue: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-	--gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
-	--gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-	--gradient-light: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-	--gradient-sunrise: linear-gradient(
-		135deg,
-		#3b82f6 0%,
-		#10b981 50%,
-		#f59e0b 100%
-	);
+  /* Gradients */
+  --gradient-red: linear-gradient(135deg, #9f2149 0%, #821a3d 100%);
+  --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --gradient-light: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --gradient-sunrise: linear-gradient(
+    135deg,
+    #9f2149 0%,
+    #10b981 50%,
+    #f59e0b 100%
+  );
 
-	/* Shadows - Light mode optimized */
-	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-	--shadow-md:
-		0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	--shadow-lg:
-		0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-	--shadow-xl:
-		0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-	--shadow-blue: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
-	--shadow-emerald: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  /* Shadows - Light mode optimized */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-red: 0 10px 15px -3px rgba(159, 33, 73, 0.1);
+  --shadow-emerald: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
 
-	/* Typography - Only McLaren and Montserrat */
-	--font-sans: "Montserrat", sans-serif;
-	--font-mclaren: "McLaren", cursive, sans-serif;
-	--font-mono: monospace;
+  /* Typography - Only Outfit and Montserrat */
+  --font-sans: "Montserrat", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  --font-mono: monospace;
 
-	/* Animation */
-	--animate-shimmer: shimmer 2s infinite linear;
-	--animate-scan: scan 4s linear infinite;
-	--animate-spin-slow: spin 8s linear infinite;
+  /* Animation */
+  --animate-shimmer: shimmer 2s infinite linear;
+  --animate-scan: scan 4s linear infinite;
+  --animate-spin-slow: spin 8s linear infinite;
+}
+
+@theme inline {
+  --color-primary: #9f2149;
+  --color-primary-light: #fdc6d0;
 }
 
 @keyframes scan {
-	from {
-		transform: translateY(-100%);
-	}
-	to {
-		transform: translateY(1000%);
-	}
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(1000%);
+  }
 }
 
 /* Base styles */
 html,
 body {
-	height: 100%;
-	background: var(--color-bg);
-	color: var(--color-text);
-	font-family: var(--font-sans);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-rendering: optimizeLegibility;
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Hide scrollbar for all browsers */
 * {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera globally */
 *::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 /* Cursor pointer on all buttons */
 button {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 /* Responsive utilities */
 /* Ensure minimum touch target size for mobile */
 @media (max-width: 768px) {
-	button,
-	a[role="button"],
-	[role="button"] {
-		min-height: 44px;
-		min-width: 44px;
-	}
+  button,
+  a[role="button"],
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 /* Responsive container utilities */
 .container-responsive {
-	width: 100%;
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 1rem;
-	padding-right: 1rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @media (min-width: 640px) {
-	.container-responsive {
-		padding-left: 1.5rem;
-		padding-right: 1.5rem;
-	}
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 @media (min-width: 1024px) {
-	.container-responsive {
-		padding-left: 2rem;
-		padding-right: 2rem;
-	}
+  .container-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 /* Prevent horizontal scroll on mobile */
 html {
-	overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 body {
-	overflow-x: hidden;
-	width: 100%;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Responsive text utilities */
 .text-responsive-xs {
-	font-size: 0.75rem; /* 12px */
+  font-size: 0.75rem; /* 12px */
 }
 
 .text-responsive-sm {
-	font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem; /* 14px */
 }
 
 .text-responsive-base {
-	font-size: 1rem; /* 16px */
+  font-size: 1rem; /* 16px */
 }
 
 @media (min-width: 640px) {
-	.text-responsive-xs {
-		font-size: 0.875rem; /* 14px */
-	}
-	.text-responsive-sm {
-		font-size: 1rem; /* 16px */
-	}
-	.text-responsive-base {
-		font-size: 1.125rem; /* 18px */
-	}
+  .text-responsive-xs {
+    font-size: 0.875rem; /* 14px */
+  }
+  .text-responsive-sm {
+    font-size: 1rem; /* 16px */
+  }
+  .text-responsive-base {
+    font-size: 1.125rem; /* 18px */
+  }
 }
 
 /* Animation keyframes */
 @keyframes shimmer {
-	0% {
-		transform: translateX(-100%);
-	}
-	100% {
-		transform: translateX(100%);
-	}
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Font utility classes */
-.font-mclaren {
-	font-family: var(--font-mclaren);
-}
 
 .font-montserrat {
-	font-family: var(--font-sans);
+  font-family: var(--font-sans);
 }
 
 /* Additional light mode utilities */
 .bg-light {
-	background-color: var(--color-bg);
+  background-color: var(--color-bg);
 }
 
 .text-light {
-	color: var(--color-text);
+  color: var(--color-text);
 }
 
 .border-light {
-	border-color: var(--color-border);
+  border-color: var(--color-border);
 }
 /* Connect Wallet Button Styling */
 .sd-connect-button {
-	width: 100%;
+  width: 100%;
 }
 
 .sd-connect-button button {
-	width: 100% !important;
-	max-width: 100% !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	border-radius: 9999px !important;
-	background-color: #111827 !important;
-	color: #ffffff !important;
-	font-size: 0.6875rem !important;
-	font-weight: 900 !important;
-	text-transform: uppercase !important;
-	letter-spacing: 0.1em !important;
-	padding: 0.5rem 0.875rem !important;
-	transition: all 300ms !important;
-	font-family: var(--font-sans) !important;
-	min-height: 36px !important;
-	border: none !important;
-	white-space: nowrap !important;
-	overflow: hidden !important;
-	text-overflow: ellipsis !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9999px !important;
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  font-size: 0.6875rem !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  padding: 0.5rem 0.875rem !important;
+  transition: all 300ms !important;
+  font-family: var(--font-sans) !important;
+  min-height: 36px !important;
+  border: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 /* Button styling when wallet is connected */
 .sd-connect-button button:has(.sd-connected) {
-	background-color: #ffffff !important;
-	border: 2px solid #000000 !important;
-	box-shadow: none !important;
+  background-color: #ffffff !important;
+  border: 2px solid #000000 !important;
+  box-shadow: none !important;
 }
 
 /* Override white text for connected button */
 .sd-connect-button button:has(.sd-connected) * {
-	color: #000000 !important;
+  color: #000000 !important;
 }
 
 .sd-connect-button button * {
-	color: #ffffff !important;
+  color: #ffffff !important;
 }
 
 /* Connected wallet address styling */
 .sd-connect-button .sd-connect-text {
-	text-transform: none !important;
-	letter-spacing: 0.02em !important;
-	font-size: 0.75rem !important;
-	font-weight: 600 !important;
-	display: inline-block !important;
-	line-height: 1.2 !important;
+  text-transform: none !important;
+  letter-spacing: 0.02em !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
 }
 
 /* Disconnected state - normal font */
 .sd-connect-button .sd-connect-text.sd-disconnected {
-	font-family: var(--font-sans) !important;
-	text-transform: uppercase !important;
-	letter-spacing: 0.1em !important;
-	font-weight: 900 !important;
-	font-size: 0.6875rem !important;
+  font-family: var(--font-sans) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  font-weight: 900 !important;
+  font-size: 0.6875rem !important;
 }
 
 /* Connected state - monospace font for address */
 .sd-connect-button .sd-connect-text.sd-connected {
-	font-family:
-		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-		"Courier New", monospace !important;
-	font-weight: 600 !important;
-	letter-spacing: 0.02em !important;
-	color: #000000 !important;
-	text-shadow: none !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: #000000 !important;
+  text-shadow: none !important;
 }
 
 /* Add visual indicator when connected */
 .sd-connect-button .sd-connect-text.sd-connected::before {
-	content: "●" !important;
-	color: #000000 !important;
-	margin-right: 0.5rem !important;
-	font-size: 0.5em !important;
-	vertical-align: middle !important;
-	animation: pulse 2s ease-in-out infinite !important;
+  content: "●" !important;
+  color: #000000 !important;
+  margin-right: 0.5rem !important;
+  font-size: 0.5em !important;
+  vertical-align: middle !important;
+  animation: pulse 2s ease-in-out infinite !important;
 }
 
 @keyframes pulse {
-	0%,
-	100% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.5;
-	}
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* Aggressively hide ALL wallet balance displays */
@@ -344,11 +346,11 @@ body {
 [data-testid*="balance"],
 .wallet-balance,
 .account-balance {
-	display: none !important;
-	visibility: hidden !important;
-	opacity: 0 !important;
-	height: 0 !important;
-	overflow: hidden !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Hide balance in wallet dropdown/modal */
@@ -356,7 +358,7 @@ body {
 .wkit-account-info [class*="balance"],
 .wkit-dialog [class*="balance"],
 .wkit-select [class*="balance"] {
-	display: none !important;
+  display: none !important;
 }
 
 /* Remove white background from wallet dropdown/modal/overlay */
@@ -370,8 +372,8 @@ body {
 [class*="wkit"][class*="select"],
 [class*="wkit"][class*="modal"],
 [class*="wkit"][class*="dropdown"] {
-	background: transparent !important;
-	backdrop-filter: none !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
 }
 
 /* Hide wallet-kit overlays and backdrops */
@@ -383,107 +385,107 @@ body {
 .wkit-backdrop,
 [class*="wkit"][class*="overlay"],
 [class*="wkit"][class*="backdrop"] {
-	display: none !important;
-	background: transparent !important;
+  display: none !important;
+  background: transparent !important;
 }
 
 /* Force connected button to show only address on small screens */
 @media (max-width: 640px) {
-	.sd-connect-button button {
-		max-width: 160px !important;
-		padding: 0.5rem 1rem !important;
-	}
-	.sd-connect-button button:has(.sd-connected) {
-		max-width: 180px !important;
-		padding: 0.5rem 1.125rem !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-connected {
-		font-size: 0.6875rem !important;
-		letter-spacing: 0.01em !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-disconnected {
-		font-size: 0.625rem !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-connected::before {
-		margin-right: 0.375rem !important;
-	}
+  .sd-connect-button button {
+    max-width: 160px !important;
+    padding: 0.5rem 1rem !important;
+  }
+  .sd-connect-button button:has(.sd-connected) {
+    max-width: 180px !important;
+    padding: 0.5rem 1.125rem !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-connected {
+    font-size: 0.6875rem !important;
+    letter-spacing: 0.01em !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-disconnected {
+    font-size: 0.625rem !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-connected::before {
+    margin-right: 0.375rem !important;
+  }
 }
 
 @media (min-width: 640px) {
-	.sd-connect-button button {
-		font-size: 0.625rem !important;
-		letter-spacing: 0.2em !important;
-		padding: 0.65rem 1.5rem !important;
-		min-height: 40px !important;
-	}
-	.sd-connect-button button:has(.sd-connected) {
-		padding: 0.7rem 1.75rem !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-connected {
-		font-size: 0.8125rem !important;
-		letter-spacing: 0.02em !important;
-	}
+  .sd-connect-button button {
+    font-size: 0.625rem !important;
+    letter-spacing: 0.2em !important;
+    padding: 0.65rem 1.5rem !important;
+    min-height: 40px !important;
+  }
+  .sd-connect-button button:has(.sd-connected) {
+    padding: 0.7rem 1.75rem !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-connected {
+    font-size: 0.8125rem !important;
+    letter-spacing: 0.02em !important;
+  }
 }
 
 @media (min-width: 1024px) {
-	.sd-connect-button button {
-		padding: 0.75rem 1.75rem !important;
-		min-height: 44px !important;
-	}
-	.sd-connect-button button:has(.sd-connected) {
-		padding: 0.8rem 2rem !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-connected {
-		font-size: 0.875rem !important;
-		letter-spacing: 0.025em !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-disconnected {
-		font-size: 0.75rem !important;
-		letter-spacing: 0.12em !important;
-	}
+  .sd-connect-button button {
+    padding: 0.75rem 1.75rem !important;
+    min-height: 44px !important;
+  }
+  .sd-connect-button button:has(.sd-connected) {
+    padding: 0.8rem 2rem !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-connected {
+    font-size: 0.875rem !important;
+    letter-spacing: 0.025em !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-disconnected {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.12em !important;
+  }
 }
 
 @media (min-width: 1280px) {
-	.sd-connect-button button {
-		padding: 0.8rem 2rem !important;
-		min-height: 46px !important;
-	}
-	.sd-connect-button button:has(.sd-connected) {
-		padding: 0.85rem 2.25rem !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-connected {
-		font-size: 0.9375rem !important;
-		letter-spacing: 0.03em !important;
-	}
-	.sd-connect-button .sd-connect-text.sd-disconnected {
-		font-size: 0.8125rem !important;
-		letter-spacing: 0.12em !important;
-	}
+  .sd-connect-button button {
+    padding: 0.8rem 2rem !important;
+    min-height: 46px !important;
+  }
+  .sd-connect-button button:has(.sd-connected) {
+    padding: 0.85rem 2.25rem !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-connected {
+    font-size: 0.9375rem !important;
+    letter-spacing: 0.03em !important;
+  }
+  .sd-connect-button .sd-connect-text.sd-disconnected {
+    font-size: 0.8125rem !important;
+    letter-spacing: 0.12em !important;
+  }
 }
 
 .sd-connect-button button:hover {
-	background-color: #2563eb !important;
-	box-shadow: 0 12px 30px -12px rgba(37, 99, 235, 0.6) !important;
-	transform: translateY(-2px) !important;
+  background-color: #9f2149 !important;
+  box-shadow: 0 12px 30px -12px rgba(159, 33, 73, 0.6) !important;
+  transform: translateY(-2px) !important;
 }
 
 /* Connected button hover state */
 .sd-connect-button button:has(.sd-connected):hover {
-	background-color: #f3f4f6 !important;
-	box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.15) !important;
-	border-color: #000000 !important;
+  background-color: #f3f4f6 !important;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.15) !important;
+  border-color: #000000 !important;
 }
 
 .sd-connect-button button:active {
-	transform: translateY(0) !important;
+  transform: translateY(0) !important;
 }
 
 .sd-connect-button button:focus-visible {
-	outline: none !important;
-	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(159, 33, 73, 0.5) !important;
 }
 
 /* Connected button focus state */
 .sd-connect-button button:has(.sd-connected):focus-visible {
-	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2) !important;
 }

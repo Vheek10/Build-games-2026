@@ -54,7 +54,7 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 					animate={{ opacity: 1, x: 0 }}
 					transition={{ duration: 0.3 }}>
 					<h3 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2 tracking-tight font-mclaren">
-						<Layers className="w-5 h-5 text-blue-500" />
+						<Layers className="w-5 h-5 text-red-500" />
 						Tokenized Properties
 					</h3>
 					<p className="text-sm text-gray-500 font-medium font-montserrat">
@@ -71,7 +71,7 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 						boxShadow: "0 8px 20px rgba(59, 130, 246, 0.3)",
 					}}
 					whileTap={{ scale: 0.95 }}
-					className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-gray-900 hover:bg-blue-600 text-white font-black rounded-full transition-all shadow-lg shadow-emerald-500/20">
+					className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-gray-900 hover:bg-red-600 text-white font-black rounded-full transition-all shadow-lg shadow-emerald-500/20">
 					<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 						Tokenize Property
 					</span>
@@ -143,7 +143,7 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								transition={{ delay: 0.2 }}>
-								<div className="flex items-center gap-1.5 text-xs sm:text-sm bg-blue-50 px-2 py-1 rounded-md text-blue-700 font-medium font-montserrat">
+								<div className="flex items-center gap-1.5 text-xs sm:text-sm bg-red-50 px-2 py-1 rounded-md text-red-700 font-medium font-montserrat">
 									<TrendingUp className="w-3.5 h-3.5" />
 									{/* Mock APY based on bedrooms :) */}
 									<span>{property.bedrooms * 4.2}% Rental Yield</span>
@@ -184,7 +184,7 @@ export default function PropertiesList({ properties }: PropertiesListProps) {
 					href="/marketplace"
 					whileHover={{ backgroundColor: "rgba(219, 234, 254, 1)" }}
 					whileTap={{ scale: 0.98 }}
-					className="w-full flex items-center justify-center gap-3 py-3 text-blue-600 font-black hover:bg-blue-50 rounded-full transition-colors font-montserrat">
+					className="w-full flex items-center justify-center gap-3 py-3 text-red-600 font-black hover:bg-red-50 rounded-full transition-colors font-montserrat">
 					<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
 						View All Properties
 					</span>

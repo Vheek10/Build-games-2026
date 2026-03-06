@@ -11,24 +11,24 @@ export default function ContactPage() {
 			<section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
 				{/* Gradient background accent */}
 				<div className="pointer-events-none absolute inset-0">
-					<div className="absolute -top-32 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
-					<div className="absolute -bottom-32 -left-24 h-64 w-64 rounded-full bg-cyan-500/10 blur-3xl" />
+					<div className="absolute -top-32 -right-24 h-64 w-64 rounded-full bg-red-500/10 blur-3xl" />
+					<div className="absolute -bottom-32 -left-24 h-64 w-64 rounded-full bg-red-500/10 blur-3xl" />
 				</div>
 
 				<div className="relative max-w-6xl mx-auto">
 					<div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-10 lg:gap-14 items-start">
 						{/* Left: Intro + Form */}
 						<div>
-							<div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-5 border border-blue-100">
-								<Building2 className="w-4 h-4 text-blue-600" />
-								<span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] text-blue-700 font-montserrat">
+							<div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full mb-5 border border-red-100">
+								<Building2 className="w-4 h-4 text-red-600" />
+								<span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] text-red-700 font-montserrat">
 									CONTACT STRATADEED
 								</span>
 							</div>
 
 							<h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight font-mclaren">
 								Let&apos;s talk about{" "}
-								<span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+								<span className="bg-linear-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
 									tokenized real estate
 								</span>
 							</h1>
@@ -47,7 +47,7 @@ export default function ContactPage() {
 										<input
 											type="text"
 											placeholder="Full Name"
-											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500/70 transition-shadow"
+											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/70 focus:border-red-500/70 transition-shadow"
 										/>
 									</div>
 									<div>
@@ -57,7 +57,7 @@ export default function ContactPage() {
 										<input
 											type="email"
 											placeholder="you@company.com"
-											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500/70 transition-shadow"
+											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/70 focus:border-red-500/70 transition-shadow"
 										/>
 									</div>
 								</div>
@@ -70,14 +70,14 @@ export default function ContactPage() {
 										<input
 											type="text"
 											placeholder="StrataDeed Labs"
-											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500/70 transition-shadow"
+											className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/70 focus:border-red-500/70 transition-shadow"
 										/>
 									</div>
 									<div>
 										<label className="block text-sm font-medium text-gray-700 mb-1.5 font-montserrat">
 											Topic
 										</label>
-										<select className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500/70">
+										<select className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500/70 focus:border-red-500/70">
 											<option>General question</option>
 											<option>Property tokenization</option>
 											<option>Investment / partnership</option>
@@ -93,7 +93,7 @@ export default function ContactPage() {
 									<textarea
 										rows={4}
 										placeholder="Tell us a bit about what you’re looking to explore with StrataDeed."
-										className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500/70 transition-shadow resize-none"
+										className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/70 focus:border-red-500/70 transition-shadow resize-none"
 									/>
 								</div>
 
@@ -103,11 +103,11 @@ export default function ContactPage() {
 										whileHover={{
 											scale: 1.05,
 											y: -5,
-											backgroundColor: "#2563eb",
+											backgroundColor: "#9f2149",
 											transition: { duration: 0.4 },
 										}}
 										whileTap={{ scale: 0.98 }}
-										className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-gray-900 text-white rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)]"
+										className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-gray-900 text-white rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(159,33,73,0.4)]"
 									>
 										<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">Send message</span>
 										<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -132,7 +132,7 @@ export default function ContactPage() {
 
 								<div className="relative z-10 space-y-5">
 									<div>
-										<p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300 mb-2 font-montserrat">
+										<p className="text-[10px] font-black uppercase tracking-[0.4em] text-red-300 mb-2 font-montserrat">
 											TALK TO OUR TEAM
 										</p>
 										<h2 className="text-xl sm:text-2xl font-black mb-2 tracking-tight font-mclaren">
@@ -147,14 +147,14 @@ export default function ContactPage() {
 
 									<div className="space-y-4 text-sm">
 										<div className="flex items-start gap-3">
-											<div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-blue-500/15 border border-blue-400/50">
-												<Mail className="w-4 h-4 text-blue-300" />
+											<div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-red-500/15 border border-red-400/50">
+												<Mail className="w-4 h-4 text-red-300" />
 											</div>
 											<div>
 												<p className="text-gray-400">Email</p>
 												<a
 													href="mailto:hello@stratadeed.xyz"
-													className="font-medium text-white hover:text-cyan-300 transition-colors"
+													className="font-medium text-white hover:text-red-300 transition-colors"
 												>
 													hello@stratadeed.xyz
 												</a>
@@ -174,8 +174,8 @@ export default function ContactPage() {
 										</div>
 
 										<div className="flex items-start gap-3">
-											<div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-cyan-500/10 border border-cyan-400/40">
-												<MapPin className="w-4 h-4 text-cyan-300" />
+											<div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10 border border-red-400/40">
+												<MapPin className="w-4 h-4 text-red-300" />
 											</div>
 											<div>
 												<p className="text-gray-400">Location</p>
@@ -193,19 +193,19 @@ export default function ContactPage() {
 										<div className="flex items-center gap-3">
 											<Link
 												href="#"
-												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-blue-400/70 hover:bg-blue-500/10 text-gray-300 hover:text-blue-300 transition-colors"
+												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-red-400/70 hover:bg-red-500/10 text-gray-300 hover:text-red-300 transition-colors"
 											>
 												<Twitter className="w-4 h-4" />
 											</Link>
 											<Link
 												href="#"
-												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-blue-400/70 hover:bg-blue-500/10 text-gray-300 hover:text-blue-300 transition-colors"
+												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-red-400/70 hover:bg-red-500/10 text-gray-300 hover:text-red-300 transition-colors"
 											>
 												<Linkedin className="w-4 h-4" />
 											</Link>
 											<Link
 												href="#"
-												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-blue-400/70 hover:bg-blue-500/10 text-gray-300 hover:text-blue-300 transition-colors"
+												className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 hover:border-red-400/70 hover:bg-red-500/10 text-gray-300 hover:text-red-300 transition-colors"
 											>
 												<Github className="w-4 h-4" />
 											</Link>

@@ -54,7 +54,7 @@ export default function PerformanceChart({
 							whileTap={{ scale: 0.95 }}
 							className={`px-3 py-1 rounded-lg text-xs sm:text-sm capitalize font-montserrat transition-all ${
 								timeRange === range
-									? "bg-blue-100 text-blue-600 font-medium shadow-md"
+									? "bg-red-100 text-red-600 font-medium shadow-md"
 									: "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
 							}`}>
 							{range}
@@ -76,7 +76,7 @@ export default function PerformanceChart({
 					transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
 					style={{
 						backgroundImage:
-							"linear-gradient(45deg, transparent 48%, #3b82f6 49%, #3b82f6 51%, transparent 52%)",
+							"linear-gradient(45deg, transparent 48%, #e06a76 49%, #e06a76 51%, transparent 52%)",
 						backgroundSize: "40px 40px",
 					}}
 				/>
@@ -89,7 +89,7 @@ export default function PerformanceChart({
 					<motion.div
 						animate={{ y: [0, -8, 0] }}
 						transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-						<BarChart3 className="w-12 h-12 text-blue-400 mx-auto mb-3" />
+						<BarChart3 className="w-12 h-12 text-red-400 mx-auto mb-3" />
 					</motion.div>
 					<p className="text-gray-600 font-montserrat">
 						Performance chart visualization

@@ -21,8 +21,8 @@ export default function MarketplaceHeader({
 			{/* Header */}
 			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
 				<div>
-					<div className="inline-flex items-center gap-3 px-5 py-2 bg-blue-600/5 rounded-full mb-4 border border-blue-600/10">
-						<span className="text-[10px] font-black text-blue-700 uppercase tracking-[0.4em] font-montserrat">
+					<div className="inline-flex items-center gap-3 px-5 py-2 bg-red-600/5 rounded-full mb-4 border border-red-600/10">
+						<span className="text-[10px] font-black text-red-700 uppercase tracking-[0.4em] font-montserrat">
 							Asset Marketplace
 						</span>
 					</div>
@@ -43,7 +43,7 @@ export default function MarketplaceHeader({
 							placeholder="Search properties..."
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
-							className="w-full pl-10 pr-10 py-3 bg-white/60 backdrop-blur-xl border border-gray-200 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-montserrat text-sm"
+							className="w-full pl-10 pr-10 py-3 bg-white/60 backdrop-blur-xl border border-gray-200 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 font-montserrat text-sm"
 						/>
 						{searchQuery && (
 							<button
