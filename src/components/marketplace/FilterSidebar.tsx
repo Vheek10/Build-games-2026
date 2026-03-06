@@ -55,7 +55,7 @@ export default function FilterSidebar({
 					onClick={() => setShowFilters(!showFilters)}
 					className="lg:hidden w-full flex items-center justify-between px-4 py-3.5 bg-white border border-gray-200 rounded-xl hover:shadow-md transition-all duration-200 group min-h-[48px]">
 					<div className="flex items-center gap-3">
-						<div className="p-1.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg group-hover:scale-105 transition-transform">
+						<div className="p-1.5 bg-gradient-to-r from-red-500 to-red-400 rounded-lg group-hover:scale-105 transition-transform">
 							<Filter className="w-4 h-4 text-white" />
 						</div>
 						<div className="text-left">
@@ -93,14 +93,14 @@ export default function FilterSidebar({
 
 					{/* Clear Filters */}
 					{hasActiveFilters && (
-						<div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+						<div className="bg-red-50 rounded-xl p-4 border border-red-200">
 							<div className="flex items-center justify-between">
 								<div className="text-sm font-medium text-gray-900">
 									{activeFilters.length} filter{activeFilters.length > 1 ? 's' : ''} active
 								</div>
 								<button
 									onClick={clearFilters}
-									className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+									className="text-sm text-red-600 hover:text-red-800 font-medium flex items-center gap-1">
 									<X className="w-3 h-3" />
 									Clear all
 								</button>

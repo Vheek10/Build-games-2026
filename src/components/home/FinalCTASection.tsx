@@ -70,8 +70,8 @@ export default function FinalCTASection() {
 					className="object-cover opacity-70 scale-110"
 					priority
 				/>
-				<div className="absolute inset-0 bg-linear-to-br from-blue-50/80 via-white/40 to-cyan-50/50" />
-				<div className="absolute inset-0 bg-blue-100/10 mix-blend-overlay" />
+				<div className="absolute inset-0 bg-linear-to-br from-red-50/80 via-white/40 to-red-50/50" />
+				<div className="absolute inset-0 bg-red-100/10 mix-blend-overlay" />
 			</motion.div>
 
 			{/* Floating Ambient Nodes */}
@@ -92,7 +92,7 @@ export default function FinalCTASection() {
 						}}
 						className={cn(
 							"absolute rounded-full blur-3xl",
-							i % 2 === 0 ? "bg-blue-600/10" : "bg-cyan-600/10",
+							i % 2 === 0 ? "bg-red-600/10" : "bg-red-600/10",
 						)}
 						style={{
 							width: `${200 + i * 50}px`,
@@ -108,7 +108,7 @@ export default function FinalCTASection() {
 			<div
 				className="absolute inset-0 opacity-[0.05] pointer-events-none"
 				style={{
-					backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`,
+					backgroundImage: `radial-gradient(circle at 1px 1px, #9f2149 1px, transparent 0)`,
 					backgroundSize: "40px 40px",
 				}}
 			/>
@@ -130,11 +130,11 @@ export default function FinalCTASection() {
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							className="inline-flex items-center gap-3 px-6 py-2 bg-white/40 border border-gray-200 rounded-full backdrop-blur-2xl shadow-sm">
-							<div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse blur-[1px]" />
-							<span className="text-[9px] sm:text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] sm:tracking-[0.5em] font-montserrat">
+							<div className="w-2 h-2 bg-red-500 rounded-full animate-pulse blur-[1px]" />
+							<span className="text-[9px] sm:text-[10px] font-black text-red-600 uppercase tracking-[0.3em] sm:tracking-[0.5em] font-montserrat">
 								Future of Ownership
 							</span>
-							<Shield className="w-3.5 h-3.5 text-blue-600/40" />
+							<Shield className="w-3.5 h-3.5 text-red-600/40" />
 						</motion.div>
 					</div>
 
@@ -148,7 +148,7 @@ export default function FinalCTASection() {
 							viewport={{ once: true }}
 							transition={{ duration: 0.8 }}
 							className="text-3xl sm:text-4xl lg:text-7xl font-black text-gray-900 mb-8 sm:mb-10 leading-[1.05] tracking-tightest font-mclaren">
-							The Secure <span className="text-blue-600">Gateway</span> <br />
+							The Secure <span className="text-red-600">Gateway</span> <br />
 							to Institutional Assets.
 						</motion.h2>
 
@@ -176,9 +176,9 @@ export default function FinalCTASection() {
 								viewport={{ once: true }}
 								transition={{ delay: idx * 0.1 }}
 								whileHover={{ y: -10, transition: { duration: 0.3 } }}
-								className="group p-6 sm:p-8 bg-white/60 border border-gray-100 rounded-4xl sm:rounded-[2.5rem] hover:bg-white hover:border-blue-100 backdrop-blur-3xl transition-all duration-500 text-center shadow-sm hover:shadow-xl hover:shadow-blue-900/5">
-								<div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-500">
-									<benefit.icon className="w-6 h-6 text-blue-600" />
+							className="group p-6 sm:p-8 bg-white/60 border border-gray-100 rounded-4xl sm:rounded-[2.5rem] hover:bg-white hover:border-red-100 backdrop-blur-3xl transition-all duration-500 text-center shadow-sm hover:shadow-xl hover:shadow-red-900/5">
+								<div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(159,33,73,0.1)] transition-all duration-500">
+									<benefit.icon className="w-6 h-6 text-red-600" />
 								</div>
 								<h4 className="text-[9px] font-black text-gray-400 group-hover:text-gray-900 uppercase tracking-[0.3em] transition-colors font-montserrat">
 									{benefit.text}
@@ -245,10 +245,10 @@ export default function FinalCTASection() {
 								<div
 									key={i}
 									className="text-center group">
-									<p className="text-[8px] sm:text-[9px] font-black text-blue-500/60 uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-2 font-montserrat">
+									<p className="text-[8px] sm:text-[9px] font-black text-red-500/60 uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-2 font-montserrat">
 										{s.label}
 									</p>
-									<h4 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-widest group-hover:text-blue-600 transition-colors uppercase font-mclaren">
+									<h4 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-widest group-hover:text-red-600 transition-colors uppercase font-mclaren">
 										{s.value}
 									</h4>
 								</div>
@@ -259,8 +259,8 @@ export default function FinalCTASection() {
 			</div>
 
 			{/* Corner Accents */}
-			<div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-500/5 blur-[150px] pointer-events-none" />
-			<div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-cyan-500/5 blur-[150px] pointer-events-none" />
+			<div className="absolute top-0 right-0 w-1/3 h-1/3 bg-red-500/5 blur-[150px] pointer-events-none" />
+			<div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-red-500/5 blur-[150px] pointer-events-none" />
 		</section>
 	);
 }

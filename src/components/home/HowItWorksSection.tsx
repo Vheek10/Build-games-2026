@@ -131,12 +131,12 @@ export default function HowItWorksSection() {
 		};
 	} = {
 		blue: {
-			bg: "bg-blue-600",
-			text: "text-blue-400",
-			bgLight: "bg-blue-500/20",
-			border: "border-blue-500/50",
-			from: "from-blue-600",
-			to: "to-blue-400",
+			bg: "bg-red-600",
+			text: "text-red-400",
+			bgLight: "bg-red-500/20",
+			border: "border-red-500/50",
+			from: "from-red-600",
+			to: "to-red-400",
 		},
 		emerald: {
 			bg: "bg-emerald-600",
@@ -147,12 +147,12 @@ export default function HowItWorksSection() {
 			to: "to-emerald-400",
 		},
 		cyan: {
-			bg: "bg-cyan-600",
-			text: "text-cyan-400",
-			bgLight: "bg-cyan-500/20",
-			border: "border-cyan-500/50",
-			from: "from-cyan-600",
-			to: "to-cyan-400",
+			bg: "bg-red-600",
+			text: "text-red-400",
+			bgLight: "bg-red-500/20",
+			border: "border-red-500/50",
+			from: "from-red-600",
+			to: "to-red-400",
 		},
 	};
 
@@ -175,7 +175,7 @@ export default function HowItWorksSection() {
 		<section className="py-10 sm:py-14 bg-gray-50 overflow-hidden relative">
 			{/* Decorative Background Elements */}
 			<div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-				<div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-100/30 rounded-full blur-3xl opacity-60" />
+				<div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-red-100/30 rounded-full blur-3xl opacity-60" />
 				<div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-emerald-100/30 rounded-full blur-3xl opacity-60" />
 			</div>
 
@@ -199,9 +199,9 @@ export default function HowItWorksSection() {
 							hidden: { opacity: 0, y: 10 },
 							visible: { opacity: 1, y: 0 },
 						}}
-						className="inline-flex items-center gap-3 px-6 py-2 bg-blue-600/5 rounded-full mb-10 border border-blue-600/10">
-						<Zap className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
-						<span className="text-[10px] font-black text-blue-700 uppercase tracking-[0.4em] font-montserrat">
+						className="inline-flex items-center gap-3 px-6 py-2 bg-red-600/5 rounded-full mb-10 border border-red-600/10">
+						<Zap className="w-3.5 h-3.5 text-red-600 animate-pulse" />
+						<span className="text-[10px] font-black text-red-700 uppercase tracking-[0.4em] font-montserrat">
 							The StrataDeed Protocol
 						</span>
 					</motion.div>
@@ -213,7 +213,7 @@ export default function HowItWorksSection() {
 						}}
 						className="text-3xl lg:text-4xl font-black text-gray-900 mb-8 tracking-tighter leading-[1.1] font-mclaren">
 						How we digitize <br />
-						<span className="text-blue-600">Global Assets.</span>
+						<span className="text-red-600">Global Assets.</span>
 					</motion.h2>
 
 					<motion.p
@@ -416,7 +416,7 @@ export default function HowItWorksSection() {
 							className={cn(
 								"h-2 rounded-full transition-all duration-300",
 								activeStep === index
-									? "w-8 bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+									? "w-8 bg-red-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
 									: "w-2 bg-gray-300 hover:bg-gray-400",
 							)}
 							aria-label={`Go to step ${index + 1}`}
@@ -431,7 +431,7 @@ export default function HowItWorksSection() {
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
-						className="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-gray-100">
+						className="bg-white rounded-[2.5rem] shadow-xl shadow-red-900/5 border border-gray-100">
 						<div className="flex flex-col sm:flex-row items-center justify-between divide-y sm:divide-y-0 sm:divide-x divide-gray-50">
 							{/* Stats Bar Items */}
 							{[
@@ -453,7 +453,7 @@ export default function HowItWorksSection() {
 								{
 									value: "100%",
 									label: "Security",
-									color: "text-blue-600",
+									color: "text-red-600",
 								},
 							].map((stat, index) => (
 								<motion.div

@@ -331,7 +331,7 @@ export default function InvestNowModal({
 							{/* Header */}
 							<div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
 								<div className="flex items-center gap-2 sm:gap-3">
-									<div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-blue-500 to-cyan-400 flex items-center justify-center shrink-0">
+									<div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-red-500 to-red-400 flex items-center justify-center shrink-0">
 										<TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
 									</div>
 									<div className="min-w-0">
@@ -364,14 +364,14 @@ export default function InvestNowModal({
 										<motion.div
 											initial={{ opacity: 0, y: -10 }}
 											animate={{ opacity: 1, y: 0 }}
-											className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+											className="bg-red-50 border border-red-200 rounded-xl p-4">
 											<div className="flex items-center gap-3">
-												<Info className="w-5 h-5 text-blue-600 shrink-0" />
+												<Info className="w-5 h-5 text-red-600 shrink-0" />
 												<div>
-													<p className="text-sm font-medium text-blue-800 font-montserrat">
+													<p className="text-sm font-medium text-red-800 font-montserrat">
 														Demo Mode
 													</p>
-													<p className="text-xs text-blue-700/80 mt-1 font-montserrat">
+													<p className="text-xs text-red-700/80 mt-1 font-montserrat">
 														This is a demonstration. Connect your wallet and
 														switch to Avalanche Fuji Testnet for real
 														transactions.
@@ -406,7 +406,7 @@ export default function InvestNowModal({
 										initial={{ opacity: 0, y: -15 }}
 										animate={{ opacity: 1, y: 0 }}
 										transition={{ duration: 0.5, delay: 0.1 }}
-										className="bg-linear-to-r from-blue-50 to-cyan-50 rounded-xl p-4 sm:p-5 border border-blue-100">
+										className="bg-linear-to-r from-red-50 to-red-50 rounded-xl p-4 sm:p-5 border border-red-100">
 										<div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
 											<motion.div
 												className="w-full sm:w-20 h-48 sm:h-20 rounded-xl overflow-hidden shrink-0"
@@ -444,7 +444,7 @@ export default function InvestNowModal({
 														</div>
 													</div>
 													<div className="text-center">
-														<div className="text-lg sm:text-2xl font-bold text-blue-600">
+														<div className="text-lg sm:text-2xl font-bold text-red-600">
 															{availableTokensNum}/{totalTokensNum}
 														</div>
 														<div className="text-[10px] sm:text-xs text-gray-500 font-montserrat">
@@ -482,8 +482,8 @@ export default function InvestNowModal({
 															whileTap={{ scale: 0.95 }}
 															className={`p-3 sm:p-4 rounded-xl border-2 transition-all ${
 																selectedTokens === tokens
-																	? "border-blue-500 bg-blue-50 shadow-lg"
-																	: "border-gray-200 hover:border-blue-300"
+																	? "border-red-500 bg-red-50 shadow-lg"
+																	: "border-gray-200 hover:border-red-300"
 															}`}>
 															<div className="text-base sm:text-lg font-bold text-gray-900 font-montserrat">
 																{tokens}
@@ -491,7 +491,7 @@ export default function InvestNowModal({
 															<div className="text-xs sm:text-sm text-gray-500 font-montserrat">
 																Tokens
 															</div>
-															<div className="text-[10px] sm:text-xs text-blue-600 font-semibold mt-1 font-montserrat">
+															<div className="text-[10px] sm:text-xs text-red-600 font-semibold mt-1 font-montserrat">
 																${(tokens * tokenPriceNum).toFixed(0)}
 															</div>
 														</motion.button>
@@ -517,7 +517,7 @@ export default function InvestNowModal({
 														type="number"
 														value={investmentAmount}
 														onChange={(e) => handleAmountChange(e.target.value)}
-														className="w-full pl-10 pr-20 sm:pl-10 sm:pr-24 py-3 sm:py-4 text-base sm:text-lg border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+														className="w-full pl-10 pr-20 sm:pl-10 sm:pr-24 py-3 sm:py-4 text-base sm:text-lg border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
 														placeholder="0.00"
 														min={minInvestmentNum}
 														max={maxInvestmentNum}
@@ -572,7 +572,7 @@ export default function InvestNowModal({
 															<div className="text-xs sm:text-sm text-gray-500 font-montserrat">
 																Est. Annual Return
 															</div>
-															<div className="text-lg sm:text-xl font-bold text-blue-600 font-montserrat">
+															<div className="text-lg sm:text-xl font-bold text-red-600 font-montserrat">
 																${calculateEstReturn(selectedTokens)}
 															</div>
 														</div>
@@ -601,7 +601,7 @@ export default function InvestNowModal({
 												</h4>
 												<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
 													<div className="flex items-center gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg">
-														<Lock className="w-3 h-3 text-blue-500" />
+														<Lock className="w-3 h-3 text-red-500" />
 														<span className="text-xs text-gray-600 font-montserrat">
 															Escrow Protected
 														</span>
@@ -630,14 +630,14 @@ export default function InvestNowModal({
 											transition={{ duration: 0.4 }}
 											className="text-center space-y-4 sm:space-y-6">
 											<motion.div
-												className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center"
+												className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-red-100 flex items-center justify-center"
 												animate={{ y: [0, -8, 0] }}
 												transition={{
 													duration: 1.5,
 													repeat: Infinity,
 													ease: "easeInOut",
 												}}>
-												<CreditCard className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600" />
+												<CreditCard className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" />
 											</motion.div>
 											<div>
 												<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 font-mclaren">
@@ -695,7 +695,7 @@ export default function InvestNowModal({
 											</div>
 											{(isProcessing || isPending) && (
 												<div className="flex items-center justify-center gap-2 sm:gap-3">
-													<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+													<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
 													<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
 														{isPending
 															? "Waiting for wallet confirmation..."
@@ -751,7 +751,7 @@ export default function InvestNowModal({
 															href={`https://testnet.suiscan.xyz/tx/${hash}`}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="font-mono text-xs sm:text-sm text-blue-600 hover:underline truncate">
+															className="font-mono text-xs sm:text-sm text-red-600 hover:underline truncate">
 															{hash.slice(0, 10)}...{hash.slice(-8)}
 														</a>
 													</div>
@@ -760,7 +760,7 @@ export default function InvestNowModal({
 														<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
 															Demo Transaction
 														</span>
-														<span className="font-mono text-xs sm:text-sm text-blue-600 truncate">
+														<span className="font-mono text-xs sm:text-sm text-red-600 truncate">
 															0xDEMO...TRANSACTION
 														</span>
 													</div>
@@ -782,9 +782,9 @@ export default function InvestNowModal({
 													</span>
 												</div>
 											</div>
-											<div className="bg-blue-50 rounded-xl p-3 sm:p-4">
+											<div className="bg-red-50 rounded-xl p-3 sm:p-4">
 												<div className="flex items-start gap-2 sm:gap-3">
-													<Info className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0 mt-0.5" />
+													<Info className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 shrink-0 mt-0.5" />
 													<div className="text-left">
 														<p className="text-xs sm:text-sm text-gray-700 font-montserrat">
 															{isMockMode
@@ -825,7 +825,7 @@ export default function InvestNowModal({
 												y: -2,
 											}}
 											whileTap={{ scale: 0.95 }}
-											className="px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-black rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3">
+											className="px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-black rounded-full hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3">
 											{isProcessing ? (
 												<>
 													<motion.div
@@ -861,7 +861,7 @@ export default function InvestNowModal({
 									<div className="text-center space-y-3 sm:space-y-4">
 										<button
 											onClick={() => setStep("select")}
-											className="text-blue-600 font-medium hover:underline text-sm sm:text-base font-montserrat">
+											className="text-red-600 font-medium hover:underline text-sm sm:text-base font-montserrat">
 											← Back to Edit
 										</button>
 										<p className="text-xs sm:text-sm text-gray-500 font-montserrat">

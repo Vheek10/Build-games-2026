@@ -12,7 +12,7 @@ export default function MetricsGrid({ metrics }: MetricsGridProps) {
 	const getIconBgColor = (color: string) => {
 		switch (color) {
 			case "blue":
-				return "bg-blue-500/10";
+				return "bg-red-500/10";
 			case "emerald":
 				return "bg-emerald-500/10";
 			case "purple":
@@ -63,7 +63,7 @@ export default function MetricsGrid({ metrics }: MetricsGridProps) {
 						<div
 							className={`absolute top-0 right-0 p-3 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity`}>
 							<Icon
-								className={`w-16 h-16 md:w-24 md:h-24 ${metric.color === "blue" ? "text-blue-500" : metric.color === "emerald" ? "text-emerald-500" : metric.color === "purple" ? "text-purple-500" : "text-amber-500"}`}
+								className={`w-16 h-16 md:w-24 md:h-24 ${metric.color === "blue" ? "text-red-500" : metric.color === "emerald" ? "text-emerald-500" : metric.color === "purple" ? "text-purple-500" : "text-amber-500"}`}
 							/>
 						</div>
 

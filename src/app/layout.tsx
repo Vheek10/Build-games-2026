@@ -56,7 +56,7 @@ export default function RootLayout({
       <body className="font-montserrat antialiased bg-bg text-text">
         <Web3Provider>
           <div className="min-h-screen flex flex-col">
-            <Navbar hideOnHome />
+            <Navbar />
             <main className="flex-1 w-full">{children}</main>
             <Footer />
           </div>

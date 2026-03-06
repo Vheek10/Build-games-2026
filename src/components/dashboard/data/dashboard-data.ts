@@ -73,10 +73,10 @@ export const metrics: DashboardMetric[] = [
 		change: 1, // +1 active strategy
 		icon: Layers,
 		color: "blue",
-		borderColor: "border-blue-200",
-		gradientFrom: "from-blue-50 to-blue-100",
-		gradientTo: "to-blue-100",
-		iconColor: "text-blue-600",
+		borderColor: "border-red-200",
+		gradientFrom: "from-red-50 to-red-100",
+		gradientTo: "to-red-100",
+		iconColor: "text-red-600",
 	},
 	{
 		id: "avg-apy",
@@ -148,7 +148,7 @@ export const recentActivities: RecentActivity[] = [
 
 // Rebranded "Portfolio Distribution" to "Asset Allocation"
 export const portfolioDistribution: PortfolioDistribution[] = [
-	{ type: "AVAX", value: 45, color: "bg-blue-600" }, // AVAX Coin
+	{ type: "AVAX", value: 45, color: "bg-red-600" }, // AVAX Coin
 	{ type: "RWA", value: 35, color: "bg-emerald-500" }, // RWA Token
 	{ type: "NFTs", value: 15, color: "bg-purple-500" }, // Property Deeds
 	{ type: "Other", value: 5, color: "bg-gray-400" }, // Governance/Misc

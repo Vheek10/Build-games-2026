@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Zap, Grid, Lock } from "lucide-react";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 
 export default function HeroSection() {
   const features = [
@@ -30,8 +29,6 @@ export default function HeroSection() {
   ];
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28 bg-black">
-      <Navbar />
-
       <div className="z-20 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="flex flex-col gap-6">
@@ -56,22 +53,40 @@ export default function HeroSection() {
               </p>
 
               {/* CTA Button */}
-              <motion.div
-                whileHover={{
-                  scale: 1.05,
-                  transition: { duration: 0.3 },
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="mb-16"
-              >
-                <Link
-                  href="/dashboard"
-                  className="group inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primay/100 text-white rounded-lg font-semibold"
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <motion.div
+                  whileHover={{
+                    scale: 1.05,
+                    transition: { duration: 0.3 },
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mb-16"
                 >
-                  Get Started
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </Link>
-              </motion.div>
+                  <Link
+                    href="/dashboard"
+                    className="group inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primay/100 text-white font-semibold rounded-full"
+                  >
+                    Start Investing
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </Link>
+                </motion.div>
+                <motion.div
+                  whileHover={{
+                    scale: 1.05,
+                    transition: { duration: 0.3 },
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mb-16"
+                >
+                  <Link
+                    href="/mint"
+                    className="group inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-primary-light text-primary rounded-full font-semibold"
+                  >
+                    List Property
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </Link>
+                </motion.div>
+              </div>
             </div>
 
             {/* Right Content - Feature Cards */}

@@ -127,8 +127,8 @@ export default function About() {
 						className="object-cover opacity-60 scale-110"
 						priority
 					/>
-					<div className="absolute inset-0 bg-linear-to-br from-blue-50/90 via-white/40 to-cyan-50/50" />
-					<div className="absolute inset-0 bg-blue-100/5 mix-blend-overlay" />
+					<div className="absolute inset-0 bg-linear-to-br from-red-50/90 via-white/40 to-red-50/50" />
+					<div className="absolute inset-0 bg-red-100/5 mix-blend-overlay" />
 				</motion.div>
 
 				{/* Floating Glow Nodes */}
@@ -149,7 +149,7 @@ export default function About() {
 							}}
 							className={cn(
 								"absolute rounded-full blur-[60px] md:blur-[100px]",
-								i % 2 === 0 ? "bg-blue-600/20" : "bg-cyan-500/20",
+								i % 2 === 0 ? "bg-red-600/20" : "bg-red-500/20",
 							)}
 							style={{
 								width: `${150 + i * 50}px`,
@@ -179,8 +179,8 @@ export default function About() {
 								custom={0}
 								variants={staggerVariants}
 								className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-1.5 md:py-2 bg-white/40 border border-gray-200 rounded-full backdrop-blur-xl md:backdrop-blur-2xl shadow-sm">
-								<div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full animate-pulse" />
-								<span className="text-[9px] md:text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] md:tracking-[0.5em] font-montserrat">
+								<div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-red-500 rounded-full animate-pulse" />
+								<span className="text-[9px] md:text-[10px] font-black text-red-600 uppercase tracking-[0.3em] md:tracking-[0.5em] font-montserrat">
 									Institutional Standard
 								</span>
 							</motion.div>
@@ -193,10 +193,10 @@ export default function About() {
 								Beyond <br />
 								<motion.span
 									animate={{
-										color: ["#2563eb", "#06b6d4", "#2563eb"],
+										color: ["#9f2149", "#06b6d4", "#9f2149"],
 									}}
 									transition={{ duration: 6, repeat: Infinity }}
-									className="text-blue-600">
+									className="text-red-600">
 									Ownership.
 								</motion.span>
 							</motion.h1>
@@ -217,13 +217,13 @@ export default function About() {
 									whileHover={{
 										scale: 1.05,
 										y: -5,
-										backgroundColor: "#2563eb",
+										backgroundColor: "#9f2149",
 									}}
 									whileTap={{ scale: 0.95 }}
 									className="bg-gray-900 rounded-full">
 									<Link
 										href="/dashboard"
-										className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-white rounded-full font-black flex items-center justify-center gap-2 md:gap-4 transition-all duration-500 shadow-xl hover:shadow-blue-600/30 text-xs sm:text-sm font-montserrat">
+										className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-white rounded-full font-black flex items-center justify-center gap-2 md:gap-4 transition-all duration-500 shadow-xl hover:shadow-red-600/30 text-xs sm:text-sm font-montserrat">
 										<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.4em]">
 											Initialize Access
 										</span>
@@ -267,7 +267,7 @@ export default function About() {
 								className="relative rounded-3xl lg:rounded-[4rem] border border-gray-200/50 shadow-2xl lg:shadow-3xl overflow-hidden bg-white/70 backdrop-blur-2xl lg:backdrop-blur-3xl p-8 lg:p-12"
 								style={{ transform: "translateZ(100px)" }}>
 								{/* Scanline Effect */}
-								<div className="absolute inset-0 bg-linear-to-b from-transparent via-blue-500/5 to-transparent h-[10%] w-full animate-scan pointer-events-none" />
+								<div className="absolute inset-0 bg-linear-to-b from-transparent via-red-500/5 to-transparent h-[10%] w-full animate-scan pointer-events-none" />
 
 								<div className="grid grid-cols-2 gap-6 lg:gap-12 relative z-10">
 									{[
@@ -279,7 +279,7 @@ export default function About() {
 										<div
 											key={i}
 											className="group">
-											<p className="text-[9px] lg:text-[10px] font-black text-blue-500/60 uppercase tracking-[0.3em] lg:tracking-[0.5em] mb-1 lg:mb-2 font-montserrat">
+											<p className="text-[9px] lg:text-[10px] font-black text-red-500/60 uppercase tracking-[0.3em] lg:tracking-[0.5em] mb-1 lg:mb-2 font-montserrat">
 												{s.label}
 											</p>
 											<motion.h4
@@ -292,7 +292,7 @@ export default function About() {
 								</div>
 								<div className="mt-8 lg:mt-12 h-px w-full bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 								<div className="mt-8 lg:mt-10 flex items-center gap-4 lg:gap-6">
-									<div className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl lg:rounded-3xl bg-blue-600 flex items-center justify-center text-white shadow-lg lg:shadow-xl shadow-blue-600/40">
+									<div className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl lg:rounded-3xl bg-red-600 flex items-center justify-center text-white shadow-lg lg:shadow-xl shadow-red-600/40">
 										<Shield className="w-6 h-6 lg:w-8 lg:h-8" />
 									</div>
 									<div>
@@ -310,7 +310,7 @@ export default function About() {
 							<motion.div
 								animate={{ rotate: 360 }}
 								transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-								className="absolute inset-0 border border-blue-500/10 rounded-full -m-10 lg:-m-20 pointer-events-none"
+								className="absolute inset-0 border border-red-500/10 rounded-full -m-10 lg:-m-20 pointer-events-none"
 							/>
 						</motion.div>
 					</div>
@@ -340,7 +340,7 @@ export default function About() {
 									StrataDeed Protocol v2.5
 								</p>
 								<div className="flex gap-1 lg:gap-2 mt-2 lg:mt-4">
-									<div className="h-1 flex-1 bg-blue-500 rounded-full" />
+									<div className="h-1 flex-1 bg-red-500 rounded-full" />
 									<div className="h-1 flex-1 bg-white/20 rounded-full" />
 									<div className="h-1 flex-1 bg-white/20 rounded-full" />
 								</div>
@@ -352,9 +352,9 @@ export default function About() {
 								initial={{ opacity: 0, x: 30 }}
 								whileInView={{ opacity: 1, x: 0 }}
 								viewport={{ once: true }}
-								className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-1.5 lg:py-2 bg-blue-50 rounded-full mb-6 lg:mb-10">
-								<Target className="w-3 h-3 lg:w-4 lg:h-4 text-blue-600" />
-								<span className="text-[9px] lg:text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] lg:tracking-[0.5em] font-montserrat">
+								className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-1.5 lg:py-2 bg-red-50 rounded-full mb-6 lg:mb-10">
+								<Target className="w-3 h-3 lg:w-4 lg:h-4 text-red-600" />
+								<span className="text-[9px] lg:text-[10px] font-black text-red-600 uppercase tracking-[0.3em] lg:tracking-[0.5em] font-montserrat">
 									The Protocol
 								</span>
 							</motion.div>
@@ -366,7 +366,7 @@ export default function About() {
 								viewport={{ once: true }}
 								className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 lg:mb-10 leading-[0.9] tracking-tighter font-mclaren">
 								Redefining <br />
-								<span className="text-blue-600">Execution.</span>
+								<span className="text-red-600">Execution.</span>
 							</motion.h2>
 
 							<motion.p
@@ -404,7 +404,7 @@ export default function About() {
 										viewport={{ once: true }}
 										transition={{ delay: i * 0.2 }}
 										className="flex items-start gap-4 lg:gap-8 group">
-										<div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-4xl bg-gray-50 flex items-center justify-center text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110 shadow-sm group-hover:shadow-blue-600/30 shrink-0">
+										<div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-4xl bg-gray-50 flex items-center justify-center text-red-600 transition-all duration-500 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110 shadow-sm group-hover:shadow-red-600/30 shrink-0">
 											<item.icon className="w-6 h-6 lg:w-8 lg:h-8" />
 										</div>
 										<div>
@@ -423,7 +423,7 @@ export default function About() {
 				</div>
 
 				{/* Background Decoration */}
-				<div className="absolute top-1/2 -right-32 lg:-right-64 w-[250px] h-[250px] lg:w-[500px] lg:h-[500px] bg-blue-500/5 rounded-full blur-[60px] lg:blur-[120px] pointer-events-none" />
+				<div className="absolute top-1/2 -right-32 lg:-right-64 w-[250px] h-[250px] lg:w-[500px] lg:h-[500px] bg-red-500/5 rounded-full blur-[60px] lg:blur-[120px] pointer-events-none" />
 			</section>
 
 			{/* Mission/Vision - Institutional Cards with Parallax */}
@@ -436,7 +436,7 @@ export default function About() {
 						viewport={{ once: true }}
 						className="text-center mb-12 lg:mb-32">
 						<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter font-mclaren">
-							Our <span className="text-blue-600">Purpose.</span>
+							Our <span className="text-red-600">Purpose.</span>
 						</h2>
 					</motion.div>
 
@@ -457,7 +457,7 @@ export default function About() {
 									className="object-cover opacity-40 transition-transform duration-[20s] group-hover:scale-110"
 								/>
 								<div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/40 to-transparent" />
-								<div className="absolute inset-0 bg-blue-900/10 mix-blend-color group-hover:bg-blue-600/20 transition-colors duration-1000" />
+								<div className="absolute inset-0 bg-red-900/10 mix-blend-color group-hover:bg-red-600/20 transition-colors duration-1000" />
 							</div>
 
 							{/* Dynamic Light Sweep */}
@@ -485,7 +485,7 @@ export default function About() {
 								{/* Updated: Changed to font-mclaren */}
 								<h3 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9] font-mclaren">
 									mission <br />
-									<span className="text-blue-500">Statement</span>
+									<span className="text-red-500">Statement</span>
 								</h3>
 								<p className="text-base lg:text-xl text-white/80 leading-relaxed font-medium max-w-sm font-montserrat">
 									Merging legal rigor with digital permanence to rebuild trust
@@ -497,12 +497,12 @@ export default function About() {
 										whileHover={{
 											scale: 1.05,
 											y: -5,
-											backgroundColor: "#2563eb",
+											backgroundColor: "#9f2149",
 											color: "#ffffff",
 											transition: { duration: 0.3 },
 										}}
 										whileTap={{ scale: 0.95 }}
-										className="flex items-center gap-2 lg:gap-3 px-6 lg:px-10 py-3 lg:py-5 rounded-full bg-white text-gray-900 font-black text-[10px] lg:text-[11px] uppercase tracking-[0.3em] lg:tracking-[0.4em] shadow-lg lg:shadow-2xl transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.5)] font-montserrat">
+										className="flex items-center gap-2 lg:gap-3 px-6 lg:px-10 py-3 lg:py-5 rounded-full bg-white text-gray-900 font-black text-[10px] lg:text-[11px] uppercase tracking-[0.3em] lg:tracking-[0.4em] shadow-lg lg:shadow-2xl transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(159,33,73,0.5)] font-montserrat">
 										View Protocol
 										<ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 									</motion.div>
@@ -531,7 +531,7 @@ export default function About() {
 									className="object-cover opacity-40 transition-transform duration-[20s] group-hover:scale-110"
 								/>
 								<div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/40 to-transparent" />
-								<div className="absolute inset-0 bg-cyan-900/10 mix-blend-color group-hover:bg-cyan-600/20 transition-colors duration-1000" />
+								<div className="absolute inset-0 bg-red-900/10 mix-blend-color group-hover:bg-red-600/20 transition-colors duration-1000" />
 							</div>
 
 							{/* Dynamic Light Sweep */}
@@ -559,7 +559,7 @@ export default function About() {
 								{/* Updated: Changed to font-mclaren */}
 								<h3 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9] font-mclaren">
 									future <br />
-									<span className="text-cyan-400">Vision</span>
+									<span className="text-red-400">Vision</span>
 								</h3>
 								<p className="text-base lg:text-xl text-white/80 leading-relaxed font-medium max-w-sm font-montserrat">
 									A borderless world where property is liquid, transparent, and
@@ -596,7 +596,7 @@ export default function About() {
 				<div
 					className="absolute inset-0 opacity-[0.05] pointer-events-none"
 					style={{
-						backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`,
+						backgroundImage: `radial-gradient(circle at 1px 1px, #9f2149 1px, transparent 0)`,
 						backgroundSize: "40px 40px",
 					}}
 				/>
@@ -612,14 +612,14 @@ export default function About() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
 						className="text-center mb-12 lg:mb-20">
-						<div className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-1.5 lg:py-2 bg-blue-50 rounded-full mb-6 lg:mb-10">
-							<HelpCircle className="w-3 h-3 lg:w-4 lg:h-4 text-blue-600" />
-							<span className="text-[9px] lg:text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] lg:tracking-[0.5em] font-montserrat">
+						<div className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-1.5 lg:py-2 bg-red-50 rounded-full mb-6 lg:mb-10">
+							<HelpCircle className="w-3 h-3 lg:w-4 lg:h-4 text-red-600" />
+							<span className="text-[9px] lg:text-[10px] font-black text-red-600 uppercase tracking-[0.3em] lg:tracking-[0.5em] font-montserrat">
 								Frequently Asked
 							</span>
 						</div>
 						<h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter font-mclaren">
-							Got <span className="text-blue-600">Questions?</span>
+							Got <span className="text-red-600">Questions?</span>
 						</h2>
 						<p className="mt-4 lg:mt-6 text-sm lg:text-base text-gray-500 font-medium font-montserrat max-w-xl mx-auto">
 							Everything you need to know about StrataDeed, property
@@ -636,14 +636,14 @@ export default function About() {
 							viewport={{ once: true }}
 							transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
 							className="lg:hidden">
-							<div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 rounded-2xl sm:rounded-3xl border border-gray-200/60 p-5 sm:p-7 shadow-sm overflow-hidden">
+							<div className="relative bg-gradient-to-br from-red-50 via-white to-red-50 rounded-2xl sm:rounded-3xl border border-gray-200/60 p-5 sm:p-7 shadow-sm overflow-hidden">
 								{/* Subtle background glow */}
-								<div className="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
-								<div className="absolute -bottom-10 -left-10 w-32 h-32 sm:w-40 sm:h-40 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
+								<div className="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-red-500/10 rounded-full blur-[60px] pointer-events-none" />
+								<div className="absolute -bottom-10 -left-10 w-32 h-32 sm:w-40 sm:h-40 bg-red-500/10 rounded-full blur-[60px] pointer-events-none" />
 
 								{/* Top row: platform badge */}
 								<div className="flex items-center gap-3 mb-4 sm:mb-5 relative z-10">
-									<div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-md shadow-blue-600/20 shrink-0">
+									<div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-red-600 to-red-500 flex items-center justify-center shadow-md shadow-red-600/20 shrink-0">
 										<Building2 className="w-5 h-5 text-white" />
 									</div>
 									<div>
@@ -672,12 +672,12 @@ export default function About() {
 										{
 											icon: Shield,
 											label: "ZK-Proof",
-											color: "bg-blue-100 text-blue-600",
+											color: "bg-red-100 text-red-600",
 										},
 										{
 											icon: Zap,
 											label: "<1.5s",
-											color: "bg-cyan-100 text-cyan-600",
+											color: "bg-red-100 text-red-600",
 										},
 										{
 											icon: Users,
@@ -715,7 +715,7 @@ export default function About() {
 								<div className="mt-4 sm:mt-5 space-y-1.5 relative z-10">
 									<div className="flex justify-between text-[8px] sm:text-[9px] font-black uppercase tracking-widest font-montserrat">
 										<span className="text-gray-400">Assets Tokenized</span>
-										<span className="text-blue-600">Growing</span>
+										<span className="text-red-600">Growing</span>
 									</div>
 									<div className="h-1.5 sm:h-2 bg-gray-100 rounded-full overflow-hidden">
 										<motion.div
@@ -727,7 +727,7 @@ export default function About() {
 												delay: 0.3,
 												ease: [0.16, 1, 0.3, 1],
 											}}
-											className="h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 rounded-full"
+											className="h-full bg-gradient-to-r from-red-600 via-red-500 to-emerald-400 rounded-full"
 										/>
 									</div>
 								</div>
@@ -752,7 +752,7 @@ export default function About() {
 									repeat: Infinity,
 									ease: "easeInOut",
 								}}
-								className="absolute w-[380px] h-[380px] bg-blue-500 rounded-full blur-[100px]"
+								className="absolute w-[380px] h-[380px] bg-red-500 rounded-full blur-[100px]"
 							/>
 
 							{/* Central card */}
@@ -766,7 +766,7 @@ export default function About() {
 								className="relative z-10 w-[300px] bg-white/80 backdrop-blur-2xl rounded-[2.5rem] border border-gray-200/60 shadow-2xl p-8 space-y-5">
 								{/* Platform badge */}
 								<div className="flex items-center gap-3">
-									<div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-600/30">
+									<div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-red-500 flex items-center justify-center shadow-lg shadow-red-600/30">
 										<Building2 className="w-6 h-6 text-white" />
 									</div>
 									<div>
@@ -787,13 +787,13 @@ export default function About() {
 											icon: Shield,
 											label: "ZK-Proof",
 											value: "Private",
-											color: "text-blue-600",
+											color: "text-red-600",
 										},
 										{
 											icon: Zap,
 											label: "Settlement",
 											value: "<1.5s",
-											color: "text-cyan-600",
+											color: "text-red-600",
 										},
 										{
 											icon: Users,
@@ -834,7 +834,7 @@ export default function About() {
 								<div className="space-y-2">
 									<div className="flex justify-between text-[9px] font-black uppercase tracking-widest font-montserrat">
 										<span className="text-gray-400">Assets Tokenized</span>
-										<span className="text-blue-600">Growing</span>
+										<span className="text-red-600">Growing</span>
 									</div>
 									<div className="h-2 bg-gray-100 rounded-full overflow-hidden">
 										<motion.div
@@ -846,7 +846,7 @@ export default function About() {
 												delay: 0.5,
 												ease: [0.16, 1, 0.3, 1],
 											}}
-											className="h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 rounded-full"
+											className="h-full bg-gradient-to-r from-red-600 via-red-500 to-emerald-400 rounded-full"
 										/>
 									</div>
 								</div>
@@ -873,7 +873,7 @@ export default function About() {
 									delay: 0,
 									x: -130,
 									y: -170,
-									color: "bg-cyan-500",
+									color: "bg-red-500",
 								},
 								{
 									icon: Lock,
@@ -882,7 +882,7 @@ export default function About() {
 									delay: 1.5,
 									x: 140,
 									y: -130,
-									color: "bg-blue-600",
+									color: "bg-red-600",
 								},
 								{
 									icon: TrendingUp,
@@ -958,12 +958,12 @@ export default function About() {
 							<motion.div
 								animate={{ rotate: 360 }}
 								transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-								className="absolute w-[420px] h-[420px] rounded-full border border-dashed border-blue-200/40 pointer-events-none"
+								className="absolute w-[420px] h-[420px] rounded-full border border-dashed border-red-200/40 pointer-events-none"
 							/>
 							<motion.div
 								animate={{ rotate: -360 }}
 								transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-								className="absolute w-[320px] h-[320px] rounded-full border border-blue-100/30 pointer-events-none"
+								className="absolute w-[320px] h-[320px] rounded-full border border-red-100/30 pointer-events-none"
 							/>
 
 							{/* Decorative dots */}
@@ -983,7 +983,7 @@ export default function About() {
 											delay: i * 0.4,
 											ease: "easeInOut",
 										}}
-										className="absolute w-2 h-2 bg-blue-500 rounded-full"
+										className="absolute w-2 h-2 bg-red-500 rounded-full"
 										style={{
 											left: `calc(50% + ${Math.cos(angle) * radius}px)`,
 											top: `calc(50% + ${Math.sin(angle) * radius}px)`,
@@ -1011,7 +1011,7 @@ export default function About() {
 										className={cn(
 											"rounded-2xl lg:rounded-3xl border transition-all duration-500",
 											isOpen
-												? "bg-blue-50/50 border-blue-200/60 shadow-lg shadow-blue-600/5"
+												? "bg-red-50/50 border-red-200/60 shadow-lg shadow-red-600/5"
 												: "bg-gray-50/50 border-gray-200/60 hover:border-gray-300 hover:shadow-md",
 										)}>
 										<button
@@ -1020,7 +1020,7 @@ export default function About() {
 											<div className="flex items-center gap-3 lg:gap-4">
 												<motion.div
 													animate={{
-														backgroundColor: isOpen ? "#2563eb" : "#f3f4f6",
+														backgroundColor: isOpen ? "#9f2149" : "#f3f4f6",
 														color: isOpen ? "#ffffff" : "#6b7280",
 													}}
 													transition={{ duration: 0.3 }}
@@ -1031,7 +1031,7 @@ export default function About() {
 													className={cn(
 														"text-sm lg:text-[15px] font-bold transition-colors duration-300 font-montserrat",
 														isOpen
-															? "text-blue-900"
+															? "text-red-900"
 															: "text-gray-700 group-hover:text-gray-900",
 													)}>
 													{faq.question}
@@ -1046,7 +1046,7 @@ export default function About() {
 												className={cn(
 													"shrink-0 w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-colors duration-300",
 													isOpen
-														? "bg-blue-600 text-white"
+														? "bg-red-600 text-white"
 														: "bg-white text-gray-400 border border-gray-200 group-hover:border-gray-300",
 												)}>
 												<ChevronDown className="w-4 h-4" />
@@ -1093,7 +1093,7 @@ export default function About() {
 									Still have questions?{" "}
 									<Link
 										href="/contact"
-										className="text-blue-600 hover:text-blue-700 font-bold underline underline-offset-4 decoration-blue-600/30 hover:decoration-blue-600/60 transition-colors">
+										className="text-red-600 hover:text-red-700 font-bold underline underline-offset-4 decoration-red-600/30 hover:decoration-red-600/60 transition-colors">
 										Reach out to our team
 									</Link>
 								</p>
@@ -1103,11 +1103,11 @@ export default function About() {
 				</div>
 
 				{/* Background decoration */}
-				<div className="absolute top-1/2 -left-32 lg:-left-64 w-[250px] h-[250px] lg:w-[500px] lg:h-[500px] bg-blue-500/5 rounded-full blur-[60px] lg:blur-[120px] pointer-events-none" />
+				<div className="absolute top-1/2 -left-32 lg:-left-64 w-[250px] h-[250px] lg:w-[500px] lg:h-[500px] bg-red-500/5 rounded-full blur-[60px] lg:blur-[120px] pointer-events-none" />
 				<div
 					className="absolute inset-0 opacity-[0.02] pointer-events-none"
 					style={{
-						backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`,
+						backgroundImage: `radial-gradient(circle at 1px 1px, #9f2149 1px, transparent 0)`,
 						backgroundSize: "32px 32px",
 					}}
 				/>
@@ -1121,9 +1121,9 @@ export default function About() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						className="space-y-8 lg:space-y-16">
-						<div className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-8 py-2 lg:py-3 bg-blue-50 border border-blue-100 rounded-full mb-2 lg:mb-4 shadow-sm">
-							<Sparkles className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 animate-spin-slow" />
-							<span className="text-[10px] lg:text-[11px] font-black text-blue-600 uppercase tracking-[0.4em] lg:tracking-[0.6em] font-montserrat">
+						<div className="inline-flex items-center gap-2 lg:gap-3 px-4 lg:px-8 py-2 lg:py-3 bg-red-50 border border-red-100 rounded-full mb-2 lg:mb-4 shadow-sm">
+							<Sparkles className="w-4 h-4 lg:w-5 lg:h-5 text-red-600 animate-spin-slow" />
+							<span className="text-[10px] lg:text-[11px] font-black text-red-600 uppercase tracking-[0.4em] lg:tracking-[0.6em] font-montserrat">
 								Build with us
 							</span>
 						</div>
@@ -1134,7 +1134,7 @@ export default function About() {
 							<motion.span
 								animate={{ opacity: [1, 0.5, 1] }}
 								transition={{ duration: 4, repeat: Infinity }}
-								className="text-blue-600">
+								className="text-red-600">
 								evolution.
 							</motion.span>
 						</h2>
@@ -1144,7 +1144,7 @@ export default function About() {
 								whileHover={{ scale: 1.05, y: -5 }}
 								whileTap={{ scale: 0.95 }}
 								className="group relative w-full sm:w-auto">
-								<div className="absolute -inset-2 lg:-inset-4 bg-blue-600/20 blur-xl lg:blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+								<div className="absolute -inset-2 lg:-inset-4 bg-red-600/20 blur-xl lg:blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
 								<Link
 									href="/dashboard"
 									className="relative bg-gray-900 px-8 lg:px-16 py-4 lg:py-7 text-white rounded-full font-black flex items-center justify-center gap-4 lg:gap-6 transition-all duration-500 shadow-xl lg:shadow-2xl w-full text-sm lg:text-base font-montserrat">
@@ -1161,7 +1161,7 @@ export default function About() {
 								className="group relative w-full sm:w-auto">
 								<Link
 									href="/contact"
-									className="relative bg-white border-2 border-gray-200 px-8 lg:px-16 py-4 lg:py-7 text-gray-900 rounded-full font-black flex items-center justify-center gap-4 lg:gap-6 transition-all duration-500 hover:border-blue-600/30 w-full text-sm lg:text-base font-montserrat">
+									className="relative bg-white border-2 border-gray-200 px-8 lg:px-16 py-4 lg:py-7 text-gray-900 rounded-full font-black flex items-center justify-center gap-4 lg:gap-6 transition-all duration-500 hover:border-red-600/30 w-full text-sm lg:text-base font-montserrat">
 									<span className="text-[11px] lg:text-[12px] uppercase tracking-[0.3em] lg:tracking-[0.5em]">
 										Contact Team
 									</span>
@@ -1173,7 +1173,7 @@ export default function About() {
 				</div>
 
 				{/* Background Grid Lines */}
-				<div className="absolute inset-x-0 bottom-0 h-48 lg:h-96 bg-linear-to-t from-blue-50/50 to-transparent pointer-events-none" />
+				<div className="absolute inset-x-0 bottom-0 h-48 lg:h-96 bg-linear-to-t from-red-50/50 to-transparent pointer-events-none" />
 				<div
 					className="absolute inset-0 opacity-[0.03] pointer-events-none"
 					style={{

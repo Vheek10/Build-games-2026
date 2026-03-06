@@ -22,7 +22,7 @@ export default function ControlsBar({
 					<span className="text-sm text-gray-600">
 						Showing
 					</span>
-					<span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+					<span className="px-2.5 py-1 bg-red-100 text-red-700 text-sm font-semibold rounded-full">
 						{filteredProperties.length}
 					</span>
 					<span className="text-sm text-gray-600">
@@ -36,7 +36,7 @@ export default function ControlsBar({
 					<select
 						value={sortBy}
 						onChange={(e) => setSortBy(e.target.value)}
-						className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+						className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500">
 						<option value="featured">Featured First</option>
 						<option value="price-low">Price: Low to High</option>
 						<option value="price-high">Price: High to Low</option>

@@ -81,7 +81,7 @@ export default function ComparisonSection() {
 			style={{ perspective: "2000px" }}>
 			{/* Background Effects */}
 			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-blue-600/3 rounded-full blur-[180px]" />
+				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-red-600/3 rounded-full blur-[180px]" />
 			</div>
 
 			<div className="max-w-7xl mx-auto relative z-10">
@@ -92,7 +92,7 @@ export default function ComparisonSection() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}>
 						<h2 className="text-3xl lg:text-4xl font-black text-gray-900 tracking-tighter mb-6 lowercase leading-[1.1] font-mclaren">
-							Beyond <span className="text-blue-600">Tradition.</span>
+							Beyond <span className="text-red-600">Tradition.</span>
 						</h2>
 						<p className="text-gray-400 text-[9px] sm:text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] opacity-60 font-montserrat">
 							The Evolution of Asset Settlement
@@ -108,13 +108,13 @@ export default function ComparisonSection() {
 							onClick={() => setActive(idx)}
 							className="group relative px-2 py-4">
 							<div
-								className={`text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-500 ${active === idx ? "text-blue-600 scale-110" : "text-gray-400 hover:text-gray-600"} font-montserrat`}>
+								className={`text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-500 ${active === idx ? "text-red-600 scale-110" : "text-gray-400 hover:text-gray-600"} font-montserrat`}>
 								{comparisons[idx].id}
 							</div>
 							{active === idx && (
 								<motion.div
 									layoutId="nav-line-comparison"
-									className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+									className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-600 shadow-[0_0_15px_rgba(37,99,235,0.3)]"
 								/>
 							)}
 						</button>
@@ -155,7 +155,7 @@ export default function ComparisonSection() {
 									<div
 										className={`absolute inset-0 opacity-10 mix-blend-color ${
 											active === 2
-												? "bg-blue-600"
+												? "bg-red-600"
 												: active === 1
 													? "bg-red-600"
 													: "bg-gray-600"
@@ -171,7 +171,7 @@ export default function ComparisonSection() {
 										<div
 											className={`p-5 rounded-3xl bg-gray-50 border border-gray-100 backdrop-blur-2xl shadow-sm ${
 												active === 2
-													? "text-blue-600"
+													? "text-red-600"
 													: active === 1
 														? "text-red-600"
 														: "text-gray-600"
@@ -185,7 +185,7 @@ export default function ComparisonSection() {
 											<h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-gray-900 tracking-tightest mb-2 leading-none font-mclaren">
 												{comparisons[active].title}
 											</h3>
-											<p className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-blue-600/90 font-montserrat">
+											<p className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-red-600/90 font-montserrat">
 												{comparisons[active].subtitle}
 											</p>
 										</div>
@@ -213,7 +213,7 @@ export default function ComparisonSection() {
 
 								{/* Features Side */}
 								<div className="relative">
-									<div className="space-y-6 p-6 sm:p-8 lg:p-10 rounded-[3rem] bg-white/60 border border-gray-100 backdrop-blur-3xl shadow-xl shadow-blue-900/5">
+									<div className="space-y-6 p-6 sm:p-8 lg:p-10 rounded-[3rem] bg-white/60 border border-gray-100 backdrop-blur-3xl shadow-xl shadow-red-900/5">
 										<div className="mb-6">
 											<p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.5em] font-montserrat">
 												Protocol Features
@@ -227,7 +227,7 @@ export default function ComparisonSection() {
 												<div
 													className={`w-2 h-2 rounded-full shadow-[0_0_10px_currentColor] ${
 														active === 2
-															? "bg-blue-500 text-blue-500"
+															? "bg-red-500 text-red-500"
 															: active === 1
 																? "bg-red-500 text-red-500"
 																: "bg-gray-300 text-gray-300"
@@ -245,14 +245,14 @@ export default function ComparisonSection() {
 											whileHover={{
 												scale: 1.1,
 												y: -5,
-												backgroundColor: "#3b82f6", // blue-500
+												backgroundColor: "#e06a76", // red-500
 												transition: { duration: 0.3 },
 											}}
 											whileTap={{ scale: 0.95 }}
-											className="mt-10 bg-blue-600 rounded-full">
+											className="mt-10 bg-red-600 rounded-full">
 											<Link
 												href="/dashboard"
-												className="flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 lg:px-10 py-4 sm:py-5 rounded-full transition-all duration-500 group/btn shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_30px_60px_-15px_rgba(37,99,235,0.6)]">
+												className="flex items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 lg:px-10 py-4 sm:py-5 rounded-full transition-all duration-500 group/btn shadow-[0_20px_40px_-10px_rgba(159,33,73,0.4)] hover:shadow-[0_30px_60px_-15px_rgba(159,33,73,0.6)]">
 												<span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.4em] text-white text-center leading-tight sm:whitespace-nowrap font-montserrat">
 													Institutional Access
 												</span>
@@ -272,7 +272,7 @@ export default function ComparisonSection() {
 									transition={{ duration: 10, ease: "linear" }}
 									className={`h-full relative ${
 										active === 2
-											? "bg-blue-600 shadow-[0_0_30px_rgba(37,99,235,0.5)]"
+											? "bg-red-600 shadow-[0_0_30px_rgba(37,99,235,0.5)]"
 											: active === 1
 												? "bg-red-600 shadow-[0_0_30px_rgba(220,38,38,0.5)]"
 												: "bg-gray-400 shadow-[0_0_30px_rgba(156,163,175,0.5)]"

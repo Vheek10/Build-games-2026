@@ -44,7 +44,7 @@ export default function CartSidebar({
 				<div className="p-6 border-b border-gray-200">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-3">
-							<ShoppingCart className="w-6 h-6 text-blue-600" />
+							<ShoppingCart className="w-6 h-6 text-red-600" />
 							<h2 className="text-xl font-bold text-gray-900">
 								Investment Cart
 							</h2>
@@ -155,7 +155,7 @@ export default function CartSidebar({
 						<Link
 							href="/dashboard"
 							onClick={onClose}
-							className="w-full py-3 bg-linear-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all flex items-center justify-center gap-2">
+							className="w-full py-3 bg-linear-to-r from-red-600 to-red-500 text-white font-semibold rounded-lg hover:from-red-700 hover:to-red-600 transition-all flex items-center justify-center gap-2">
 							<CreditCard className="w-5 h-5" />
 							Proceed to Checkout
 						</Link>

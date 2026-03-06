@@ -15,10 +15,10 @@
   --color-card: #f8fafc;
   --color-border: #e2e8f0;
 
-  /* Primary accent - Deep Blue (Professional, trust) */
-  --color-accent: #ff5a5a;
-  --color-accent-light: #ff5a5a;
-  --color-accent-dark: #ff5a5a;
+  /* Primary accent - Deep Red (Professional, trust) */
+  --color-accent: #9f2149;
+  --color-accent-light: #d13a50;
+  --color-accent-dark: #821a3d;
 
   /* Secondary accent - Emerald (Growth, success) */
   --color-accent-2: #10b981;
@@ -42,32 +42,32 @@
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
 
-  /* Blue shades for light theme */
-  --color-blue-50: #eff6ff;
-  --color-blue-100: #dbeafe;
-  --color-blue-200: #bfdbfe;
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-800: #1e40af;
-  --color-blue-900: #1e3a8a;
+  /* Red shades for light theme */
+  --color-red-50: #fdf2f4;
+  --color-red-100: #fce7e9;
+  --color-red-200: #f9d5d9;
+  --color-red-300: #f3b7be;
+  --color-red-400: #eb9099;
+  --color-red-500: #e06a76;
+  --color-red-600: #d13a50;
+  --color-red-700: #b52e43;
+  --color-red-800: #9f2149;
+  --color-red-900: #821a3d;
 
   /* Status colors */
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-info: #9f2149;
 
   /* Gradients */
-  --gradient-blue: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  --gradient-red: linear-gradient(135deg, #9f2149 0%, #821a3d 100%);
   --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
   --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   --gradient-light: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   --gradient-sunrise: linear-gradient(
     135deg,
-    #3b82f6 0%,
+    #9f2149 0%,
     #10b981 50%,
     #f59e0b 100%
   );
@@ -80,7 +80,7 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-blue: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+  --shadow-red: 0 10px 15px -3px rgba(159, 33, 73, 0.1);
   --shadow-emerald: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
 
   /* Typography - Only Outfit and Montserrat */
@@ -464,8 +464,8 @@ body {
 }
 
 .sd-connect-button button:hover {
-  background-color: #2563eb !important;
-  box-shadow: 0 12px 30px -12px rgba(37, 99, 235, 0.6) !important;
+  background-color: #9f2149 !important;
+  box-shadow: 0 12px 30px -12px rgba(159, 33, 73, 0.6) !important;
   transform: translateY(-2px) !important;
 }
 
@@ -482,7 +482,7 @@ body {
 
 .sd-connect-button button:focus-visible {
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(159, 33, 73, 0.5) !important;
 }
 
 /* Connected button focus state */

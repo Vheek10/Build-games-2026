@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 export default function Footer() {
 	return (
 		<footer className="bg-linear-to-b from-white via-slate-50 to-white border-t border-gray-200 relative overflow-hidden">
-			<div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0" />
+			<div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-red-500/0 via-red-500/40 to-red-500/0" />
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
 				<div className="flex flex-col lg:flex-row justify-between items-center gap-8">
 					{/* Brand Section */}
@@ -42,7 +42,7 @@ export default function Footer() {
 							<h2 className="text-xl font-black text-gray-900 font-mclaren">
 								StrataDeed
 							</h2>
-							<p className="text-[9px] font-black text-blue-600 uppercase tracking-[0.4em] leading-none mt-0.5 font-montserrat">
+							<p className="text-[9px] font-black text-red-600 uppercase tracking-[0.4em] leading-none mt-0.5 font-montserrat">
 								Property Tokenization
 							</p>
 						</div>
@@ -60,7 +60,7 @@ export default function Footer() {
 							<Link
 								key={link.label}
 								href={link.href}
-								className="hover:text-blue-600 hover:tracking-[0.3em] transition-all duration-300">
+								className="hover:text-red-600 hover:tracking-[0.3em] transition-all duration-300">
 								{link.label}
 							</Link>
 						))}
@@ -76,7 +76,7 @@ export default function Footer() {
 							<a
 								key={i}
 								href={social.href}
-								className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 hover:scale-110 hover:rotate-3 transition-all duration-500 shadow-sm hover:shadow-[0_15px_30px_-5px_rgba(37,99,235,0.3)]">
+								className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:scale-110 hover:rotate-3 transition-all duration-500 shadow-sm hover:shadow-[0_15px_30px_-5px_rgba(37,99,235,0.3)]">
 								<social.icon className="w-5 h-5" />
 							</a>
 						))}

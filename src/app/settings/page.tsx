@@ -11,9 +11,9 @@ const SettingsPage = () => {
 			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 				{/* Header */}
 				<header className="space-y-2">
-					<div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/5 px-3 py-1">
-						<Settings className="w-4 h-4 text-blue-500" />
-						<span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 font-montserrat">
+					<div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/5 px-3 py-1">
+						<Settings className="w-4 h-4 text-red-500" />
+						<span className="text-[10px] font-black uppercase tracking-[0.4em] text-red-500 font-montserrat">
 							Settings
 						</span>
 					</div>
@@ -67,7 +67,7 @@ const SettingsPage = () => {
 					{/* Network */}
 					<section className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
 						<div className="flex items-center gap-2">
-							<div className="w-4 h-4 rounded-full bg-linear-to-br from-blue-500 to-cyan-400" />
+							<div className="w-4 h-4 rounded-full bg-linear-to-br from-red-500 to-red-400" />
 							<h2 className="text-sm font-black text-gray-900 font-montserrat">
 								Network
 							</h2>
@@ -79,8 +79,8 @@ const SettingsPage = () => {
 					</section>
 
 					{/* Privacy Notice */}
-					<div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-						<p className="text-xs text-blue-700 font-montserrat">
+					<div className="p-4 bg-red-50 rounded-xl border border-red-200">
+						<p className="text-xs text-red-700 font-montserrat">
 							<strong>Privacy First:</strong> StrataDeed uses zero-knowledge
 							proofs to protect your identity. Your personal data never leaves
 							your device.

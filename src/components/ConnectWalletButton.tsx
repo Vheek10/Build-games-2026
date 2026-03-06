@@ -9,7 +9,6 @@ const ConnectWalletButton = forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <div className="sd-connect-button" ref={ref}>
       <ConnectButton
-        style={{ backgroundColor: "var(--color-primary)" }}
         chainStatus="icon"
         accountStatus="address"
         showBalance={false}

@@ -56,9 +56,9 @@ export default function MissionVisionSection() {
 					className="text-center mb-16 lg:mb-24">
 					<motion.div
 						variants={itemVariants}
-						className="inline-flex items-center gap-3 px-6 py-2.5 bg-blue-600/5 rounded-full mb-6 sm:mb-8 border border-blue-600/10">
-						<Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
-						<span className="text-[9px] sm:text-[10px] font-black text-blue-700 uppercase tracking-[0.3em] sm:tracking-[0.5em] font-montserrat">
+						className="inline-flex items-center gap-3 px-6 py-2.5 bg-red-600/5 rounded-full mb-6 sm:mb-8 border border-red-600/10">
+						<Sparkles className="w-4 h-4 text-red-600 animate-pulse" />
+						<span className="text-[9px] sm:text-[10px] font-black text-red-700 uppercase tracking-[0.3em] sm:tracking-[0.5em] font-montserrat">
 							The StrataDeed North Star
 						</span>
 					</motion.div>
@@ -67,7 +67,7 @@ export default function MissionVisionSection() {
 						variants={itemVariants}
 						className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 mb-6 sm:mb-8 tracking-tighter leading-[1.1] font-mclaren">
 						Reimagining <br />
-						<span className="text-blue-600">Property Ownership</span>
+						<span className="text-red-600">Property Ownership</span>
 					</motion.h2>
 
 					<motion.p
@@ -101,7 +101,7 @@ export default function MissionVisionSection() {
 								className="object-cover transition-transform duration-[20s] group-hover:scale-110"
 							/>
 							<div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
-							<div className="absolute inset-0 bg-blue-900/10 mix-blend-color group-hover:bg-blue-600/20 transition-colors duration-1000" />
+							<div className="absolute inset-0 bg-red-900/10 mix-blend-color group-hover:bg-red-600/20 transition-colors duration-1000" />
 						</div>
 
 						{/* Dynamic Light Sweep */}
@@ -131,7 +131,7 @@ export default function MissionVisionSection() {
 
 								<h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white mb-6 sm:mb-8 tracking-tightest leading-[0.95] sm:leading-[0.9] lowercase font-mclaren">
 									our <br />
-									<span className="text-blue-400">Mission</span>
+									<span className="text-red-400">Mission</span>
 								</h3>
 
 								<p className="text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed mb-10 sm:mb-12 font-medium max-w-md opacity-80 group-hover:opacity-100 transition-opacity font-montserrat">
@@ -144,12 +144,12 @@ export default function MissionVisionSection() {
 										whileHover={{
 											scale: 1.1,
 											y: -5,
-											backgroundColor: "#2563eb",
+											backgroundColor: "#9f2149",
 											color: "#ffffff",
 											transition: { duration: 0.3 },
 										}}
 										whileTap={{ scale: 0.95 }}
-										className="flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-white text-gray-900 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.4em] shadow-2xl transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.5)] font-montserrat">
+										className="flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-white text-gray-900 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.4em] shadow-2xl transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(159,33,73,0.5)] font-montserrat">
 										View Protocol
 										<ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
 									</motion.div>
@@ -185,7 +185,7 @@ export default function MissionVisionSection() {
 								className="object-cover transition-transform duration-[20s] group-hover:scale-110"
 							/>
 							<div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/40 to-transparent" />
-							<div className="absolute inset-0 bg-cyan-900/10 mix-blend-color group-hover:bg-cyan-600/20 transition-colors duration-1000" />
+							<div className="absolute inset-0 bg-red-900/10 mix-blend-color group-hover:bg-red-600/20 transition-colors duration-1000" />
 						</div>
 
 						{/* Content Overlay */}
@@ -200,7 +200,7 @@ export default function MissionVisionSection() {
 
 								<h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white mb-6 sm:mb-8 tracking-tightest leading-[0.95] sm:leading-[0.9] lowercase font-mclaren">
 									our <br />
-									<span className="text-cyan-400">Vision</span>
+									<span className="text-red-400">Vision</span>
 								</h3>
 
 								<p className="text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed mb-10 sm:mb-12 font-medium max-w-md opacity-80 group-hover:opacity-100 transition-opacity font-montserrat">
@@ -213,7 +213,7 @@ export default function MissionVisionSection() {
 										whileHover={{
 											scale: 1.1,
 											y: -5,
-											backgroundColor: "#0891b2", // cyan-600
+											backgroundColor: "#0891b2", // red-600
 											color: "#ffffff",
 											transition: { duration: 0.3 },
 										}}
@@ -241,10 +241,10 @@ export default function MissionVisionSection() {
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						className="text-center mb-16">
-						<h3 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.5em] mb-4 font-montserrat">
+						<h3 className="text-[10px] font-black text-red-600 uppercase tracking-[0.5em] mb-4 font-montserrat">
 							The RealFi Advantage
 						</h3>
-						<div className="h-0.5 w-12 bg-blue-600 mx-auto" />
+						<div className="h-0.5 w-12 bg-red-600 mx-auto" />
 					</motion.div>
 
 					<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -287,7 +287,7 @@ export default function MissionVisionSection() {
 									viewport={{ once: true }}
 									transition={{ delay: index * 0.1 }}
 									whileHover={{ y: -10, transition: { duration: 0.3 } }}
-									className="group p-6 sm:p-8 lg:p-10 bg-gray-50 rounded-[2.5rem] sm:rounded-[3rem] border border-gray-100 hover:border-blue-100 hover:bg-white hover:shadow-[0_40px_80px_-15px_rgba(37,99,235,0.1)] transition-all duration-700">
+									className="group p-6 sm:p-8 lg:p-10 bg-gray-50 rounded-[2.5rem] sm:rounded-[3rem] border border-gray-100 hover:border-red-100 hover:bg-white hover:shadow-[0_40px_80px_-15px_rgba(37,99,235,0.1)] transition-all duration-700">
 									<div className="w-16 h-16 rounded-2xl bg-white shadow-xl flex items-center justify-center mb-10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
 										<Icon className="w-7 h-7 text-gray-900" />
 									</div>
