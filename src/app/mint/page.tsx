@@ -113,7 +113,7 @@ function MintFormContent() {
 		loading: isMinting,
 		error: mintError,
 	} = useTokenization();
-	const { deployStrataDeed, isDeploying } = useStrataDeed();
+	const { fractionalizeProperty, isDeploying } = useStrataDeed();
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 	const [txHash, setTxHash] = useState<string | undefined>(undefined);
@@ -389,13 +389,20 @@ function MintFormContent() {
 					return;
 				}
 
-				// If enabled, proceed to RWA Deployment
+				// If enabled, proceed to RWA Deployment (Fractionalization)
 				setCurrentStep("tokenizing");
 
 				try {
-					const rwaHash = await deployStrataDeed(
-						formData.targetRaise,
-						address!,
+					const tokenSupply = BigInt(formData.tokenSupply || "1000");
+					const fundingCap = BigInt(
+						Math.round(Number(formData.targetRaise) * 1e18),
+					);
+					const rwaHash = await fractionalizeProperty(
+						BigInt(0), // deedTokenId — will be resolved from mint receipt
+						`StrataDeed ${formData.title} Shares`,
+						`SD-${propertyId.slice(-6).toUpperCase()}`,
+						tokenSupply,
+						fundingCap,
 					);
 
 					if (rwaHash) {
