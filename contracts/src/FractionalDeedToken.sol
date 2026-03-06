@@ -13,8 +13,6 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @notice ERC-20 token representing fractional ownership shares of a single
  *         real estate property deed on Avalanche.
  * @dev One FractionalDeedToken contract is deployed per fractionalized property.
- *      Ported from the Sui Move `property_rwa.move` module.
- *
  *      Key features:
  *        - Fixed total supply minted at construction (no further inflation).
  *        - Compliance whitelist: only whitelisted addresses may hold tokens.

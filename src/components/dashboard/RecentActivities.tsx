@@ -198,7 +198,7 @@ export default function RecentActivities({
 				whileHover={{ backgroundColor: "rgba(219, 234, 254, 1)" }}
 				whileTap={{ scale: 0.98 }}>
 				<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
-					View on SuiScan
+					View on Snowtrace
 				</span>
 				<motion.div
 					animate={{ x: [0, 3, 0] }}

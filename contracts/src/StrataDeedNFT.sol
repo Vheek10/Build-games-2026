@@ -14,7 +14,6 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @notice ERC-721 NFT representing tokenized real estate property deeds on Avalanche.
  * @dev Each token stores a metadata URI (pointing to property info on IPFS or similar)
  *      and a private commitment hash used for ZK-based compliance verification.
- *      Ported from the Sui Move `property_nft.move` module.
  */
 contract StrataDeedNFT is
     ERC721,

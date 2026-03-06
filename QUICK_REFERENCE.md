@@ -11,8 +11,11 @@ Quick commands and useful information for developers.
 git clone https://github.com/yourusername/stratadeed.git
 cd stratadeed
 
-# Install dependencies
+# Install frontend dependencies
 pnpm install
+
+# Install contract dependencies
+cd contracts && pnpm install && cd ..
 
 # Copy environment template
 cp .env.local.example .env.local
@@ -24,47 +27,56 @@ pnpm dev
 ## 🛠️ Available Scripts
 
 ```bash
-# Development
+# Frontend Development
 pnpm dev              # Start dev server (http://localhost:3000)
 pnpm build            # Build for production
 pnpm start            # Start production server
 pnpm lint             # Run ESLint
 
-# Smart Contracts
-cd move/stratadeed
-sui move build        # Build Move contracts
-sui move test         # Run Move tests
-sui client publish    # Deploy to Sui network
+# Smart Contracts (from contracts/ directory)
+cd contracts
+npx hardhat compile              # Compile Solidity contracts
+npx hardhat test                 # Run contract tests
+npx hardhat run scripts/deploy.js --network fuji       # Deploy to Fuji testnet
+npx hardhat run scripts/deploy.js --network avalanche   # Deploy to mainnet
 ```
 
-## 🔗 Sui CLI Commands
+## 🔗 Avalanche CLI & Hardhat Commands
 
 ```bash
-# Setup Sui CLI
-sui client envs                    # List available networks
-sui client switch --env testnet    # Switch to testnet
-sui client active-address          # Show current wallet address
+# Compile contracts
+cd contracts
+npx hardhat compile
 
-# Get testnet tokens
-sui client faucet                  # Request testnet SUI
-sui client gas                     # Check gas objects
+# Run a local Hardhat node
+npx hardhat node
 
-# Deploy contracts
-sui client publish --gas-budget 100000000
+# Deploy to local node
+npx hardhat run scripts/deploy.js --network localhost
 
-# Query objects
-sui client object <OBJECT_ID>      # View object details
-sui client objects                 # List all owned objects
+# Deploy to Avalanche Fuji Testnet
+npx hardhat run scripts/deploy.js --network fuji
+
+# Deploy to Avalanche C-Chain Mainnet
+npx hardhat run scripts/deploy.js --network avalanche
+
+# Verify contracts on Snowtrace
+npx hardhat verify --network fuji <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS...>
+
+# Open Hardhat console
+npx hardhat console --network fuji
 ```
 
 ## 📝 Environment Variables
 
-| Variable                              | Description                 | Example                        |
-| ------------------------------------- | --------------------------- | ------------------------------ |
-| `NEXT_PUBLIC_SUI_NETWORK`             | Sui network to connect to   | `testnet`, `devnet`, `mainnet` |
-| `NEXT_PUBLIC_PROPERTY_NFT_PACKAGE_ID` | Property NFT package ID     | `0x1234...`                    |
-| `NEXT_PUBLIC_PROPERTY_RWA_PACKAGE_ID` | Property RWA package ID     | `0x5678...`                    |
-| `NEXT_PUBLIC_SUI_GAS_BUDGET`          | Gas budget for transactions | `50000000` (0.05 SUI)          |
+| Variable                                     | Description                        | Example                       |
+| -------------------------------------------- | ---------------------------------- | ----------------------------- |
+| `NEXT_PUBLIC_STRATA_DEED_NFT_ADDRESS`        | StrataDeedNFT contract address     | `0x1234...`                   |
+| `NEXT_PUBLIC_STRATA_DEED_CORE_ADDRESS`       | StrataDeedCore contract address    | `0x5678...`                   |
+| `NEXT_PUBLIC_FRACTIONAL_DEED_TOKEN_ADDRESS`  | FractionalDeedToken address        | `0x9abc...`                   |
+| `NEXT_PUBLIC_ZK_COMPLIANCE_VERIFIER_ADDRESS` | ZKComplianceVerifier address       | `0xdef0...`                   |
+| `PRIVATE_KEY`                                | Deployer wallet private key        | `0xabc123...` (never commit!) |
+| `SNOWTRACE_API_KEY`                          | Snowtrace API key for verification | `ABC123...`                   |
 
 ## 🏗️ Project Structure
 
@@ -79,22 +91,21 @@ stratadeed/
 │   ├── components/              # React components
 │   ├── hooks/                   # Custom React hooks
 │   │   ├── useTokenization.ts  # Property NFT minting
-│   │   └── useStrataDeed.ts    # RWA treasury creation
+│   │   └── useStrataDeed.ts    # StrataDeedCore interaction
 │   ├── lib/                     # Utility libraries
-│   │   └── sui/                # Sui blockchain utilities
-│   │       ├── tokenization.ts # Transaction builders
-│   │       └── client.ts       # Sui client factory
 │   ├── config/                  # Configuration files
-│   │   ├── contracts.ts        # Smart contract addresses
-│   │   └── web3/               # Web3 configuration
+│   │   ├── contracts.ts        # Contract addresses & ABIs
+│   │   └── web3/               # Wagmi / RainbowKit config
 │   └── providers/               # React context providers
-├── move/                         # Move smart contracts
-│   └── stratadeed/
-│       ├── Move.toml            # Move package manifest
-│       └── sources/             # Move source files
-│           ├── property.move    # Property creation (145 lines)
-│           ├── property_nft.move # Property deed NFTs (198 lines)
-│           └── property_rwa.move # RWA tokens (370 lines)
+├── contracts/                    # Solidity smart contracts (Hardhat)
+│   ├── hardhat.config.js        # Hardhat config (Fuji & Mainnet)
+│   ├── scripts/
+│   │   └── deploy.js           # Deployment script
+│   └── src/                     # Solidity source files
+│       ├── StrataDeedCore.sol   # Orchestrator contract
+│       ├── StrataDeedNFT.sol    # ERC-721 property deed NFTs
+│       ├── FractionalDeedToken.sol # ERC-20 fractional ownership
+│       └── ZKComplianceVerifier.sol # ZK compliance verification
 ├── public/                       # Static assets
 ├── .env.local.example           # Environment template
 ├── package.json                 # Node dependencies
@@ -106,107 +117,140 @@ stratadeed/
 
 ### Frontend
 
-- **[src/app/mint/page.tsx](src/app/mint/page.tsx)** - Property minting form (1400+ lines)
-- **[src/lib/sui/tokenization.ts](src/lib/sui/tokenization.ts)** - Sui transaction builders
+- **[src/app/mint/page.tsx](src/app/mint/page.tsx)** - Property minting form
+- **[src/hooks/useStrataDeed.ts](src/hooks/useStrataDeed.ts)** - StrataDeedCore hook (wagmi)
 - **[src/hooks/useTokenization.ts](src/hooks/useTokenization.ts)** - Minting hook
-- **[src/config/contracts.ts](src/config/contracts.ts)** - Contract configuration
+- **[src/config/contracts.ts](src/config/contracts.ts)** - Contract addresses & ABIs
 
 ### Smart Contracts
 
-- **[move/stratadeed/sources/property.move](move/stratadeed/sources/property.move)** - Core property tokenization
-- **[move/stratadeed/sources/property_nft.move](move/stratadeed/sources/property_nft.move)** - NFT deed implementation
-- **[move/stratadeed/sources/property_rwa.move](move/stratadeed/sources/property_rwa.move)** - RWA token & treasury
+- **[contracts/src/StrataDeedCore.sol](contracts/src/StrataDeedCore.sol)** - Orchestrator (minting, fractionalization, compliance)
+- **[contracts/src/StrataDeedNFT.sol](contracts/src/StrataDeedNFT.sol)** - ERC-721 property deed NFTs with ZK commitments
+- **[contracts/src/FractionalDeedToken.sol](contracts/src/FractionalDeedToken.sol)** - ERC-20 fractional ownership tokens
+- **[contracts/src/ZKComplianceVerifier.sol](contracts/src/ZKComplianceVerifier.sol)** - Merkle proof & ZK verification
 
 ## 🔐 Smart Contract Functions
 
-### Property NFT Module
+### StrataDeedCore (Orchestrator)
 
-```typescript
-// Mint a property deed NFT
-property_nft::mint_property_deed(
-  property_id: string,      // e.g., "PROP-1234567890-abc123..."
-  metadata_uri: string,     // Base64 or IPFS URI
-  private_commitment: u8[], // ZK commitment hash
-  to: address              // Recipient address
-)
+```solidity
+// Create a property and mint the deed NFT
+function createProperty(
+    string memory propertyId,     // e.g., "PROP-1234567890-abc123..."
+    string memory metadataURI,    // IPFS or base64 URI
+    bytes  memory privateCommitment, // ZK commitment hash
+    address to                    // Recipient address
+) external returns (uint256 tokenId);
+
+// Fractionalize a property deed into ERC-20 shares
+function fractionalizeProperty(
+    uint256 deedTokenId,          // Token ID of the minted deed NFT
+    string memory tokenName,      // e.g., "StrataDeed PROP-123 Shares"
+    string memory tokenSymbol,    // e.g., "SD-123"
+    uint256 totalShares,          // Total fractional shares to mint
+    uint256 pricePerShare         // Price per share in wei (AVAX)
+) external returns (address fractionalToken);
 ```
 
-### Property RWA Module
+### StrataDeedNFT (ERC-721)
 
-```typescript
-// Mint RWA tokens (fractional ownership)
-property_rwa::mint_rwa_token(
-  property_id: string,  // Same as NFT property_id
-  tokens: number,       // Amount of tokens to mint
-  to: address          // Recipient address
-)
+```solidity
+// Mint a property deed NFT
+function mintPropertyDeed(
+    string memory propertyId,
+    string memory metadataURI,
+    bytes  memory privateCommitment,
+    address to
+) external returns (uint256 tokenId);
 
-// Create RWA treasury
-property_rwa::create_treasury(
-  funding_cap: number  // Maximum funding amount in SUI
-)
+// Update ZK commitment on an existing deed
+function updatePrivateCommitment(
+    uint256 tokenId,
+    bytes memory newCommitment
+) external;
+```
+
+### FractionalDeedToken (ERC-20)
+
+```solidity
+// Purchase fractional shares (payable)
+function buyShares(uint256 amount) external payable;
+
+// Deposit yield for distribution (payable)
+function depositYield() external payable;
+
+// Claim accumulated yield
+function claimYield() external;
 ```
 
 ## 🐛 Common Issues & Solutions
 
-### Issue: "Cannot find module '@mysten/sui'"
+### Issue: "Cannot find module 'wagmi'" or "'viem'"
 
 **Solution:**
 
 ```bash
-pnpm install @mysten/sui@latest
+pnpm install wagmi viem @rainbow-me/rainbowkit
 ```
 
 ### Issue: "Wallet not connected"
 
 **Solution:**
 
-1. Install [Suiet Wallet](https://chrome.google.com/webstore/detail/suiet-sui-wallet/khpkpbbcccdmmclmpigdgddabeilkdpd)
-2. Create/import wallet
-3. Switch to testnet in wallet settings
-4. Refresh page and click "Connect Wallet"
+1. Install [MetaMask](https://metamask.io/) or [Core Wallet](https://core.app/)
+2. Add Avalanche Fuji Testnet (Chain ID: 43113, RPC: `https://api.avax-test.network/ext/bc/C/rpc`)
+3. Import or create a wallet
+4. Refresh the page and click "Connect Wallet"
 
-### Issue: "Package ID not configured"
+### Issue: "Contract address not configured"
 
 **Solution:**
 
-1. Deploy contracts to Sui: `sui client publish --gas-budget 100000000`
-2. Copy package IDs from deployment output
-3. Update `.env.local` with package IDs
+1. Deploy contracts: `cd contracts && npx hardhat run scripts/deploy.js --network fuji`
+2. Copy deployed addresses from the console output
+3. Update `.env.local` with the contract addresses
 4. Restart dev server: `pnpm dev`
 
-### Issue: "Insufficient gas"
+### Issue: "Insufficient funds" or transaction reverts
 
 **Solution:**
 
 ```bash
-# Request testnet SUI tokens
-sui client faucet
+# Request testnet AVAX from the Avalanche faucet
+# Visit: https://faucet.avax.network/
+# Paste your wallet address and request Fuji AVAX
 
-# Check balance
-sui client gas
+# Or use Core faucet:
+# Visit: https://core.app/tools/testnet-faucet/
 ```
 
-### Issue: Move compilation errors about "public struct"
+### Issue: Hardhat compilation errors
 
-**Solution:** The Move contracts use legacy edition syntax. This is a TypeScript language server warning only - the contracts compile and deploy successfully. You can safely ignore these warnings or update Move.toml to use edition = "2024" and remove `public` keywords from structs.
+**Solution:**
+
+```bash
+cd contracts
+
+# Clean artifacts and recompile
+npx hardhat clean
+npx hardhat compile
+
+# If OpenZeppelin imports fail
+pnpm install @openzeppelin/contracts
+```
 
 ## 📚 Useful Links
 
-- **Sui Documentation**: https://docs.sui.io/
-- **Move Language Book**: https://move-language.github.io/move/
-- **Sui TypeScript SDK**: https://sdk.mystenlabs.com/typescript
-- **Suiet Wallet Docs**: https://suiet.app/docs
-- **Sui Explorer (Testnet)**: https://suiscan.xyz/testnet
-- **Sui Discord**: https://discord.gg/sui
+- **Avalanche Documentation**: https://docs.avax.network/
+- **Avalanche C-Chain Explorer (Snowtrace)**: https://snowtrace.io/
+- **Fuji Testnet Explorer**: https://testnet.snowtrace.io/
+- **Avalanche Faucet (Fuji)**: https://faucet.avax.network/
+- **Hardhat Documentation**: https://hardhat.org/docs
+- **OpenZeppelin Contracts**: https://docs.openzeppelin.com/contracts/
+- **Wagmi (React Hooks for EVM)**: https://wagmi.sh/
+- **Viem (TypeScript EVM Client)**: https://viem.sh/
 
 ## 🎓 Learning Resources
-
-### Sui Development
-
-- [Sui Move by Example](https://examples.sui.io/)
-- [Sui Move Tutorial](https://docs.sui.io/guides/developer/first-app)
-- [Programmable Transaction Blocks](https://docs.sui.io/concepts/transactions/prog-txn-blocks)
 
 ### Next.js
 
@@ -219,10 +263,10 @@ sui client gas
 ### Smart Contract Development
 
 - Always test on devnet/testnet before mainnet
-- Use `sui move test` to run unit tests
-- Keep gas budgets reasonable (0.05-0.1 SUI)
-- Validate all inputs in Move functions
-- Use capability-based access control
+- Use `npx hardhat test` to run unit tests
+- Keep gas costs reasonable on Fuji testnet
+- Validate all inputs in Solidity functions
+- Use role-based access control (OpenZeppelin AccessControl)
 
 ### Frontend Development
 
@@ -252,10 +296,10 @@ sui client gas
 
 ### Testnet Deployment
 
-- [ ] Deploy contracts to Sui testnet
-- [ ] Update `.env.local` with package IDs
+- [ ] Deploy contracts to Avalanche Fuji testnet
+- [ ] Update `.env.local` with contract addresses
 - [ ] Test all user flows end-to-end
-- [ ] Verify transactions on Sui Explorer
+- [ ] Verify transactions on Snowtrace
 - [ ] Get community feedback
 
 ### Mainnet Deployment
@@ -264,7 +308,7 @@ sui client gas
 - [ ] Insurance coverage confirmed
 - [ ] Backup strategies in place
 - [ ] Monitoring and alerts configured
-- [ ] Deploy contracts to Sui mainnet
+- [ ] Deploy contracts to Avalanche mainnet
 - [ ] Update production environment variables
 - [ ] Announce launch
 
