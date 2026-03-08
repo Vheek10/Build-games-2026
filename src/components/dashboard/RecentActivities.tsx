@@ -166,7 +166,13 @@ export default function RecentActivities({
 									transition={{ delay: 0.1 }}>
 									<div className="flex items-center gap-2">
 										<a
-											href="#"
+											href={
+												activity.txHash
+													? `https://testnet.snowtrace.io/tx/${activity.txHash}`
+													: "#"
+											}
+											target="_blank"
+											rel="noopener noreferrer"
 											className="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-600 hover:underline font-montserrat">
 											{activity.txHash} <ExternalLink className="w-2.5 h-2.5" />
 										</a>
@@ -190,22 +196,28 @@ export default function RecentActivities({
 				})}
 			</motion.div>
 
-			<motion.button
-				className="w-full mt-6 py-3 text-red-600 font-black hover:bg-red-50 rounded-full transition-colors flex items-center justify-center gap-3 font-montserrat"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 0.4 }}
-				whileHover={{ backgroundColor: "rgba(219, 234, 254, 1)" }}
-				whileTap={{ scale: 0.98 }}>
-				<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
-					View on Snowtrace
-				</span>
+			<a
+				href="https://testnet.snowtrace.io/address/0xE75ebFFd36e1A986F5E69DAfAb663a8A0fB6F983"
+				target="_blank"
+				rel="noopener noreferrer"
+				className="w-full">
 				<motion.div
-					animate={{ x: [0, 3, 0] }}
-					transition={{ duration: 2, repeat: Infinity }}>
-					<ExternalLink className="w-3.5 h-3.5" />
+					className="w-full mt-6 py-3 text-red-600 font-black hover:bg-red-50 rounded-full transition-colors flex items-center justify-center gap-3 font-montserrat"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 0.4 }}
+					whileHover={{ backgroundColor: "rgba(219, 234, 254, 1)" }}
+					whileTap={{ scale: 0.98 }}>
+					<span className="text-[10px] uppercase tracking-[0.4em] font-montserrat">
+						View on Snowtrace
+					</span>
+					<motion.div
+						animate={{ x: [0, 3, 0] }}
+						transition={{ duration: 2, repeat: Infinity }}>
+						<ExternalLink className="w-3.5 h-3.5" />
+					</motion.div>
 				</motion.div>
-			</motion.button>
+			</a>
 		</motion.div>
 	);
 }

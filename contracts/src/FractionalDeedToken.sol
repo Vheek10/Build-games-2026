@@ -100,6 +100,7 @@ contract FractionalDeedToken is
     event YieldDistributed(address indexed recipient, uint256 amount);
     event WhitelistUpdated(address indexed account, bool status);
     event WhitelistEnforcementChanged(bool enforced);
+    event YieldDeposited(address indexed depositor, uint256 amount);
 
     // =========================================================================
     // Errors
@@ -225,10 +226,8 @@ contract FractionalDeedToken is
     {
         if (amount == 0) revert ZeroAmount();
         if (to == address(0)) revert ZeroAddress();
-        if (escrowState == EscrowState.Funding)
-            revert InvalidEscrowStateForAction(escrowState);
-        if (escrowState == EscrowState.Emergency)
-            revert InvalidEscrowStateForAction(escrowState);
+        if (escrowState != EscrowState.Finalized)
+            revert NotInFinalizedState();
         if (amount > address(this).balance)
             revert InsufficientTreasuryBalance(amount, address(this).balance);
         if (amount > maxWithdrawalPerTx)
@@ -374,11 +373,16 @@ contract FractionalDeedToken is
         super._update(from, to, value);
     }
 
-    /// @notice Allow the contract to receive AVAX for yield deposits (only in Finalized state).
+    /// @notice Accept AVAX yield deposits (only in Finalized state, only from treasury admin).
     receive() external payable {
         require(
             escrowState == EscrowState.Finalized,
             "Direct deposits only allowed in Finalized state"
         );
+        require(
+            hasRole(TREASURY_ADMIN_ROLE, msg.sender),
+            "Only treasury admin can deposit yield"
+        );
+        emit YieldDeposited(msg.sender, msg.value);
     }
 }
