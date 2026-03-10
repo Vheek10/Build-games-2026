@@ -19,7 +19,7 @@
 **🎥 Video Demo**: [Watch 3-Minute Walkthrough](#) _(Coming Soon)_  
 **🌐 Live Demo**: [Try StrataDeed](https://strata-deed.vercel.app)  
 **📜 Smart Contracts (Avalanche)**: View on [Snowtrace](https://testnet.snowtrace.io/) _(Fuji Testnet)_  
-**📖 Documentation**: [Technical Docs](./QUICK_REFERENCE.md)
+**📖 Documentation**: [Quick Reference](./QUICK_REFERENCE.md)
 
 ---
 
@@ -32,6 +32,7 @@
 - [🏗️ Architecture](#️-architecture)
 - [🔐 ZK-KYC Innovation](#-zk-kyc-innovation)
 - [📝 Smart Contracts (Solidity)](#-smart-contracts-solidity)
+- [🧑‍💻 User Journey](#-user-journey)
 - [🚀 Deployment](#-deployment)
 - [📦 Installation](#-installation)
 - [🛣️ Roadmap](#️-roadmap)
@@ -77,13 +78,15 @@ StrataDeed is being ported to **Avalanche C-Chain** for the **Avalanche Build Ga
 
 ## 📌 Current Status
 
-| Component              | Status         | Details                                                |
-| ---------------------- | -------------- | ------------------------------------------------------ |
-| **Solidity Contracts** | ✅ Complete    | Core contracts written for Avalanche C-Chain (EVM)     |
-| **Frontend (Next.js)** | ✅ Complete    | Full-featured UI (marketplace, dashboard, 3D viewer)   |
-| **Fuji Deployment**    | 🔄 In Progress | Deploying to Avalanche Fuji testnet                    |
-| **ZK Verifier**        | 🔄 Stub Ready  | Interface + lightweight Merkle proof verifier deployed |
-| **Mainnet Launch**     | 📋 Planned     | After testnet validation and audit                     |
+| Component              | Status             | Details                                                    |
+| ---------------------- | ------------------ | ---------------------------------------------------------- |
+| **Solidity Contracts** | ✅ Complete        | 4 contracts: Core, NFT, Fractional Token, ZK Verifier      |
+| **Frontend (Next.js)** | ✅ Complete        | Marketplace, dashboard, mint form, vault, 3D viewer        |
+| **Wallet Integration** | ✅ Complete        | RainbowKit + Wagmi + viem on Avalanche C-Chain             |
+| **Foundry Tooling**    | ✅ Complete        | Forge build, test, and deploy scripts for Fuji & Mainnet   |
+| **Fuji Deployment**    | 🔄 In Progress     | Deploying full contract suite to Avalanche Fuji testnet    |
+| **ZK Verifier**        | 🔄 Interface Ready | Merkle proof path active; IZKVerifier interface for SNARKs |
+| **Mainnet Launch**     | 📋 Planned         | After testnet validation and security audit                |
 
 ---
 
@@ -167,20 +170,33 @@ graph TB
 
 #### Smart Contracts (Avalanche C-Chain)
 
-- **Language**: Solidity ^0.8.20
-- **Framework**: Hardhat / Foundry
-- **Libraries**: OpenZeppelin Contracts 5.x
-- **Network**: Avalanche C-Chain (Fuji Testnet → Mainnet)
-- **Chain IDs**: Fuji = `43113` | Mainnet = `43114`
+| Tool              | Version                        | Purpose                                                   |
+| ----------------- | ------------------------------ | --------------------------------------------------------- |
+| Solidity          | ^0.8.20                        | Contract language (custom errors, overflow protection)    |
+| Foundry           | Latest                         | Primary build, test, and deploy framework                 |
+| Hardhat           | ^3.1.9                         | Alternative toolchain and verification                    |
+| OpenZeppelin      | 5.x                            | ERC-721, ERC-20, AccessControl, Pausable, ReentrancyGuard |
+| Avalanche C-Chain | Fuji `43113` / Mainnet `43114` | EVM-compatible deployment target                          |
 
 #### Frontend
 
-- **Framework**: Next.js 16.0.10 with React 19.2.0
-- **Language**: TypeScript 5.9.3
-- **Styling**: Tailwind CSS 4 with PostCSS
-- **Animations**: Framer Motion 12.23.25
-- **3D Graphics**: Three.js 0.182.0 + React Three Fiber 9.5.0
-- **State**: TanStack React Query 5.90.12
+| Tool                  | Version            | Purpose                                                 |
+| --------------------- | ------------------ | ------------------------------------------------------- |
+| Next.js (App Router)  | 16.0.10            | Server-first rendering with file-based routing          |
+| React                 | 19.2.0             | UI component framework                                  |
+| TypeScript            | ^5 (strict)        | Type-safe development                                   |
+| Tailwind CSS          | 4                  | Utility-first styling with custom Platinum Mist palette |
+| Framer Motion         | 12.x               | Page transitions and scroll animations                  |
+| Three.js + R3F + drei | 0.182 / 9.x / 10.x | 3D property viewer with orbit controls                  |
+
+#### Web3 Integration
+
+| Tool                 | Version  | Purpose                                                        |
+| -------------------- | -------- | -------------------------------------------------------------- |
+| RainbowKit           | ^2.2.10  | Wallet connection modal (MetaMask, Core, Rabby, WalletConnect) |
+| Wagmi                | ^3.5.0   | React hooks for contract reads/writes                          |
+| viem                 | ^2.46.2  | Low-level typed Ethereum client                                |
+| TanStack React Query | ^5.90.12 | On-chain state caching and refetching                          |
 
 #### Development
 
@@ -188,6 +204,7 @@ graph TB
 - **Linting**: ESLint 9 with Next.js config
 - **Type Checking**: TypeScript strict mode
 - **Build Tool**: Webpack 5 (Next.js bundler)
+- **Deployment**: Vercel (frontend), Foundry scripts (contracts)
 
 ---
 
@@ -246,12 +263,12 @@ StrataDeed's ZK-KYC system enables regulatory compliance without sacrificing pri
 
 All Avalanche C-Chain contracts live in the [`contracts/`](./contracts/) directory:
 
-| Contract                 | File                                                                       | Description                                            |
-| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------ |
-| **StrataDeedNFT**        | [`contracts/StrataDeedNFT.sol`](contracts/StrataDeedNFT.sol)               | ERC-721 property deed NFTs with ZK commitment storage  |
-| **FractionalDeedToken**  | [`contracts/FractionalDeedToken.sol`](contracts/FractionalDeedToken.sol)   | ERC-20 fractional ownership tokens per property        |
-| **ZKComplianceVerifier** | [`contracts/ZKComplianceVerifier.sol`](contracts/ZKComplianceVerifier.sol) | Merkle proof verifier + pluggable ZK interface         |
-| **StrataDeedCore**       | [`contracts/StrataDeedCore.sol`](contracts/StrataDeedCore.sol)             | Orchestrator: mint deeds, fractionalize, escrow, yield |
+| Contract                 | File                                                                               | Description                                                         |
+| ------------------------ | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **StrataDeedNFT**        | [`contracts/src/StrataDeedNFT.sol`](contracts/src/StrataDeedNFT.sol)               | ERC-721 property deed NFTs with ZK commitment storage (314 lines)   |
+| **FractionalDeedToken**  | [`contracts/src/FractionalDeedToken.sol`](contracts/src/FractionalDeedToken.sol)   | ERC-20 fractional ownership with escrow state machine (389 lines)   |
+| **ZKComplianceVerifier** | [`contracts/src/ZKComplianceVerifier.sol`](contracts/src/ZKComplianceVerifier.sol) | Merkle proof verifier + pluggable IZKVerifier interface (330 lines) |
+| **StrataDeedCore**       | [`contracts/src/StrataDeedCore.sol`](contracts/src/StrataDeedCore.sol)             | Orchestrator: mint, fractionalize, compliance gate (302 lines)      |
 
 ### Contract Relationships
 
@@ -272,6 +289,40 @@ StrataDeedCore (Orchestrator)
 
 ---
 
+## 🧑‍💻 User Journey
+
+StrataDeed supports two primary user paths that share the same wallet connection and dashboard:
+
+### Property Owner Path
+
+1. **Land on homepage** — read about the platform, no wallet needed
+2. **Connect wallet** — MetaMask, Core Wallet, Rabby, or WalletConnect via RainbowKit
+3. **Navigate to Mint** — AuthGuard checks wallet connection
+4. **Fill the mint form** — property title, location, valuation, description, optional file uploads
+5. **Enable tokenization (optional)** — configure target raise, token supply; the UI auto-calculates price per token and equity percentage
+6. **Sign the transaction** — the frontend generates a metadata URI, a unique property ID, and a SHA-256 private commitment, then calls `StrataDeedNFT.mintPropertyDeed()`
+7. **Second transaction (if tokenized)** — `StrataDeedCore.fractionalizeProperty()` deploys a new FractionalDeedToken contract for this property
+8. **See success screen** — transaction hash linked to Snowtrace, property saved and visible in the marketplace
+9. **Monitor from dashboard** — portfolio metrics, performance charts, activity feed
+
+### Investor Path
+
+1. **Browse the marketplace** — search and filter property cards, no wallet needed
+2. **View property details** — full info, 3D viewer, investment metrics
+3. **Connect wallet** — same flow as above
+4. **Pass compliance** — verified via Merkle proof, ZK proof, or admin grant on ZKComplianceVerifier
+5. **Deposit into escrow** — send AVAX to the property's FractionalDeedToken during Funding state
+6. **Receive fractional tokens** — after the treasury admin finalizes the escrow
+7. **Collect yield** — proportional AVAX distributions from rental income
+8. **Trade shares** — ERC-20 tokens transferable on any Avalanche DEX (subject to whitelist rules)
+
+### Vault & Settings
+
+- **Vault** (`/vault`) — view connected wallet, ZK-KYC credentials, and commitment hashes; encrypted document storage coming soon
+- **Settings** (`/settings`) — wallet info, network status, link to identity vault
+
+---
+
 ## 🚀 Deployment
 
 ### Network Configuration
@@ -281,12 +332,11 @@ StrataDeedCore (Orchestrator)
 | **Fuji Testnet**      | `43113`  | `https://api.avax-test.network/ext/bc/C/rpc` | https://testnet.snowtrace.io |
 | **Avalanche Mainnet** | `43114`  | `https://api.avax.network/ext/bc/C/rpc`      | https://snowtrace.io         |
 
-### Deploy with Hardhat
+### Deploy with Hardhat (Alternative)
 
 ```bash
-# Install dependencies
 cd contracts
-npm install
+pnpm install
 
 # Compile contracts
 npx hardhat compile
@@ -298,48 +348,37 @@ npx hardhat run scripts/deploy.js --network fuji
 npx hardhat run scripts/deploy.js --network avalanche
 ```
 
-Example `hardhat.config.js` network entries:
+### Deploy with Foundry (Primary)
 
-```js
-module.exports = {
-	solidity: "0.8.20",
-	networks: {
-		fuji: {
-			url: "https://api.avax-test.network/ext/bc/C/rpc",
-			chainId: 43113,
-			accounts: [process.env.PRIVATE_KEY],
-		},
-		avalanche: {
-			url: "https://api.avax.network/ext/bc/C/rpc",
-			chainId: 43114,
-			accounts: [process.env.PRIVATE_KEY],
-		},
-	},
-};
-```
+Foundry is the primary contract development tool. The deploy script lives at [`contracts/script/DeployStrataDeed.s.sol`](contracts/script/DeployStrataDeed.s.sol) and deploys all four contracts in the correct order:
 
-### Deploy with Foundry
+1. ZKComplianceVerifier (standalone)
+2. StrataDeedNFT (standalone)
+3. StrataDeedCore (references the other two)
+4. Grants MINTER_ROLE on StrataDeedNFT to StrataDeedCore
 
 ```bash
+cd contracts
+
 # Build contracts
 forge build
 
 # Deploy to Fuji testnet
-forge script script/Deploy.s.sol:DeployStrataDeed \
-  --rpc-url https://api.avax-test.network/ext/bc/C/rpc \
-  --chain-id 43113 \
+forge script script/DeployStrataDeed.s.sol:DeployStrataDeed \
+  --rpc-url fuji \
   --private-key $PRIVATE_KEY \
   --broadcast \
   --verify
 
 # Deploy to Avalanche mainnet
-forge script script/Deploy.s.sol:DeployStrataDeed \
-  --rpc-url https://api.avax.network/ext/bc/C/rpc \
-  --chain-id 43114 \
+forge script script/DeployStrataDeed.s.sol:DeployStrataDeed \
+  --rpc-url avalanche \
   --private-key $PRIVATE_KEY \
   --broadcast \
   --verify
 ```
+
+Foundry config (`foundry.toml`) enables the optimizer at 200 runs, uses `via_ir` for cross-function optimization, and targets the Paris EVM version.
 
 ### Get Fuji Testnet AVAX
 
@@ -362,25 +401,48 @@ Request test AVAX from the [Avalanche Faucet](https://faucet.avax.network/) — 
 ### Quick Start
 
 ```bash
-# 1️⃣ Clone the repository
+# 1. Clone the repository
 git clone https://github.com/yourusername/stratadeed.git
 cd stratadeed
 
-# 2️⃣ Install frontend dependencies
+# 2. Install frontend dependencies
 pnpm install
 
-# 3️⃣ Install contract dependencies
+# 3. Install contract dependencies
 cd contracts
-npm install
+pnpm install
 cd ..
 
-# 4️⃣ Compile contracts
+# 4. Create environment file
+cp .env.example .env.local
+# Add your WalletConnect project ID and contract addresses
+
+# 5. Compile contracts (Foundry)
+cd contracts && forge build && cd ..
+
+# Or compile with Hardhat
 cd contracts && npx hardhat compile && cd ..
 
-# 5️⃣ Start development server
+# 6. Start development server
 pnpm dev
 
-# 6️⃣ Open in browser → http://localhost:3000
+# 7. Open in browser → http://localhost:3000
+```
+
+### Environment Variables
+
+```env
+# WalletConnect (required for wallet modal)
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+
+# Network (fuji or mainnet)
+NEXT_PUBLIC_NETWORK=fuji
+
+# Contract addresses (set after deployment)
+NEXT_PUBLIC_STRATA_DEED_NFT_ADDRESS=0x...
+NEXT_PUBLIC_FRACTIONAL_DEED_TOKEN_ADDRESS=0x...
+NEXT_PUBLIC_ZK_COMPLIANCE_VERIFIER_ADDRESS=0x...
+NEXT_PUBLIC_STRATA_DEED_CORE_ADDRESS=0x...
 ```
 
 ---
@@ -467,7 +529,46 @@ MIT License — see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## � Project Structure
+
+```
+StrataDeed/
+├── contracts/                    # Solidity smart contracts
+│   ├── src/                      # Contract source files
+│   │   ├── StrataDeedCore.sol    # Orchestrator (302 lines)
+│   │   ├── StrataDeedNFT.sol     # ERC-721 deeds (314 lines)
+│   │   ├── FractionalDeedToken.sol # ERC-20 shares + escrow (389 lines)
+│   │   └── ZKComplianceVerifier.sol # Merkle + ZK proofs (330 lines)
+│   ├── script/                   # Foundry deploy scripts
+│   ├── test/                     # Contract tests
+│   └── foundry.toml              # Foundry configuration
+├── src/
+│   ├── app/                      # Next.js App Router pages
+│   │   ├── marketplace/          # Property browsing
+│   │   ├── mint/                 # Tokenization form (1394 lines)
+│   │   ├── dashboard/            # Portfolio management
+│   │   ├── vault/                # Identity & credentials
+│   │   ├── property/[id]/        # Property detail
+│   │   └── settings/             # Preferences
+│   ├── components/               # Reusable UI components
+│   │   ├── home/                 # Landing page sections
+│   │   ├── dashboard/            # Dashboard widgets
+│   │   └── marketplace/          # Listing grid & filters
+│   ├── config/
+│   │   ├── contracts.ts          # ABIs + addresses (single source of truth)
+│   │   └── web3/                 # Chain defs, transports, Wagmi config
+│   ├── hooks/                    # useStrataDeed, useTokenization
+│   ├── providers/                # Web3Provider (Wagmi + RainbowKit)
+│   └── lib/                      # Utilities, storage, performance
+├── public/                       # Static assets
+├── package.json
+├── tailwind.config.ts
+└── QUICK_REFERENCE.md
+```
+
+---
+
+## �🙏 Acknowledgments
 
 - **Avalanche Foundation** — For the Build Games 2026 hackathon and the incredible L1 ecosystem
 - **OpenZeppelin** — For battle-tested smart contract libraries
