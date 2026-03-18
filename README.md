@@ -14,10 +14,10 @@
 
 ---
 
-## 🚀 Quick Links
+## Quick Links
 
 **🎥 Video Demo**: [Watch 3-Minute Walkthrough](#) _(Coming Soon)_  
-**🌐 Live Demo**: [Try StrataDeed](https://strata-deed.vercel.app)  
+**🌐 Live Demo**: [Try StrataDeed](https://stratadeed.vercel.app)  
 **📜 Smart Contracts (Avalanche)**: View on [Snowtrace](https://testnet.snowtrace.io/) _(Fuji Testnet)_  
 **📖 Documentation**: [Quick Reference](./QUICK_REFERENCE.md)
 
@@ -84,7 +84,7 @@ StrataDeed is being ported to **Avalanche C-Chain** for the **Avalanche Build Ga
 | **Frontend (Next.js)** | ✅ Complete        | Marketplace, dashboard, mint form, vault, 3D viewer        |
 | **Wallet Integration** | ✅ Complete        | RainbowKit + Wagmi + viem on Avalanche C-Chain             |
 | **Foundry Tooling**    | ✅ Complete        | Forge build, test, and deploy scripts for Fuji & Mainnet   |
-| **Fuji Deployment**    | 🔄 In Progress     | Deploying full contract suite to Avalanche Fuji testnet    |
+| **Fuji Deployment**    | ✅ Complete        | Full contract suite deployed to Avalanche Fuji testnet     |
 | **ZK Verifier**        | 🔄 Interface Ready | Merkle proof path active; IZKVerifier interface for SNARKs |
 | **Mainnet Launch**     | 📋 Planned         | After testnet validation and security audit                |
 
@@ -449,46 +449,54 @@ NEXT_PUBLIC_STRATA_DEED_CORE_ADDRESS=0x...
 
 ## 🛣️ Roadmap
 
-### 🎯 Phase 1: Foundation & Avalanche Port (Current — Q1 2026)
+### 🎯 Phase 1: Foundation & Avalanche Port
 
-- [x] Security audit and vulnerability fixes (14 issues resolved)
-- [x] Frontend marketplace, dashboard, and mint pages
-- [x] 3D property visualization
-- [x] **Port core contracts to Solidity for Avalanche C-Chain**
-- [x] **ERC-721 property deeds with ZK commitments**
-- [x] **ERC-20 fractional ownership tokens**
-- [x] **ZK Compliance Verifier (Merkle proof + interface)**
-- [ ] Deploy to Avalanche Fuji testnet
-- [ ] End-to-end testing on Fuji
-- [ ] **Submit to Avalanche Build Games 2026**
+**(Current — Q1 2026 — mostly wrapped up)**
 
-### 🚀 Phase 2: ZK & Advanced Features (Q2 2026)
+- [x] Security audit + 14 issues fixed
+- [x] Full frontend (marketplace, dashboard, mint form, 3D viewer)
+- [x] Smart contracts ported to Solidity for Avalanche C-Chain
+- [x] ERC-721 deeds with ZK commitments
+- [x] ERC-20 fractional tokens
+- [x] ZK Compliance Verifier (Merkle + interface)
+- [x] Full deployment to Fuji testnet (early March)
+- [x] End-to-end MVP testing on Fuji (flows from mint to fractional trade to verification all working)
+- [x] Submitted to Avalanche Build Games 2026
 
-- [ ] Full ZK-SNARK verifier (Groth16 / PLONK) integration
-- [ ] Proof aggregation for gas optimization
-- [ ] IPFS integration for property metadata
-- [ ] Enhanced property verification workflow
-- [ ] Secondary market AMM for fractional tokens
-- [ ] Avalanche Subnet for KYC-gated compliance zone
+### 🚀 Phase 2: ZK & Advanced Features + MVP Scaling
 
-### 🌍 Phase 3: Ecosystem & Scale (Q3-Q4 2026)
+**(Q2 2026 — next 3-6 months, building on the live testnet MVP)**
 
-- [ ] Avalanche Warp Messaging for cross-subnet transfers
-- [ ] Institutional API and dashboard
-- [ ] Governance DAO for platform decisions
-- [ ] Real property partnerships (title companies, agents)
-- [ ] Insurance integration (property coverage)
-- [ ] Lending/borrowing against RWA tokens
-- [ ] Avalanche Mainnet deployment
+- [ ] Full ZK-SNARK verifier (Groth16/PLONK circuits) + proof aggregation for cheaper gas
+- [ ] IPFS for property metadata storage
+- [ ] Enhanced verification workflow
+- [ ] Secondary market AMM for easy fractional trading
+- [ ] Scaling the MVP: Stress testing high-volume mints/trades, optimize gas usage, add multi-asset support (more property types), user onboarding improvements (simpler wallet flows, fiat hints)
+- [ ] Mobile app development starts: Build iOS/Android app (React Native or similar) for wallet connect, browse marketplace, mint/view deeds on the go — focus on simple UX for non-crypto users
+- [ ] Avalanche Subnet setup for privacy/KYC-gated zones
 
-### 🏆 Phase 4: Mass Adoption (2027+)
+### 🌍 Phase 3: Ecosystem & Scale
 
-- [ ] Regulatory approval in major jurisdictions
-- [ ] Traditional finance integrations
+**(Q3-Q4 2026 — turning MVP into real product)**
+
+- [ ] Avalanche Warp Messaging for cross-subnet flows
+- [ ] Institutional API + dedicated dashboard
+- [ ] Launch governance DAO
+- [ ] Partnerships with property/title companies, agents, funds
+- [ ] Insurance integration for tokenized assets
+- [ ] Lending/borrowing features against fractions
+- [ ] Full Mainnet deployment (after audits + scaling validation)
+
+### 🏆 Phase 4: Mass Adoption & Global Growth
+
+**(2027 and beyond — the long game)**
+
+- [ ] Regulatory approvals in key markets
+- [ ] Integrations with TradFi (banks, REITs, etc.)
 - [ ] Tokenized rental income streams
-- [ ] Property management tools
-- [ ] Global expansion to 50+ countries
-- [ ] $1B+ in tokenized real estate
+- [ ] Full property management tools
+- [ ] Expand to 50+ countries
+- [ ] Hit $1B+ in tokenized real estate value
 
 ---
 
