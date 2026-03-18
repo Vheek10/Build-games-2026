@@ -17,7 +17,7 @@
 ## 🚀 Quick Links
 
 **🎥 Video Demo**: [Watch 3-Minute Walkthrough](#) _(Coming Soon)_  
-**🌐 Live Demo**: [Try StrataDeed](https://strata-deed.vercel.app)  
+**🌐 Live Demo**: [Try StrataDeed](https://stratadeed.vercel.app)  
 **📜 Smart Contracts (Avalanche)**: View on [Snowtrace](https://testnet.snowtrace.io/) _(Fuji Testnet)_  
 **📖 Documentation**: [Quick Reference](./QUICK_REFERENCE.md)
 
