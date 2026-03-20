@@ -21,10 +21,7 @@ import "./ZKComplianceVerifier.sol";
  *        3. Enforcing compliance checks before fractionalization
  *        4. Managing the registry of fractionalized properties
  *
- *      Ported from the combined logic of Sui Move modules:
- *        - property.move (property creation + token minting)
- *        - property_nft.move (deed NFTs + ZK commitments)
- *        - property_rwa.move (fractional tokens + escrow + yield)
+ *      Combines property deed minting, fractionalization, and compliance.
  */
 contract StrataDeedCore is AccessControl, Pausable, ReentrancyGuard {
     // =========================================================================

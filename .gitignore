@@ -49,3 +49,16 @@ typechain-types/
 # Foundry
 broadcast/
 lib/forge-std/
+
+# Foundry
+cache/
+out/
+broadcast/
+
+
+# macOS / Windows junk
+.DS_Store
+Thumbs.db
+
+# Personal keystores (if using cast wallet import)
+keystore/

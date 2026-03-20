@@ -14,7 +14,6 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @notice ERC-721 NFT representing tokenized real estate property deeds on Avalanche.
  * @dev Each token stores a metadata URI (pointing to property info on IPFS or similar)
  *      and a private commitment hash used for ZK-based compliance verification.
- *      Ported from the Sui Move `property_nft.move` module.
  */
 contract StrataDeedNFT is
     ERC721,
@@ -55,6 +54,9 @@ contract StrataDeedNFT is
 
     /// @dev Mapping from tokenId → minted-at timestamp.
     mapping(uint256 => uint256) private _mintedAt;
+
+    /// @dev Mapping from propertyId hash → whether it has been used.
+    mapping(bytes32 => bool) private _usedPropertyIds;
 
     // =========================================================================
     // Events
@@ -97,6 +99,7 @@ contract StrataDeedNFT is
     error EmptyMetadataURI();
     error PropertyNotVerified(uint256 tokenId);
     error SelfTransferNotAllowed();
+    error DuplicatePropertyId(string propertyId);
 
     // =========================================================================
     // Constructor
@@ -139,6 +142,10 @@ contract StrataDeedNFT is
         if (bytes(propertyId).length == 0) revert EmptyPropertyId();
         if (bytes(metadataURI).length == 0) revert EmptyMetadataURI();
         _validateCommitment(privateCommitment);
+
+        bytes32 pidHash = keccak256(abi.encodePacked(propertyId));
+        if (_usedPropertyIds[pidHash]) revert DuplicatePropertyId(propertyId);
+        _usedPropertyIds[pidHash] = true;
 
         tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
@@ -227,9 +234,13 @@ contract StrataDeedNFT is
         return _propertyIds[tokenId];
     }
 
-    /// @notice Get the private ZK commitment for a deed.
+    /// @notice Get the private ZK commitment for a deed (restricted to owner or compliance).
     function getPrivateCommitment(uint256 tokenId) external view returns (bytes memory) {
-        _requireOwned(tokenId);
+        address owner = _requireOwned(tokenId);
+        require(
+            msg.sender == owner || hasRole(COMPLIANCE_ROLE, msg.sender),
+            "Only deed owner or compliance can read commitment"
+        );
         return _privateCommitments[tokenId];
     }
 

@@ -109,10 +109,6 @@ export function initPerformanceMonitoring() {
 					windowLoad: navigation.loadEventEnd - navigation.fetchStart,
 				};
 
-				if (process.env.NODE_ENV === "development") {
-					console.log("[Performance Metrics]", metrics);
-				}
-
 				reportWebVitals({
 					name: "TTFB",
 					value: metrics.ttfb,
@@ -146,12 +142,10 @@ export function measurePerformance(
 		try {
 			performance.measure(name, startMark, endMark);
 			const measure = performance.getEntriesByName(name)[0];
-			if (process.env.NODE_ENV === "development") {
-				console.log(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
-			}
+
 			return measure.duration;
 		} catch (e) {
-			console.error("Performance measurement error:", e);
+			// silently ignore measurement errors
 		}
 	}
 	return null;

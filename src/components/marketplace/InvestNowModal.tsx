@@ -748,7 +748,7 @@ export default function InvestNowModal({
 															Transaction Hash
 														</span>
 														<a
-															href={`https://testnet.suiscan.xyz/tx/${hash}`}
+															href={`https://testnet.snowtrace.io/tx/${hash}`}
 															target="_blank"
 															rel="noopener noreferrer"
 															className="font-mono text-xs sm:text-sm text-red-600 hover:underline truncate">

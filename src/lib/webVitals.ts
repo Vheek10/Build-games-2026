@@ -18,14 +18,6 @@ export interface WebVitalsMetric {
  */
 export function reportWebVitals(metric: WebVitalsMetric) {
 	// In development, log to console
-	if (process.env.NODE_ENV === "development") {
-		console.log(`[Web Vitals] ${metric.name}:`, {
-			value: metric.value,
-			rating: metric.rating,
-			delta: metric.delta,
-		});
-	}
-
 	// In production, send to your analytics service
 	// Example: sendToAnalytics(metric);
 }
@@ -170,8 +162,7 @@ export function observePerformance(
 		});
 
 		return observer;
-	} catch (error) {
-		console.error("Performance observer error:", error);
+	} catch {
 		return null;
 	}
 }
