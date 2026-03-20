@@ -88,7 +88,7 @@ export default function Navbar({ hideOnHome = false }: NavbarProps) {
           showDarkNavbar ? "bg-transparent" : "bg-white/80 shadow-sm",
         )}
       >
-        <div className="relative w-full max-w-screen-2xl">
+        <div className="relative w-full max-w-7xl mx-auto">
           <div className="flex items-center justify-between h-16 sm:h-[68px] md:h-[72px] lg:h-20 relative">
             {/* Mobile Menu Toggle */}
             <div className="flex lg:hidden items-center shrink-0 z-10">

@@ -55,7 +55,15 @@ const steps = [
 ];
 
 // 3D Tilt Card Component for Elementor-like effect
-function TiltCard({ children, className, isActive }: any) {
+function TiltCard({
+  children,
+  className,
+  isActive,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  isActive: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);

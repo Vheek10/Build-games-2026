@@ -33,7 +33,7 @@ export default function HeroSection() {
       className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28 bg-black"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="flex flex-col gap-6 md:mt-0 mt-8">
+        <div className="max-w-7xl mx-auto flex flex-col gap-6 md:mt-0 mt-8">
           {/* Left Content */}
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start z-20 max-w-2xl">
             {/* Badge */}
@@ -96,7 +96,7 @@ export default function HeroSection() {
               alt="Hero Image"
               width={620}
               height={800}
-              className="lg:min-h-[90vh]"
+              className="lg:min-h-screen"
             />
           </div>
         </div>
