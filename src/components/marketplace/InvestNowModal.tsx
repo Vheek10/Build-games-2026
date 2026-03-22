@@ -119,7 +119,7 @@ export default function InvestNowModal({
 
 	// For demo purposes, use mock data since contract doesn't exist
 	const tokenPriceNum = property.price / 1000; // Assuming 1000 tokens total
-	const minInvestmentNum = 50; // Minimum 2 tokens
+	const minInvestmentNum = 100; // Minimum investment amount in USD
 	const maxInvestmentNum = tokenPriceNum * 100; // Maximum 100 tokens per transaction
 	const totalTokensNum = 1000; // Mock total token supply
 	const availableTokensNum = 750; // Mock available tokens (75%)
@@ -143,8 +143,10 @@ export default function InvestNowModal({
 	} as const;
 
 	// Calculate investment values
-	const calculateTokens = (amount: number) =>
-		Math.floor(amount / tokenPriceNum);
+	const calculateTokens = (amount: number) => {
+		if (amount < minInvestmentNum) return 0;
+		return Math.max(1, Math.floor(amount / tokenPriceNum));
+	};
 	const calculateEquity = (tokens: number) =>
 		totalTokensNum > 0 ? ((tokens / totalTokensNum) * 100).toFixed(2) : "0.00";
 	const calculateEstReturn = (tokens: number) => {

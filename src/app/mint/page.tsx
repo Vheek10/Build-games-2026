@@ -21,22 +21,14 @@ import {
 	Clock,
 	Globe,
 	Shield,
+	RefreshCcw,
 } from "lucide-react";
-// Simple hash function for file commitments (using Web Crypto API for SHA-256)
-async function hashString(str: string): Promise<string> {
-	const encoder = new TextEncoder();
-	const data = encoder.encode(str);
-	const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	const hashHex = hashArray
-		.map((b) => b.toString(16).padStart(2, "0"))
-		.join("");
-	return "0x" + hashHex.slice(0, 64);
-}
+import { keccak256 as viemKeccak256, toHex } from "viem";
+import { avalancheFuji } from "@/config/web3/chains";
 
 // Simple async wrapper for hash calls
 const keccak256 = async (str: string): Promise<string> => {
-	return hashString(str);
+	return viemKeccak256(toHex(str));
 };
 import { useTokenization } from "@/hooks/useTokenization";
 import { useStrataDeed } from "@/hooks/useStrataDeed";
@@ -45,7 +37,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { saveProperty, getNextPropertyId } from "@/lib/propertyStorage";
 import { sampleProperties } from "@/lib/dummy-data";
 import type { Property } from "@/lib/dummy-data";
-import { useAccount } from "wagmi";
+import {
+	useAccount,
+	useChainId,
+	useSwitchChain,
+	useWaitForTransactionReceipt,
+} from "wagmi";
+
+const MINT_DRAFT_STORAGE_KEY = "stratadeed_mint_draft_v1";
+const REQUIRED_DOCS = [
+	{
+		key: "deed",
+		label: "Property Deed / Title",
+		matcher: /(deed|title|ownership)/i,
+	},
+	{ key: "id", label: "Owner ID", matcher: /(id|passport|license)/i },
+	{
+		key: "valuation",
+		label: "Valuation Report",
+		matcher: /(valuation|appraisal|report)/i,
+	},
+] as const;
 
 // Error Boundary Component
 function withErrorBoundary(WrappedComponent: React.ComponentType) {
@@ -70,7 +82,7 @@ function withErrorBoundary(WrappedComponent: React.ComponentType) {
 						<div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
 							<AlertCircle className="w-8 h-8 text-red-600" />
 						</div>
-						<h2 className="text-2xl font-bold text-gray-900 text-center mb our-2">
+						<h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
 							Something went wrong
 						</h2>
 						<p className="text-gray-600 text-center mb-6">
@@ -108,26 +120,47 @@ function withErrorBoundary(WrappedComponent: React.ComponentType) {
 // Main Form Component - Completely standalone
 function MintFormContent() {
 	const { address, isConnected: connected } = useAccount();
+	const chainId = useChainId();
+	const { switchChainAsync, isPending: isSwitchingChain } = useSwitchChain();
 	const {
 		tokenizeProperty,
 		loading: isMinting,
 		error: mintError,
+		txHash: tokenizationTxHash,
 	} = useTokenization();
-	const { fractionalizeProperty, isDeploying } = useStrataDeed();
+	const {
+		fractionalizeProperty,
+		isDeploying,
+		txHash: fractionalizationTxHash,
+	} = useStrataDeed();
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 	const [txHash, setTxHash] = useState<string | undefined>(undefined);
 	const [rwaTxHash, setRwaTxHash] = useState<string | undefined>(undefined);
 	const [submitError, setSubmitError] = useState<string | null>(null);
+	const [partialSuccessNotice, setPartialSuccessNotice] = useState<
+		string | null
+	>(null);
 	const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 	const [currentStep, setCurrentStep] = useState<
 		"idle" | "minting" | "tokenizing" | "success"
 	>("idle");
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [shouldStartFractionalization, setShouldStartFractionalization] =
+		useState(false);
+	const [isDraftRestored, setIsDraftRestored] = useState(false);
 
-	const isWaitingReceipt = false;
-	const rwaReceipt = undefined;
-	const isWaitingRwaReceipt = false;
+	const isOnFuji = chainId === avalancheFuji.id;
+
+	const { isLoading: isWaitingReceipt, isSuccess: isMintReceiptSuccess } =
+		useWaitForTransactionReceipt({
+			hash: txHash ? (txHash as `0x${string}`) : undefined,
+		});
+
+	const { isLoading: isWaitingRwaReceipt, isSuccess: isRwaReceiptSuccess } =
+		useWaitForTransactionReceipt({
+			hash: rwaTxHash ? (rwaTxHash as `0x${string}`) : undefined,
+		});
 
 	// Completely standalone form data - no property card data
 	const [formData, setFormData] = useState({
@@ -141,14 +174,96 @@ function MintFormContent() {
 		tokenSupply: "1000",
 	});
 
+	const docCoverage = useMemo(() => {
+		const fileNames = selectedFiles.map((f) => f.name.toLowerCase());
+		return REQUIRED_DOCS.map((doc) => ({
+			...doc,
+			provided: fileNames.some((name) => doc.matcher.test(name)),
+		}));
+	}, [selectedFiles]);
+
+	const missingRequiredDocs = useMemo(
+		() => docCoverage.filter((doc) => !doc.provided),
+		[docCoverage],
+	);
+
 	// Real-time network validation - check wallet connection
 	useEffect(() => {
 		if (!connected) {
 			setSubmitError("Please connect your wallet to mint property deeds.");
+		} else if (!isOnFuji) {
+			setSubmitError(
+				"Wrong network selected. Please switch to Avalanche Fuji Testnet.",
+			);
 		} else {
 			setSubmitError(null);
 		}
-	}, [connected]);
+	}, [connected, isOnFuji]);
+
+	useEffect(() => {
+		const storedDraft = localStorage.getItem(MINT_DRAFT_STORAGE_KEY);
+		if (!storedDraft) return;
+
+		try {
+			const parsed = JSON.parse(storedDraft);
+			if (parsed && typeof parsed === "object") {
+				setFormData((prev) => ({ ...prev, ...parsed }));
+				setIsDraftRestored(true);
+			}
+		} catch {
+			localStorage.removeItem(MINT_DRAFT_STORAGE_KEY);
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem(MINT_DRAFT_STORAGE_KEY, JSON.stringify(formData));
+	}, [formData]);
+
+	useEffect(() => {
+		if (!tokenizationTxHash || txHash) return;
+		setTxHash(tokenizationTxHash);
+	}, [tokenizationTxHash, txHash]);
+
+	useEffect(() => {
+		if (!fractionalizationTxHash || rwaTxHash) return;
+		setRwaTxHash(fractionalizationTxHash);
+	}, [fractionalizationTxHash, rwaTxHash]);
+
+	useEffect(() => {
+		if (!shouldStartFractionalization || !isMintReceiptSuccess) return;
+
+		const startFractionalization = async () => {
+			setCurrentStep("tokenizing");
+			try {
+				const tokenSupply = BigInt(formData.tokenSupply || "1000");
+				const fundingCap = BigInt(
+					Math.round(Number(formData.targetRaise) * 1e18),
+				);
+				await fractionalizeProperty(
+					BigInt(0),
+					`StrataDeed ${formData.title} Shares`,
+					`SD-${Date.now().toString().slice(-6)}`,
+					tokenSupply,
+					fundingCap,
+				);
+			} catch (error: any) {
+				setPartialSuccessNotice(
+					`Deed minted successfully, but token deployment failed: ${error?.message || "Unknown error"}`,
+				);
+				setCurrentStep("idle");
+			}
+		};
+
+		setShouldStartFractionalization(false);
+		void startFractionalization();
+	}, [
+		shouldStartFractionalization,
+		isMintReceiptSuccess,
+		formData.targetRaise,
+		formData.tokenSupply,
+		formData.title,
+		fractionalizeProperty,
+	]);
 
 	// Enhanced file validation
 	const validateFile = (file: File): string | null => {
@@ -241,9 +356,17 @@ function MintFormContent() {
 			}
 		}
 
+		if (selectedFiles.length === 0) {
+			errors.documents = "At least one supporting document is required";
+		} else if (missingRequiredDocs.length > 0) {
+			errors.documents = `Missing required document categories: ${missingRequiredDocs
+				.map((doc) => doc.label)
+				.join(", ")}`;
+		}
+
 		setFormErrors(errors);
 		return Object.keys(errors).length === 0;
-	}, [formData]);
+	}, [formData, selectedFiles.length, missingRequiredDocs]);
 
 	// Memoized token calculations
 	const tokenDetails = useMemo(() => {
@@ -299,6 +422,14 @@ function MintFormContent() {
 		e.preventDefault();
 
 		setSubmitError(null);
+		setPartialSuccessNotice(null);
+
+		if (!isOnFuji) {
+			setSubmitError(
+				"Please switch to Avalanche Fuji Testnet before minting this property deed.",
+			);
+			return;
+		}
 
 		// Validate form
 		if (!validateForm()) {
@@ -381,35 +512,10 @@ function MintFormContent() {
 				address,
 			);
 
-			if (result.success && result.hash) {
-				setTxHash(result.hash);
-
-				// If tokenization is disabled, we're done after this receipt
-				if (!formData.tokenizationEnabled) {
-					return;
-				}
-
-				// If enabled, proceed to RWA Deployment (Fractionalization)
-				setCurrentStep("tokenizing");
-
-				try {
-					const tokenSupply = BigInt(formData.tokenSupply || "1000");
-					const fundingCap = BigInt(
-						Math.round(Number(formData.targetRaise) * 1e18),
-					);
-					const rwaHash = await fractionalizeProperty(
-						BigInt(0), // deedTokenId — will be resolved from mint receipt
-						`StrataDeed ${formData.title} Shares`,
-						`SD-${propertyId.slice(-6).toUpperCase()}`,
-						tokenSupply,
-						fundingCap,
-					);
-
-					if (rwaHash) {
-						setRwaTxHash(rwaHash);
-					}
-				} catch (rwaError: any) {
-					// Handle RWA deployment error
+			if (result.success) {
+				setCurrentStep("minting");
+				if (formData.tokenizationEnabled) {
+					setShouldStartFractionalization(true);
 				}
 			} else {
 				throw new Error(
@@ -427,7 +533,9 @@ function MintFormContent() {
 	};
 
 	// Success View Component
-	const isFullySuccessful = !!txHash;
+	const isFullySuccessful = formData.tokenizationEnabled
+		? !!txHash && !!rwaTxHash && isRwaReceiptSuccess
+		: !!txHash && isMintReceiptSuccess;
 
 	// Save property to localStorage when minting is successful
 	useEffect(() => {
@@ -470,6 +578,17 @@ function MintFormContent() {
 			localStorage.setItem(savedKey, "true");
 		}
 	}, [isFullySuccessful, formData, txHash, tokenDetails]);
+
+	const handleSwitchToFuji = async () => {
+		try {
+			await switchChainAsync({ chainId: avalancheFuji.id });
+			setSubmitError(null);
+		} catch (error: any) {
+			setSubmitError(
+				error?.message || "Unable to switch network. Please switch in wallet.",
+			);
+		}
+	};
 
 	if (isFullySuccessful) {
 		return (
@@ -597,7 +716,9 @@ function MintFormContent() {
 							: "Initiating Property Mint..."
 						: isWaitingRwaReceipt
 							? "Confirming RWA Deployment..."
-							: "Deploying Token Contract..."}
+							: isRwaReceiptSuccess
+								? "RWA Deployment Confirmed"
+								: "Deploying Token Contract..."}
 				</div>
 				<div className="text-xs text-red-100 font-medium font-montserrat">
 					{currentStep === "minting" ? "Step 1 of 2" : "Step 2 of 2"}
@@ -693,41 +814,87 @@ function MintFormContent() {
 					transition={{ delay: 0.3, duration: 0.4 }}>
 					<motion.div
 						className={`flex items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
-							connected
+							connected && isOnFuji
 								? "bg-emerald-50 border border-emerald-100 shadow-sm shadow-emerald-100/50"
 								: "bg-red-50 border border-red-100 shadow-sm shadow-red-100/50"
 						}`}
 						whileHover={{
 							y: -2,
-							boxShadow: connected
-								? "0 12px 24px rgba(16,185,129,0.15)"
-								: "0 12px 24px rgba(220,38,38,0.15)",
+							boxShadow:
+								connected && isOnFuji
+									? "0 12px 24px rgba(16,185,129,0.15)"
+									: "0 12px 24px rgba(220,38,38,0.15)",
 						}}
 						transition={{ type: "spring", stiffness: 400 }}>
 						<div
 							className={`w-3 h-3 rounded-full ${
-								connected ? "bg-emerald-500 animate-pulse" : "bg-red-500"
+								connected && isOnFuji
+									? "bg-emerald-500 animate-pulse"
+									: "bg-red-500"
 							}`}
 						/>
 						<div className="flex-1">
 							<div className="font-semibold text-gray-900 font-montserrat">
-								{connected
+								{connected && isOnFuji
 									? "Connected to Avalanche Fuji"
-									: "Wallet Disconnected"}
+									: connected
+										? "Wrong Network"
+										: "Wallet Disconnected"}
 							</div>
 							<div className="text-sm text-gray-600 font-montserrat">
-								{connected
+								{connected && isOnFuji
 									? "You can mint property deeds on Avalanche Fuji Testnet."
-									: "Please connect your wallet to mint property deeds."}
+									: connected
+										? "Please switch your wallet to Avalanche Fuji Testnet to continue."
+										: "Please connect your wallet to mint property deeds."}
 							</div>
 						</div>
-						<Globe className="w-5 h-5 text-gray-400" />
+						{connected && !isOnFuji ? (
+							<button
+								type="button"
+								onClick={handleSwitchToFuji}
+								disabled={isSwitchingChain}
+								className="px-3 py-1.5 text-xs font-bold rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 font-montserrat"
+								aria-label="Switch to Avalanche Fuji">
+								{isSwitchingChain ? (
+									<>
+										<Loader2 className="w-3.5 h-3.5 animate-spin" />
+										Switching...
+									</>
+								) : (
+									<>
+										<RefreshCcw className="w-3.5 h-3.5" />
+										Switch Network
+									</>
+								)}
+							</button>
+						) : (
+							<Globe className="w-5 h-5 text-gray-400" />
+						)}
 					</motion.div>
 				</motion.div>
 
+				{isDraftRestored && (
+					<motion.div
+						initial={{ opacity: 0, y: -10 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="mb-6 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-800 font-montserrat flex items-center justify-between gap-3">
+						<span>
+							Draft restored for this form. Supporting files must be
+							re-uploaded.
+						</span>
+						<button
+							type="button"
+							onClick={() => setIsDraftRestored(false)}
+							className="text-xs font-bold text-amber-900 hover:underline">
+							Dismiss
+						</button>
+					</motion.div>
+				)}
+
 				{/* Global Error Alert */}
 				<AnimatePresence mode="wait">
-					{(submitError || mintError) && (
+					{(submitError || mintError || partialSuccessNotice) && (
 						<motion.div
 							initial={{ opacity: 0, y: -20, scale: 0.95 }}
 							animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -740,17 +907,21 @@ function MintFormContent() {
 							</div>
 							<div className="flex-1">
 								<h4 className="text-lg font-black text-red-900 tracking-tight font-mclaren">
-									Minting Error
+									{partialSuccessNotice ? "Partial Success" : "Minting Error"}
 								</h4>
 								<p className="text-sm text-red-700/80 mt-1 font-medium leading-relaxed font-montserrat">
-									{submitError ||
+									{partialSuccessNotice ||
+										submitError ||
 										(typeof mintError === "string"
 											? mintError
 											: "An unexpected error occurred during the minting process. Please check your network and try again.")}
 								</p>
 								<div className="mt-4 flex gap-3">
 									<button
-										onClick={() => setSubmitError(null)}
+										onClick={() => {
+											setSubmitError(null);
+											setPartialSuccessNotice(null);
+										}}
 										className="px-4 py-2 bg-white text-red-600 text-xs font-bold rounded-lg border border-red-200 hover:bg-red-50 transition-all font-montserrat"
 										aria-label="Dismiss error">
 										Dismiss
@@ -764,7 +935,10 @@ function MintFormContent() {
 								</div>
 							</div>
 							<button
-								onClick={() => setSubmitError(null)}
+								onClick={() => {
+									setSubmitError(null);
+									setPartialSuccessNotice(null);
+								}}
 								className="p-2 text-red-400 hover:bg-red-100 rounded-xl transition-all"
 								aria-label="Close error">
 								<Plus className="w-5 h-5 rotate-45" />
@@ -1000,7 +1174,15 @@ function MintFormContent() {
 									Supporting Documents
 								</label>
 
-								<div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-red-400 hover:bg-gray-50 transition-all duration-300 group">
+								<div
+									className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-red-400 hover:bg-gray-50 transition-all duration-300 group"
+									onDragOver={(e) => {
+										e.preventDefault();
+									}}
+									onDrop={(e) => {
+										e.preventDefault();
+										handleFileSelect(Array.from(e.dataTransfer.files));
+									}}>
 									<div className="mx-auto w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
 										<Upload className="w-6 h-6 text-red-600" />
 									</div>
@@ -1045,7 +1227,34 @@ function MintFormContent() {
 									<p className="text-xs text-gray-500 mt-4 font-montserrat">
 										{selectedFiles.length} of 5 files selected
 									</p>
+
+									<div className="mt-5 text-left rounded-lg border border-gray-200 bg-white p-3 space-y-2">
+										<p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 font-montserrat">
+											Required document checklist
+										</p>
+										{docCoverage.map((doc) => (
+											<div
+												key={doc.key}
+												className="flex items-center justify-between gap-3 text-xs font-montserrat">
+												<span className="text-gray-700">{doc.label}</span>
+												<span
+													className={`px-2 py-0.5 rounded-full font-bold ${
+														doc.provided
+															? "bg-emerald-100 text-emerald-700"
+															: "bg-amber-100 text-amber-700"
+													}`}>
+													{doc.provided ? "Provided" : "Missing"}
+												</span>
+											</div>
+										))}
+									</div>
 								</div>
+
+								{formErrors.documents && (
+									<p className="text-sm text-red-600 font-montserrat">
+										{formErrors.documents}
+									</p>
+								)}
 
 								{/* Selected Files List */}
 								{selectedFiles.length > 0 && (
@@ -1129,7 +1338,7 @@ function MintFormContent() {
 											onClick={() =>
 												setFormData((prev) => ({
 													...prev,
-													tokenizationEnabled: !prev.tokenizationEnabled,
+													tokenizationEnabled: true,
 												}))
 											}
 											className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
@@ -1145,7 +1354,7 @@ function MintFormContent() {
 											onClick={() =>
 												setFormData((prev) => ({
 													...prev,
-													tokenizationEnabled: !prev.tokenizationEnabled,
+													tokenizationEnabled: false,
 												}))
 											}
 											className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-gray-500 ${
@@ -1329,9 +1538,9 @@ function MintFormContent() {
 							<div className="pt-6 mt-8 border-t border-gray-200">
 								<button
 									type="submit"
-									disabled={isProcessing || !connected}
+									disabled={isProcessing || !connected || !isOnFuji}
 									className={`w-full px-6 py-5 rounded-full shadow-lg transition-all duration-500 flex items-center justify-center ${
-										isProcessing || !connected
+										isProcessing || !connected || !isOnFuji
 											? "bg-linear-to-r from-gray-400 to-gray-500 cursor-not-allowed opacity-80"
 											: "bg-linear-to-r from-red-600 via-red-500 to-red-500 hover:from-red-700 hover:via-red-600 hover:to-red-600 hover:shadow-red-500/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg"
 									}`}
@@ -1343,11 +1552,13 @@ function MintFormContent() {
 									<MintButtonContent />
 								</button>
 
-								{!connected && (
+								{(!connected || !isOnFuji) && (
 									<p
 										className="text-center text-sm text-red-500 mt-3 font-medium font-montserrat"
 										role="alert">
-										Wallet not connected. Please connect via the navigation bar.
+										{!connected
+											? "Wallet not connected. Please connect via the navigation bar."
+											: "Wrong network detected. Switch to Avalanche Fuji Testnet."}
 									</p>
 								)}
 
