@@ -17,7 +17,7 @@
 ## Quick Links
 
 **🎥 Video Demo**: [Watch 3-Minute Walkthrough](#) _(Coming Soon)_  
-**🌐 Live Demo**: [Try StrataDeed](https://stratadeed.vercel.app)  
+**🌐 Live Demo**: [Try StrataDeed](https://stratadeed.xyz)  
 **📜 Smart Contracts (Avalanche)**: View on [Snowtrace](https://testnet.snowtrace.io/) _(Fuji Testnet)_  
 **📖 Documentation**: [Quick Reference](./QUICK_REFERENCE.md)
 
@@ -598,6 +598,6 @@ StrataDeed/
 
 **Built with ❤️ on Avalanche — for Build Games 2026**
 
-[🌐 Website](#) • [📖 Docs](#) • [🐦 Twitter](#) • [💬 Discord](#)
+[🌐 Website](www.stratadeed.xyz) • [📖 Docs](#) • [🐦 Twitter](www.x.com/StrataDeed) • [💬 Discord](#)
 
 </div>
