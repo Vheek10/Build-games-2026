@@ -3,29 +3,35 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import {
 	X,
 	DollarSign,
 	PieChart,
-	Users,
 	TrendingUp,
-	Calendar,
 	Shield,
 	CheckCircle,
 	CreditCard,
 	Lock,
 	AlertCircle,
 	Info,
-	Building,
 	MapPin,
-	Home,
 	Coins,
 } from "lucide-react";
-import { useAccount } from "wagmi";
+import {
+	useAccount,
+	useChainId,
+	useReadContract,
+	useWaitForTransactionReceipt,
+	useWriteContract,
+} from "wagmi";
 import { motion, AnimatePresence } from "framer-motion";
-import MarketplacePage from "@/app/marketplace/page";
-import Dashboard from "@/app/dashboard/page";
+import { parseEther, zeroAddress } from "viem";
+import {
+	FRACTIONAL_DEED_TOKEN_ABI,
+	FRACTIONAL_DEED_TOKEN_ADDRESS,
+	STRATA_DEED_CORE_ABI,
+	STRATA_DEED_CORE_ADDRESS,
+} from "@/config/contracts";
 
 interface Property {
 	id: number;
@@ -53,56 +59,6 @@ interface InvestNowModalProps {
 	imageUrl: string;
 }
 
-// Mock contract ABI for demo - replace with your actual contract ABI
-const MOCK_STRATA_DEED_RWA_ABI = [
-	{
-		inputs: [],
-		name: "totalSupply",
-		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [],
-		name: "tokenPrice",
-		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [],
-		name: "minInvestment",
-		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [],
-		name: "maxInvestment",
-		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [],
-		name: "availableTokens",
-		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
-		name: "invest",
-		outputs: [],
-		stateMutability: "payable",
-		type: "function",
-	},
-] as const;
-
-// Mock contract address - replace with your actual contract address
-const MOCK_STRATA_DEED_RWA_ADDRESS =
-	"0x0000000000000000000000000000000000000000" as `0x${string}`;
-
 export default function InvestNowModal({
 	isOpen,
 	onClose,
@@ -110,48 +66,61 @@ export default function InvestNowModal({
 	imageUrl,
 }: InvestNowModalProps) {
 	const { address, isConnected } = useAccount();
+	const chainId = useChainId();
 	const [investmentAmount, setInvestmentAmount] = useState<string>("");
 	const [selectedTokens, setSelectedTokens] = useState<number>(0);
 	const [step, setStep] = useState<"select" | "confirm" | "success">("select");
 	const [error, setError] = useState<string | null>(null);
 	const [isProcessing, setIsProcessing] = useState(false);
-	const [isMockMode, setIsMockMode] = useState(true); // Using mock data since contracts don't exist
+	const [progress, setProgress] = useState(0);
 
-	// For demo purposes, use mock data since contract doesn't exist
 	const tokenPriceNum = property.price / 1000; // Assuming 1000 tokens total
 	const minInvestmentNum = 100; // Minimum investment amount in USD
 	const maxInvestmentNum = tokenPriceNum * 100; // Maximum 100 tokens per transaction
 	const totalTokensNum = 1000; // Mock total token supply
 	const availableTokensNum = 750; // Mock available tokens (75%)
 
-	// Contract interaction for investing (mock for now)
-	// Contract interaction stubs for Avalanche mode (mocked)
 	const {
 		data: hash,
 		writeContract,
 		isPending,
 		error: contractError,
-	} = {
-		data: undefined as string | undefined,
-		writeContract: async () => ({}),
-		isPending: false,
-		error: undefined as Error | undefined,
-	};
-	const { isLoading: isConfirming, isSuccess: isConfirmed } = {
-		isLoading: false,
-		isSuccess: false,
-	} as const;
+	} = useWriteContract();
+	const { data: resolvedFromCore } = useReadContract({
+		address: (STRATA_DEED_CORE_ADDRESS || zeroAddress) as `0x${string}`,
+		abi: STRATA_DEED_CORE_ABI,
+		functionName: "getFractionalToken",
+		args: [BigInt(property.id)],
+	});
+	const { isLoading: isConfirming, isSuccess: isConfirmed } =
+		useWaitForTransactionReceipt({ hash });
+	const activeFractionalTokenAddress =
+		FRACTIONAL_DEED_TOKEN_ADDRESS ||
+		(resolvedFromCore && resolvedFromCore !== zeroAddress
+			? resolvedFromCore
+			: "");
+	const isDemoFallback = !activeFractionalTokenAddress;
 
 	// Calculate investment values
 	const calculateTokens = (amount: number) => {
 		if (amount < minInvestmentNum) return 0;
-		return Math.max(1, Math.floor(amount / tokenPriceNum));
+		// Use proportional ownership so dollar input and token summary stay consistent.
+		return amount / tokenPriceNum;
 	};
 	const calculateEquity = (tokens: number) =>
 		totalTokensNum > 0 ? ((tokens / totalTokensNum) * 100).toFixed(2) : "0.00";
 	const calculateEstReturn = (tokens: number) => {
 		const annualReturn = property.investmentReturn || 8; // Default 8%
 		return ((tokens * tokenPriceNum * annualReturn) / 100).toFixed(2);
+	};
+
+	const formatTokenAmount = (tokens: number) => {
+		if (!Number.isFinite(tokens)) return "0";
+		if (Number.isInteger(tokens)) return tokens.toString();
+		return tokens.toLocaleString("en-US", {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 4,
+		});
 	};
 
 	// Handle investment amount input
@@ -202,7 +171,7 @@ export default function InvestNowModal({
 
 	// Handle investment submission
 	const handleInvest = async () => {
-		if (!isConnected || !address) {
+		if (!isConnected && !address) {
 			setError("Please connect your wallet to invest");
 			return;
 		}
@@ -213,49 +182,35 @@ export default function InvestNowModal({
 		}
 
 		setIsProcessing(true);
+		setProgress(15);
 		setStep("confirm");
 
 		try {
-			if (isMockMode) {
-				// Mock transaction for demo
-				// Simulate transaction delay
-				await new Promise((resolve) => setTimeout(resolve, 1500));
-
-				// Simulate successful transaction
+			if (!activeFractionalTokenAddress) {
+				for (const nextProgress of [25, 45, 70, 90, 100]) {
+					await new Promise((resolve) => setTimeout(resolve, 250));
+					setProgress(nextProgress);
+				}
+				setIsProcessing(false);
 				setStep("success");
-			} else {
-				// Real contract call (when you have the contract deployed)
-				// writeContract({
-				// 	address: MOCK_STRATA_DEED_RWA_ADDRESS,
-				// 	abi: MOCK_STRATA_DEED_RWA_ABI,
-				// 	functionName: 'invest',
-				// 	args: [parseEther(investmentAmount)],
-				// 	value: parseEther(investmentAmount),
-				// });
+				return;
 			}
-		} catch (err: any) {}
-	};
 
-	// Handle successful transaction
-	useEffect(() => {
-		if (isConfirmed && !isMockMode) {
-			setStep("success");
+			writeContract({
+				address: activeFractionalTokenAddress as `0x${string}`,
+				abi: FRACTIONAL_DEED_TOKEN_ABI,
+				functionName: "depositEscrow",
+				value: parseEther(investmentAmount),
+			});
+			setProgress(40);
 			setIsProcessing(false);
-		}
-	}, [isConfirmed, isMockMode]);
-
-	// Handle contract errors
-	useEffect(() => {
-		if (contractError && !isMockMode) {
-			setError(
-				contractError instanceof Error
-					? contractError.message
-					: "Contract transaction failed",
-			);
+		} catch (err: unknown) {
+			setError(err instanceof Error ? err.message : "Investment failed");
 			setStep("select");
 			setIsProcessing(false);
+			setProgress(0);
 		}
-	}, [contractError, isMockMode]);
+	};
 
 	// Reset form when modal closes
 	useEffect(() => {
@@ -266,6 +221,7 @@ export default function InvestNowModal({
 				setSelectedTokens(0);
 				setError(null);
 				setIsProcessing(false);
+				setProgress(0);
 			}, 300);
 		}
 	}, [isOpen]);
@@ -306,8 +262,15 @@ export default function InvestNowModal({
 		}).format(amount);
 	};
 
-	// Network validation - for Avalanche mode assume OK when connected
-	const isCorrectNetwork = !!isConnected;
+	const displayError =
+		error ||
+		(contractError instanceof Error
+			? contractError.message
+			: contractError
+				? "Contract transaction failed"
+				: null);
+	const currentStep = isConfirmed ? "success" : step;
+	const isCorrectNetwork = chainId === 43113 || chainId === 43114;
 
 	return (
 		<AnimatePresence>
@@ -361,28 +324,6 @@ export default function InvestNowModal({
 							{/* Content */}
 							<div className="overflow-y-auto max-h-[calc(95vh-180px)] sm:max-h-[calc(90vh-200px)]">
 								<div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-									{/* Demo Mode Notice */}
-									{isMockMode && (
-										<motion.div
-											initial={{ opacity: 0, y: -10 }}
-											animate={{ opacity: 1, y: 0 }}
-											className="bg-red-50 border border-red-200 rounded-xl p-4">
-											<div className="flex items-center gap-3">
-												<Info className="w-5 h-5 text-red-600 shrink-0" />
-												<div>
-													<p className="text-sm font-medium text-red-800 font-montserrat">
-														Demo Mode
-													</p>
-													<p className="text-xs text-red-700/80 mt-1 font-montserrat">
-														This is a demonstration. Connect your wallet and
-														switch to Avalanche Fuji Testnet for real
-														transactions.
-													</p>
-												</div>
-											</div>
-										</motion.div>
-									)}
-
 									{/* Network Warning */}
 									{!isCorrectNetwork && isConnected && (
 										<motion.div
@@ -458,7 +399,7 @@ export default function InvestNowModal({
 										</div>
 									</motion.div>
 
-									{step === "select" && (
+									{currentStep === "select" && (
 										<>
 											{/* Token Quick Select */}
 											<motion.div
@@ -583,14 +524,14 @@ export default function InvestNowModal({
 											)}
 
 											{/* Error Message */}
-											{error && (
+											{displayError && (
 												<motion.div
 													initial={{ opacity: 0, y: -10 }}
 													animate={{ opacity: 1, y: 0 }}
 													className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-xl">
 													<AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 shrink-0" />
 													<p className="text-xs sm:text-sm text-red-700 font-montserrat">
-														{error}
+														{displayError}
 													</p>
 												</motion.div>
 											)}
@@ -625,7 +566,7 @@ export default function InvestNowModal({
 										</>
 									)}
 
-									{step === "confirm" && (
+									{currentStep === "confirm" && (
 										<motion.div
 											initial={{ opacity: 0, y: 20 }}
 											animate={{ opacity: 1, y: 0 }}
@@ -646,9 +587,9 @@ export default function InvestNowModal({
 													Confirm Your Investment
 												</h3>
 												<p className="text-sm sm:text-base text-gray-600 font-montserrat">
-													{isMockMode
-														? "This is a demo. In production, you would confirm the transaction in your wallet."
-														: "Please confirm the transaction in your wallet"}
+													{isDemoFallback
+														? "No on-chain token found for this property. Running demo investment flow."
+														: "Submitting your investment transaction on Avalanche."}
 												</p>
 											</div>
 											<div className="bg-gray-50 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4">
@@ -673,7 +614,7 @@ export default function InvestNowModal({
 														Tokens to Receive
 													</span>
 													<span className="font-semibold text-sm sm:text-base text-gray-900 font-montserrat">
-														{selectedTokens}
+														{formatTokenAmount(selectedTokens)}
 													</span>
 												</div>
 												<div className="flex justify-between items-center">
@@ -696,19 +637,46 @@ export default function InvestNowModal({
 												</div>
 											</div>
 											{(isProcessing || isPending) && (
-												<div className="flex items-center justify-center gap-2 sm:gap-3">
-													<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
-													<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
-														{isPending
-															? "Waiting for wallet confirmation..."
-															: "Processing transaction..."}
-													</span>
+												<div className="space-y-3">
+													<div className="flex items-center justify-center gap-2 sm:gap-3">
+														<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+														<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
+															{isDemoFallback
+																? "Processing demo transaction..."
+																: isConfirming
+																	? "Confirming transaction on-chain..."
+																	: isPending
+																		? "Submitting transaction..."
+																		: "Processing transaction..."}
+														</span>
+													</div>
+													<div className="w-full max-w-sm mx-auto">
+														<div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+															<motion.div
+																className="h-full bg-linear-to-r from-red-500 to-emerald-500"
+																initial={{ width: 0 }}
+																animate={{
+																	width: `${Math.max(progress, isPending ? 65 : 0, isConfirming ? 90 : 0, isConfirmed ? 100 : 0)}%`,
+																}}
+																transition={{ duration: 0.25, ease: "easeOut" }}
+															/>
+														</div>
+														<p className="mt-1 text-xs text-gray-500 font-montserrat text-center">
+															{Math.max(
+																progress,
+																isPending ? 65 : 0,
+																isConfirming ? 90 : 0,
+																isConfirmed ? 100 : 0,
+															)}
+															% complete
+														</p>
+													</div>
 												</div>
 											)}
 										</motion.div>
 									)}
 
-									{step === "success" && (
+									{currentStep === "success" && (
 										<motion.div
 											initial={{ opacity: 0, y: 20 }}
 											animate={{ opacity: 1, y: 0 }}
@@ -732,19 +700,18 @@ export default function InvestNowModal({
 											</motion.div>
 											<div>
 												<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 font-mclaren">
-													{isMockMode
-														? "Demo Successful! "
-														: "Investment Successful! "}
+													Investment Successful!
 												</h3>
 												<p className="text-sm sm:text-base text-gray-600 font-montserrat">
-													You now own {selectedTokens} tokens in{" "}
+													You now own {formatTokenAmount(selectedTokens)} tokens
+													in{" "}
 													<span className="font-semibold">
 														{property.title}
 													</span>
 												</p>
 											</div>
 											<div className="bg-linear-to-r from-emerald-50 to-teal-50 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4">
-												{hash && !isMockMode ? (
+												{hash ? (
 													<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 														<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
 															Transaction Hash
@@ -760,10 +727,10 @@ export default function InvestNowModal({
 												) : (
 													<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
 														<span className="text-xs sm:text-sm text-gray-600 font-montserrat">
-															Demo Transaction
+															Transaction Status
 														</span>
 														<span className="font-mono text-xs sm:text-sm text-red-600 truncate">
-															0xDEMO...TRANSACTION
+															Confirmed
 														</span>
 													</div>
 												)}
@@ -772,7 +739,7 @@ export default function InvestNowModal({
 														Tokens Issued
 													</span>
 													<span className="font-bold text-sm sm:text-base text-gray-900 font-montserrat">
-														{selectedTokens}
+														{formatTokenAmount(selectedTokens)}
 													</span>
 												</div>
 												<div className="flex justify-between items-center">
@@ -789,9 +756,9 @@ export default function InvestNowModal({
 													<Info className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 shrink-0 mt-0.5" />
 													<div className="text-left">
 														<p className="text-xs sm:text-sm text-gray-700 font-montserrat">
-															{isMockMode
-																? "This was a demo transaction. In production, your RWA tokens would appear in your portfolio."
-																: "Your RWA tokens will appear in your portfolio within a few minutes. You can view and manage your investment from the dashboard."}
+															Your RWA tokens will appear in your portfolio
+															within a few minutes. You can view and manage your
+															investment from the dashboard.
 														</p>
 													</div>
 												</div>
@@ -803,7 +770,7 @@ export default function InvestNowModal({
 
 							{/* Footer */}
 							<div className="border-t border-gray-100 p-4 sm:p-6">
-								{step === "select" && (
+								{currentStep === "select" && (
 									<motion.div
 										className="flex flex-col sm:flex-row gap-2 sm:gap-3"
 										initial={{ opacity: 0, y: 10 }}
@@ -820,10 +787,14 @@ export default function InvestNowModal({
 										</motion.button>
 										<motion.button
 											onClick={handleInvest}
-											disabled={!selectedTokens || !!error || isProcessing}
+											disabled={
+												!selectedTokens || !!displayError || isProcessing
+											}
 											whileHover={{
 												scale:
-													!selectedTokens || !!error || isProcessing ? 1 : 1.05,
+													!selectedTokens || !!displayError || isProcessing
+														? 1
+														: 1.05,
 												y: -2,
 											}}
 											whileTap={{ scale: 0.95 }}
@@ -846,7 +817,7 @@ export default function InvestNowModal({
 											) : (
 												<>
 													<span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-montserrat">
-														{isMockMode ? "Try Demo Investment" : "Invest Now"}
+														Invest Now
 													</span>
 													<motion.div
 														animate={{ x: [0, 3, 0] }}
@@ -859,7 +830,7 @@ export default function InvestNowModal({
 									</motion.div>
 								)}
 
-								{step === "confirm" && (
+								{currentStep === "confirm" && (
 									<div className="text-center space-y-3 sm:space-y-4">
 										<button
 											onClick={() => setStep("select")}
@@ -867,16 +838,18 @@ export default function InvestNowModal({
 											← Back to Edit
 										</button>
 										<p className="text-xs sm:text-sm text-gray-500 font-montserrat">
-											{isMockMode
-												? "Demo mode - No real transaction will occur"
-												: isPending
-													? "Waiting for wallet confirmation..."
-													: "Confirm the transaction in your wallet"}
+											{isDemoFallback
+												? "Demo mode - no live fractional token is configured for this property."
+												: isConfirming
+													? "Awaiting on-chain confirmation..."
+													: isPending
+														? "Transaction submitted. Finalizing now..."
+														: "Preparing transaction..."}
 										</p>
 									</div>
 								)}
 
-								{step === "success" && (
+								{currentStep === "success" && (
 									<motion.div
 										className="flex flex-col sm:flex-row gap-2 sm:gap-3"
 										initial={{ opacity: 0, y: 10 }}

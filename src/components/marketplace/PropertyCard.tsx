@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import {
 	MapPin,
-	Eye,
+	Info,
 	Bed,
 	Bath,
 	Square,
@@ -15,10 +15,13 @@ import {
 	TrendingUp,
 	Star,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 // Lazy load the investment modal to reduce initial bundle size
 const InvestNowModal = dynamic(() => import("./InvestNowModal"), {
+	ssr: false,
+});
+
+const PropertyDetailsModal = dynamic(() => import("./PropertyDetailsModal"), {
 	ssr: false,
 });
 
@@ -52,14 +55,18 @@ export default function PropertyCard({
 	property,
 	imageUrl,
 }: PropertyCardProps) {
-	const router = useRouter();
 	const [showInvestModal, setShowInvestModal] = useState(false);
+	const [showDetailsModal, setShowDetailsModal] = useState(false);
 
 	// Simulate funding progress based on ID (just for demo)
 	const fundingProgress = Math.min(100, Math.max(15, (property.id * 13) % 100));
 
 	const handleInvestClick = () => {
 		setShowInvestModal(true);
+	};
+
+	const handleDetailsClick = () => {
+		setShowDetailsModal(true);
 	};
 
 	return (
@@ -223,22 +230,33 @@ export default function PropertyCard({
 									</div>
 								</div>
 
-								<motion.button
-									onClick={handleInvestClick}
-									whileHover={{
-										scale: 1.05,
-										y: -5,
-										backgroundColor: "#9f2149",
-										color: "#ffffff",
-										transition: { duration: 0.4 },
-									}}
-									whileTap={{ scale: 0.98 }}
-									className="w-full px-6 py-4 bg-gray-900 text-white rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(159,33,73,0.4)] flex items-center justify-center gap-3">
-									<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
-										Invest Now
-									</span>
-									<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-								</motion.button>
+								<div className="flex items-center gap-2">
+									<motion.button
+										onClick={handleInvestClick}
+										whileHover={{
+											scale: 1.05,
+											y: -5,
+											backgroundColor: "#9f2149",
+											color: "#ffffff",
+											transition: { duration: 0.4 },
+										}}
+										whileTap={{ scale: 0.98 }}
+										className="flex-1 px-6 py-4 bg-gray-900 text-white rounded-full transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(159,33,73,0.4)] flex items-center justify-center gap-3">
+										<span className="text-[10px] font-black uppercase tracking-[0.4em] font-montserrat">
+											Invest Now
+										</span>
+										<ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+									</motion.button>
+
+									<motion.button
+										onClick={handleDetailsClick}
+										whileHover={{ scale: 1.05, y: -3 }}
+										whileTap={{ scale: 0.95 }}
+										className="h-12 w-12 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 flex items-center justify-center"
+										aria-label={`View details for ${property.title}`}>
+										<Info className="h-5 w-5" />
+									</motion.button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -250,6 +268,15 @@ export default function PropertyCard({
 				<InvestNowModal
 					isOpen={showInvestModal}
 					onClose={() => setShowInvestModal(false)}
+					property={property}
+					imageUrl={imageUrl}
+				/>
+			)}
+
+			{showDetailsModal && (
+				<PropertyDetailsModal
+					isOpen={showDetailsModal}
+					onClose={() => setShowDetailsModal(false)}
 					property={property}
 					imageUrl={imageUrl}
 				/>
